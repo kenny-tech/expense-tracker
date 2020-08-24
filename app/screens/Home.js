@@ -1,10 +1,25 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+
+import HomeLink from '../components/HomeLink';
+import HomeText from '../components/HomeText';
+import Chart from '../components/Chart';
 
 const Home = () => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Home</Text>
+        <View>
+            <Chart/>
+            <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30}}>
+                <HomeText title="Income" amount="NGN50,000" color="#006400"/>
+                <HomeText title="Expense" amount="NGN30,000" color="#C70039"/>
+                <HomeText title="Balance" amount="NGN20,000" color="#0000ff"/>
+            </View>
+            <View style={{marginTop: 10}}>
+                <HomeLink text="ADD INCOME" backgroundColor="#daf5ff" textColor="#639eb8" icon="money"/>
+                <HomeLink text="ADD EXPENSES" backgroundColor="#d4e8ff" textColor="#4b81bf" icon="credit-card"/>
+                <HomeLink text="ALL TRANSACTION" backgroundColor="#ffecdd" textColor="#e79b5f" icon="pie-chart"/>
+                <HomeLink text="REPORTS" backgroundColor="#fedada" textColor="#ff7175" icon="bar-chart"/>
+            </View>
         </View>
     )
 }
