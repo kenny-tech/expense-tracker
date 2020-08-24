@@ -11,12 +11,12 @@ const Chart = () => {
               radius={80}
               sections={[
                 {
-                  percentage: 60,
-                  color: '#404FCD',
+                  percentage: 40,
+                  color: '#C70039',
                 },
                 {
-                  percentage: 40,
-                  color: '#EBD22F',
+                  percentage: 60,
+                  color: '#44CD40',
                 },
               ]}
               strokeCap={'butt'}
