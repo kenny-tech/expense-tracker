@@ -13,5 +13,9 @@ export default StyleSheet.create({
         color: '#639eb8',
         fontWeight: 'bold',
         marginLeft: 40
+    },
+    pieChartView: {
+        margin: 20,
+        alignItems: 'center'
     }
 });
