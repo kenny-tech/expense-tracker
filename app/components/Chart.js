@@ -16,7 +16,7 @@ const Chart = () => {
                 },
                 {
                   percentage: 60,
-                  color: '#44CD40',
+                  color: '#006400',
                 },
               ]}
               strokeCap={'butt'}
