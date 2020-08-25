@@ -20,14 +20,19 @@ export default StyleSheet.create({
     },
     formView: {
         width: 380,
-        height: 70,
+        height: 80,
         backgroundColor: '#ffffff',
-        marginTop: 15,
+        marginTop: 10,
         marginHorizontal: 10,
     },
     formViewLabel: {
         color: '#4169e1',
         padding: 10,
         fontWeight: 'bold',
+    },
+    textinputView: {
+        borderBottomColor: '#696969',
+        borderWidth: 1,
+        padding: 10,
     }
 });

@@ -3,10 +3,12 @@ import { View, Text } from 'react-native';
 
 import styles from '../styles/style';
 
-const FormView = (props) => {
+const FormView = ({label,inputType}) => {
+
     return (
         <View style={styles.formView}>
-           <Text style={styles.formViewLabel}>{props.label}</Text>
+            <Text style={styles.formViewLabel}>{label}</Text>
+            {inputType}
         </View>
     )
 }
