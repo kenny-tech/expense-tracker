@@ -17,5 +17,17 @@ export default StyleSheet.create({
     pieChartView: {
         margin: 20,
         alignItems: 'center'
+    },
+    formView: {
+        width: 380,
+        height: 70,
+        backgroundColor: '#ffffff',
+        marginTop: 15,
+        marginHorizontal: 10,
+    },
+    formViewLabel: {
+        color: '#4169e1',
+        padding: 10,
+        fontWeight: 'bold',
     }
 });

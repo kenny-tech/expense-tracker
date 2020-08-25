@@ -4,18 +4,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './app/screens/Home';
+import IncomeScreen from './app/screens/Income';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false
-        }}
-      >
+      <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen headerShown="true" name="Income" component={IncomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
