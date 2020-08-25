@@ -11,9 +11,19 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen headerShown="true" name="Income" component={IncomeScreen} />
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#4169e1',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen}/>
+        <Stack.Screen options={{ title: "Add Income" }} name="Income" component={IncomeScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
