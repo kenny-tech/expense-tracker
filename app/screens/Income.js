@@ -3,6 +3,7 @@ import { View, ScrollView, KeyboardAvoidingView} from 'react-native';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
+import Myradioinput from '../components/Myradioinput';
 
 const Income = () => {
     const [amount, setAmount] = useState('');
@@ -16,7 +17,10 @@ const Income = () => {
                     behavior="padding"
                     style={{ flex: 1, justifyContent: 'space-between' }}
                 >
-                    <FormView label="Type" />
+                    <FormView 
+                        label="Type" 
+                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense" value2="Expense"/>}
+                    />
                     <FormView 
                         label="Amount" 
                         inputType={<Mytextinput placeholder="Amount" keyboardType="numeric" onChangeText={amount => setAmount(amount)}/>}
