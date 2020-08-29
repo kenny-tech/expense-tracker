@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import FormView from '../components/FormView';
@@ -33,7 +33,9 @@ const Income = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
           headerRight: () => (
-            <Icon name="check" size={30} style={styles.check}/>
+            <TouchableOpacity onPress={() => Alert.alert('Income', 'Processing income...')}>
+                <Icon name="check" size={30} style={styles.check}/>
+            </TouchableOpacity>            
           ),
         });
     }, [navigation]);
