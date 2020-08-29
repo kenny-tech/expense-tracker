@@ -5,11 +5,28 @@ import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
 import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
+import Myselectinput from '../components/Myselectinput';
 
 const Income = () => {
     const [amount, setAmount] = useState('');
     const [note, setNote] = useState('');
 
+    const categories = [
+        { label: 'Business', value: 'Business' },
+        { label: 'Clothing', value: 'Clothing' },
+        { label: 'Drinks', value: 'Drinks' },
+        { label: 'Education', value: 'Education' },
+        { label: 'Food', value: 'Food' },
+        { label: 'Salary', value: 'Salary' },
+    ];
+
+    const modes = [
+        { label: 'Cash', value: 'Cash' },
+        { label: 'Credit Card', value: 'Credit Card' },
+        { label: 'Debit Card', value: 'Debit Card' },
+        { label: 'Bank', value: 'Bank' },
+        { label: 'Cheque', value: 'Cheque' },
+    ];
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -26,12 +43,18 @@ const Income = () => {
                         label="Amount" 
                         inputType={<Mytextinput placeholder="Amount" keyboardType="numeric" onChangeText={amount => setAmount(amount)}/>}
                     />
-                    <FormView label="Category"/>
+                    <FormView 
+                        label="Category"
+                        inputType={<Myselectinput types={categories}/>}
+                    />
                     <FormView 
                         label="Date" 
                         inputType={<Mydateinput/>}
                     />
-                    <FormView label="Mode"/>
+                    <FormView 
+                        label="Mode"
+                        inputType={<Myselectinput types={modes}/>}
+                    />
                     <FormView 
                         label="Note"
                         inputType={<Mytextinput placeholder="Note" onChangeText={note => setNote(note)}/>}
