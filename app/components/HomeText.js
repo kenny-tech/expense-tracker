@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import styles from '../styles/style';
-
 const HomeText = (props) => {
     return (
         <View style={{marginHorizontal: 40}}>

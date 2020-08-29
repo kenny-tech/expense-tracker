@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './app/screens/Home';
+import IncomeScreen from './app/screens/Income';
 
 const Stack = createStackNavigator();
 
@@ -12,10 +13,17 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          headerStyle: {
+            backgroundColor: '#4169e1',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       >
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen}/>
+        <Stack.Screen options={{ title: "Add Income" }} name="Income" component={IncomeScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
