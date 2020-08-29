@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './app/screens/Home';
 import IncomeScreen from './app/screens/Income';
+import ExpenseScreen from './app/screens/Expense';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ const App = () => {
       >
         <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen}/>
         <Stack.Screen options={{ title: "Add Income" }} name="Income" component={IncomeScreen}/>
+        <Stack.Screen options={{ title: "Add Expense" }} name="Expense" component={ExpenseScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

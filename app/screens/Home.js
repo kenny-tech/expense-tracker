@@ -16,7 +16,7 @@ const Home = ({navigation}) => {
             </View>
             <View style={{marginTop: 10}}>
                 <HomeLink text="ADD INCOME" backgroundColor="#daf5ff" textColor="#639eb8" icon="money" customClick={() => navigation.navigate('Income')}/>
-                <HomeLink text="ADD EXPENSES" backgroundColor="#d4e8ff" textColor="#4b81bf" icon="credit-card"/>
+                <HomeLink text="ADD EXPENSES" backgroundColor="#d4e8ff" textColor="#4b81bf" icon="credit-card" customClick={() => navigation.navigate('Expense')}/>
                 <HomeLink text="ALL TRANSACTION" backgroundColor="#ffecdd" textColor="#e79b5f" icon="pie-chart"/>
                 <HomeLink text="REPORTS" backgroundColor="#fedada" textColor="#ff7175" icon="bar-chart"/>
             </View>
