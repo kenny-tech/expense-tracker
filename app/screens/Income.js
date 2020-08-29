@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, ScrollView, KeyboardAvoidingView} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
 import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
+import styles from '../styles/style';
 
-const Income = () => {
+const Income = ({ navigation }) => {
     const [amount, setAmount] = useState('');
     const [note, setNote] = useState('');
 
@@ -27,6 +29,14 @@ const Income = () => {
         { label: 'Bank', value: 'Bank' },
         { label: 'Cheque', value: 'Cheque' },
     ];
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <Icon name="check" size={30} style={styles.check}/>
+          ),
+        });
+    }, [navigation]);
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>

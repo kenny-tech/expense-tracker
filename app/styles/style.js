@@ -34,5 +34,9 @@ export default StyleSheet.create({
         borderBottomColor: '#696969',
         borderWidth: 1,
         padding: 10,
+    },
+    check: {
+        marginRight: 20,
+        color: '#ffffff',
     }
 });
