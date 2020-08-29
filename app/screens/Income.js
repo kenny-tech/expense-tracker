@@ -4,6 +4,7 @@ import { View, ScrollView, KeyboardAvoidingView} from 'react-native';
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
 import Myradioinput from '../components/Myradioinput';
+import Mydateinput from '../components/MyDateinput';
 
 const Income = () => {
     const [amount, setAmount] = useState('');
@@ -26,7 +27,10 @@ const Income = () => {
                         inputType={<Mytextinput placeholder="Amount" keyboardType="numeric" onChangeText={amount => setAmount(amount)}/>}
                     />
                     <FormView label="Category"/>
-                    <FormView label="Date & Time"/>
+                    <FormView 
+                        label="Date" 
+                        inputType={<Mydateinput/>}
+                    />
                     <FormView label="Mode"/>
                     <FormView 
                         label="Note"
