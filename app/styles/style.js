@@ -82,5 +82,32 @@ export default StyleSheet.create({
         fontSize: 16,
         paddingLeft: 20,
         fontWeight: 'bold'
+    },
+    incomeTextDescriptionBg: {
+        backgroundColor: '#006400',
+        width: 10,
+        height: 10,
+        marginTop: 5,
+    },
+    expenseTextDescriptionBg: {
+        backgroundColor: '#C70039',
+        width: 10,
+        height: 10,
+        marginTop: 5
+    },
+    transaction: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: 390,
+        height: 40,
+        backgroundColor: '#ffffff', 
+        marginHorizontal: 80,
+        marginTop: 10,
+    },
+    transactionTextSize: {
+        fontSize: 16,
+        paddingLeft: 20,
+        paddingRight: 150,
+        marginHorizontal: 5
     }
 });
