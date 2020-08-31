@@ -38,5 +38,35 @@ export default StyleSheet.create({
     check: {
         marginRight: 20,
         color: '#ffffff',
+    },
+    transactionMonth: {
+        width: 150,
+        height: 40,
+        backgroundColor: '#4b81bf',
+        justifyContent: 'center',
+        marginTop: 5,
+        borderBottomEndRadius: 10,
+        borderTopEndRadius: 10
+    },
+    transactionMonthText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        paddingLeft: 20,
+        fontSize: 18
+    },
+    transactionView: {
+        backgroundColor: '#ffffff',
+        width: 390,
+        height: 530,
+        marginVertical: 10,
+        marginHorizontal: 10,
+    },
+    transactionViewText: {
+        marginLeft: 30,
+        marginTop: 10,
+    },
+    transactionText: {
+        fontSize: 18
     }
+
 });
