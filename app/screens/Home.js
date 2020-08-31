@@ -12,7 +12,7 @@ const Home = ({navigation}) => {
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30}}>
                 <HomeText title="Income" amount="NGN50,000" color="#006400"/>
                 <HomeText title="Expense" amount="NGN30,000" color="#C70039"/>
-                <HomeText title="Balance" amount="NGN20,000" color="#4169e1"/>
+                <HomeText title="Balance" amount="NGN20,000" color="#4b81bf"/>
             </View>
             <View style={{marginTop: 10}}>
                 <HomeLink text="ADD INCOME" backgroundColor="#daf5ff" textColor="#639eb8" icon="money" customClick={() => navigation.navigate('Income')}/>

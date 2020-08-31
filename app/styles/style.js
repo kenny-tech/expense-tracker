@@ -26,7 +26,7 @@ export default StyleSheet.create({
         marginHorizontal: 10,
     },
     formViewLabel: {
-        color: '#4169e1',
+        color: '#4b81bf',
         padding: 10,
         fontWeight: 'bold',
     },
