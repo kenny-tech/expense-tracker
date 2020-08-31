@@ -67,6 +67,20 @@ export default StyleSheet.create({
     },
     transactionText: {
         fontSize: 18
+    },
+    bottomView: {
+        width: 390,
+        height: 40,
+        backgroundColor: '#4b81bf', 
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0,
+        marginHorizontal: 10
+    },
+    bottomViewText: {
+        color: 'white',
+        fontSize: 16,
+        paddingLeft: 20,
+        fontWeight: 'bold'
     }
-
 });
