@@ -1,11 +1,96 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 
 import HomeLink from '../components/HomeLink';
 import HomeText from '../components/HomeText';
 import Chart from '../components/Chart';
+import { DB } from '../model/db';
 
 const Home = ({navigation}) => {
+
+    useEffect(() => {
+        createCategories()
+        createModes()
+    }, []);    
+
+    const createCategories = () => {
+        DB.transaction(function (tx) {
+            // tx.executeSql('DROP TABLE IF EXISTS categories');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS categories (name)');
+            }, function (error) {
+                console.log('Transaction error: ' + error.message);
+            }, function () {
+                console.log('Successfully created categories table');
+            }
+        );
+
+        DB.transaction(tx => {
+            tx.executeSql('SELECT name FROM categories', [], (tx, results) => {
+                let len = results.rows.length;
+
+                if(len > 0) {
+                    let category = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        category.push(results.rows.item(i));
+                    }
+                    console.log('Categories: ',category);
+                } else {
+                    tx.executeSql(        
+                        'INSERT INTO categories VALUES (?),(?),(?),(?),(?),(?)',
+                        ['Business','Clothing','Drinks','Education','Food','Salary'],
+                        (tx, results) => {               
+                          if (results.rowsAffected > 0 ) {
+                            console.log('Insert success');              
+                          } else {
+                            console.log('Insert failed');
+                          }
+                        }
+                    );
+                }
+            })
+        });
+
+    }
+
+    const createModes = () => {
+        DB.transaction(function (tx) {
+            // tx.executeSql('DROP TABLE IF EXISTS modes');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS modes (name)');
+            }, function (error) {
+                console.log('Transaction error: ' + error.message);
+            }, function () {
+                console.log('Successfully created modes table');
+            }
+        );
+
+        DB.transaction(tx => {
+            tx.executeSql('SELECT name FROM modes', [], (tx, results) => {
+                let len = results.rows.length;
+
+                if(len > 0) {
+                    let mode = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        mode.push(results.rows.item(i));
+                    }
+                    console.log('Modes: ',mode);
+                } else {
+                    tx.executeSql(        
+                        'INSERT INTO modes VALUES (?),(?),(?),(?),(?)',
+                        ['Cash','Credit Card','Debit Card','Bank','Cheque'],
+                        (tx, results) => {               
+                          if (results.rowsAffected > 0 ) {
+                            console.log('Insert success');              
+                          } else {
+                            console.log('Insert failed');
+                          }
+                        }
+                    );
+                }
+            })
+        });
+
+    }
+
     return (
         <View>
             <Chart/>
