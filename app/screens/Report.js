@@ -1,25 +1,38 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 
 import FormView from '../components/FormView';
 import Myselectinput from '../components/Myselectinput';
 import Chart from '../components/Chart';
 import ChartDescription from '../components/ChartDescription';
 import Transaction from '../components/Transaction';
+import { DB } from '../model/db';
 
 const Report = () => {
+    const [filterTypes, setFilterTypes] = useState([]);
 
-    const types = [
-        { label: 'Type', value: 'Type' },
-        { label: 'Category', value: 'Category' },
-        { label: 'Mode', value: 'Mode' }
-    ];
+    useEffect(() => {
+        getFilterTypes();
+    }, []);    
+    
+    const getFilterTypes = () => {
+        DB.transaction(tx => {
+            tx.executeSql('SELECT rowid, name FROM filter_types', [], (tx, results) => {
+                let filters = [];
+                console.log('Filter types from report screen: ',results.rows);
+                for (let i = 0; i < results.rows.length; ++i) {
+                    filters.push(results.rows.item(i));
+                }
+                setFilterTypes(filters);
+            })
+        });
+    }
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
            <FormView 
                 label="Report by"
-                inputType={<Myselectinput types={types}/>}
+                inputType={<Myselectinput types={filterTypes}/>}
             />
             <Chart/>
             <ChartDescription/>
