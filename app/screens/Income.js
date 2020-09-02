@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -8,27 +8,44 @@ import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
 import styles from '../styles/style';
+import { DB } from '../model/db';
 
 const Income = ({ navigation }) => {
     const [amount, setAmount] = useState('');
     const [note, setNote] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [modes, setModes] = useState([]);
 
-    const categories = [
-        { label: 'Business', value: 'Business' },
-        { label: 'Clothing', value: 'Clothing' },
-        { label: 'Drinks', value: 'Drinks' },
-        { label: 'Education', value: 'Education' },
-        { label: 'Food', value: 'Food' },
-        { label: 'Salary', value: 'Salary' },
-    ];
+    useEffect(() => {
+        getCategories();
+        getModes();
+    }, []);    
 
-    const modes = [
-        { label: 'Cash', value: 'Cash' },
-        { label: 'Credit Card', value: 'Credit Card' },
-        { label: 'Debit Card', value: 'Debit Card' },
-        { label: 'Bank', value: 'Bank' },
-        { label: 'Cheque', value: 'Cheque' },
-    ];
+    const getCategories = () => {
+        DB.transaction(tx => {
+            tx.executeSql('SELECT rowid, name FROM categories', [], (tx, results) => {
+                let allCategories = [];
+                console.log('Categories from income screen: ',results.rows);
+                for (let i = 0; i < results.rows.length; ++i) {
+                    allCategories.push(results.rows.item(i));
+                }
+                setCategories(allCategories);
+            })
+        });
+    }
+
+    const getModes = () => {
+        DB.transaction(tx => {
+            tx.executeSql('SELECT rowid, name FROM modes', [], (tx, results) => {
+                let allModes = [];
+                console.log('Modes from income screen: ',results.rows);
+                for (let i = 0; i < results.rows.length; ++i) {
+                    allModes.push(results.rows.item(i));
+                }
+                setModes(allModes);
+            })
+        });
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
