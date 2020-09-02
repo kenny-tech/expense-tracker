@@ -14,7 +14,7 @@ const Myselectinput = ({ types }) => {
             {
                 types.map(type => {
                     return (
-                        <Picker.Item label={type.name} value={type.name} />
+                        <Picker.Item key={type.rowid} label={type.name} value={type.name} />
                     )
                 })
             }
