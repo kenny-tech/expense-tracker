@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
 import HomeLink from '../components/HomeLink';
@@ -9,8 +9,9 @@ import { DB } from '../model/db';
 const Home = ({navigation}) => {
 
     useEffect(() => {
-        createCategories()
-        createModes()
+        createCategories();
+        createModes();
+        createFilterTypes();
     }, []);    
 
     const createCategories = () => {
@@ -49,7 +50,6 @@ const Home = ({navigation}) => {
                 }
             })
         });
-
     }
 
     const createModes = () => {
@@ -88,8 +88,47 @@ const Home = ({navigation}) => {
                 }
             })
         });
+    }
+
+    const createFilterTypes = () => {
+        DB.transaction(function (tx) {
+            // tx.executeSql('DROP TABLE IF EXISTS categories');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS filter_types (name)');
+            }, function (error) {
+                console.log('Transaction error: ' + error.message);
+            }, function () {
+                console.log('Successfully created filter_types table');
+            }
+        );
+
+        DB.transaction(tx => {
+            tx.executeSql('SELECT name FROM filter_types', [], (tx, results) => {
+                let len = results.rows.length;
+
+                if(len > 0) {
+                    let filterTypes = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        filterTypes.push(results.rows.item(i));
+                    }
+                    console.log('Filter Types: ',filterTypes);
+                } else {
+                    tx.executeSql(        
+                        'INSERT INTO filter_types VALUES (?),(?),(?)',
+                        ['Type','Category','Mode'],
+                        (tx, results) => {               
+                          if (results.rowsAffected > 0 ) {
+                            console.log('Insert success');              
+                          } else {
+                            console.log('Insert failed');
+                          }
+                        }
+                    );
+                }
+            })
+        });
 
     }
+
 
     return (
         <View>
