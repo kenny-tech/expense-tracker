@@ -1,11 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 
 import HomeLink from '../components/HomeLink';
 import HomeText from '../components/HomeText';
 import Chart from '../components/Chart';
+import { DB } from '../model/db';
 
 const Home = ({navigation}) => {
+
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        createCategories()
+    }, []);    
+
+    const createCategories = () => {
+        DB.transaction(function (tx) {
+            // tx.executeSql('DROP TABLE IF EXISTS categories');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS categories (name)');
+            }, function (error) {
+                console.log('Transaction error: ' + error.message);
+            }, function () {
+                console.log('Successfully created categories table');
+            }
+        );
+
+        DB.transaction(tx => {
+            tx.executeSql('SELECT name FROM categories', [], (tx, results) => {
+                let len = results.rows.length;
+
+                if(len > 0) {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log(temp);
+                    setCategories(temp);
+                } else {
+                    tx.executeSql(        
+                        'INSERT INTO categories VALUES (?),(?),(?),(?),(?),(?)',
+                        ['Business','Clothing','Drinks','Education','Food','Salary'],
+                        (tx, results) => {               
+                          if (results.rowsAffected > 0 ) {
+                            console.log('Insert success');              
+                          } else {
+                            console.log('Insert failed');
+                          }
+                        }
+                    );
+                }
+            })
+        });
+
+    }
+
     return (
         <View>
             <Chart/>
