@@ -1,21 +1,21 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 
-const Mytextinput = (props) => {
+const Mytextinput = ({ placeholder,keyboardType,onChangeText,returnKeyType,numberOfLines,multiline,onSubmitEditing,value }) => {
     return (
         <TextInput
             underlineColorAndroid="transparent"
-            placeholder={props.placeholder}
+            placeholder={placeholder}
             placeholderTextColor="gray"
-            keyboardType={props.keyboardType}
-            onChangeText={props.onChangeText}
-            returnKeyType={props.returnKeyType}
-            numberOfLines={props.numberOfLines}
-            multiline={props.multiline}
-            onSubmitEditing={props.onSubmitEditing}
+            keyboardType={keyboardType}
+            onChangeText={onChangeText}
+            returnKeyType={returnKeyType}
+            numberOfLines={numberOfLines}
+            multiline={multiline}
+            onSubmitEditing={onSubmitEditing}
             style={{ height: 35, borderColor: "gray", borderBottomWidth: 1, marginHorizontal: 10}}
             blurOnSubmit={false}
-            value={props.value}
+            value={value}
         />
     )
 }

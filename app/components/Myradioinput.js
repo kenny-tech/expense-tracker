@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 
-const Myradioinput = ({ label1, label2, value1, value2 }) => {
+const Myradioinput = ({ label1,label2,value1,value2 }) => {
 
     const [value, setValue] = useState('');
 

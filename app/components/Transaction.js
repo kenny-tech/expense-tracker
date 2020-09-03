@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import styles from '../styles/style';
 
-const Transaction = ({ label, amount }) => {
+const Transaction = ({ label,amount }) => {
     return (
         <View style={styles.transaction}>
             <Text style={styles.transactionTextSize}>{label}</Text>

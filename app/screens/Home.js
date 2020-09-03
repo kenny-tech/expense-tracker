@@ -6,7 +6,7 @@ import HomeText from '../components/HomeText';
 import Chart from '../components/Chart';
 import { DB } from '../model/db';
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
 
     useEffect(() => {
         createCategories();
