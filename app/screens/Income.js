@@ -10,7 +10,7 @@ import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
 const Income = () => {
-    const [type, setType] = useState('');
+    const [type, setType] = useState('Income');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('Business');
     const [date, setDate] = useState('');
@@ -53,7 +53,7 @@ const Income = () => {
 
     const handleSubmit = () => {
         // Alert.alert('Income', 'Processing income...')
-        Alert.alert(date);
+        Alert.alert(type);
     }
 
     return (
@@ -65,7 +65,7 @@ const Income = () => {
                 >
                     <FormView 
                         label="Type" 
-                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense" value2="Expense" onChangeText={type => setType(type)}/>}
+                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense"  value2="Expense" defaultValue={type} onChangeType={type => setType(type)}/>}
                     />
                     <FormView 
                         label="Amount" 
