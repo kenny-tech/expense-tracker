@@ -9,7 +9,7 @@ import Myselectinput from '../components/Myselectinput';
 import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
-const Income = () => {
+const Income = ({ navigation }) => {
     const [type, setType] = useState('Income');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('Business');
@@ -52,8 +52,47 @@ const Income = () => {
     }
 
     const handleSubmit = () => {
-        // Alert.alert('Income', 'Processing income...')
-        Alert.alert(type);
+        if(amount.trim() != '') {
+            if(date.trim != '') {
+                DB.transaction(function (tx) {
+                    // tx.executeSql('DROP TABLE IF EXISTS incomes');   
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS incomes (type, amount, category, date, mode, note)');
+              
+                    }, function (error) {
+                        console.log('Transaction error: ' + error.message);
+                    }, function () {
+                        console.log('Successfully loaded incomes table');
+                    });
+                DB.transaction((tx) => {
+                    tx.executeSql('INSERT INTO incomes VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
+                        (tx, results) => {               
+                            if (results.rowsAffected > 0 ) {
+                                Alert.alert(
+                                    'Success',
+                                    'Income successfully recorded',
+                                    [
+                                        {
+                                            text: 'Ok',
+                                            onPress: () => navigation.navigate('Home'),
+                                        },
+                                    ],
+                                    { cancelable: false}
+                                );
+                                console.log("Income successfully recorded");            
+                            } else {
+                                console.log('Insert failed');
+                            }
+                        }
+                    );
+                }, function (tx, err) {
+                    console.log('Insert income error ' + err);
+                });
+            } else {
+                Alert.alert('Error', 'Please select a date');
+            }
+        } else {
+            Alert.alert('Error', 'Please enter an amount')
+        }
     }
 
     return (
