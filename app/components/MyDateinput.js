@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-native-datepicker'
 
-const MyDateinput = () => {
-
-    const [date, setDate] = useState('');
+const MyDateinput = ({ defaultDate,onDateChange }) => {
 
     return (
         <DatePicker
           style={{width: 200}}
-          date={date}
+          date={defaultDate}
           mode="date"
           placeholder="select date"
           format="YYYY-MM-DD"
@@ -25,7 +23,7 @@ const MyDateinput = () => {
               marginLeft: 36
             }
           }}
-          onDateChange={(date) => {setDate(date)}}
+          onDateChange={onDateChange}
           style={{marginHorizontal: 10}}
         />
     )

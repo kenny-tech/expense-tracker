@@ -10,11 +10,11 @@ import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
 const Income = ({ navigation }) => {
-    const [type, setType] = useState('');
+    const [type, setType] = useState('Income');
     const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState('Business');
     const [date, setDate] = useState('');
-    const [mode, setMode] = useState('');
+    const [mode, setMode] = useState('Cash');
     const [note, setNote] = useState('');
 
     const [categories, setCategories] = useState([]);
@@ -52,7 +52,47 @@ const Income = ({ navigation }) => {
     }
 
     const handleSubmit = () => {
-        Alert.alert('Income', 'Processing income...')
+        if(amount.trim() != '') {
+            if(date.trim != '') {
+                DB.transaction(function (tx) {
+                    // tx.executeSql('DROP TABLE IF EXISTS incomes');   
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS incomes (type, amount, category, date, mode, note)');
+              
+                    }, function (error) {
+                        console.log('Transaction error: ' + error.message);
+                    }, function () {
+                        console.log('Successfully loaded incomes table');
+                    });
+                DB.transaction((tx) => {
+                    tx.executeSql('INSERT INTO incomes VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
+                        (tx, results) => {               
+                            if (results.rowsAffected > 0 ) {
+                                Alert.alert(
+                                    'Success',
+                                    'Income successfully recorded',
+                                    [
+                                        {
+                                            text: 'Ok',
+                                            onPress: () => navigation.navigate('Home'),
+                                        },
+                                    ],
+                                    { cancelable: false}
+                                );
+                                console.log("Income successfully recorded");            
+                            } else {
+                                console.log('Insert failed');
+                            }
+                        }
+                    );
+                }, function (tx, err) {
+                    console.log('Insert income error ' + err);
+                });
+            } else {
+                Alert.alert('Error', 'Please select a date');
+            }
+        } else {
+            Alert.alert('Error', 'Please enter an amount')
+        }
     }
 
     return (
@@ -64,7 +104,7 @@ const Income = ({ navigation }) => {
                 >
                     <FormView 
                         label="Type" 
-                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense" value2="Expense" onChangeText={type => setType(type)}/>}
+                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense"  value2="Expense" defaultValue={type} onChangeType={type => setType(type)}/>}
                     />
                     <FormView 
                         label="Amount" 
@@ -72,15 +112,19 @@ const Income = ({ navigation }) => {
                     />
                     <FormView 
                         label="Category"
-                        inputType={<Myselectinput types={categories} onChangeText={category => setCategory(category)}/>}
+                        inputType={<Myselectinput types={categories} 
+                        defaultValue={category}
+                        onValueChange={(category) => setCategory(category)}/>}
                     />
                     <FormView 
                         label="Date" 
-                        inputType={<Mydateinput onChangeText={date => setDate(date)}/>}
+                        inputType={<Mydateinput defaultDate={date} onDateChange={(date) => {setDate(date)}}/>}
                     />
-                    <FormView 
+                     <FormView 
                         label="Mode"
-                        inputType={<Myselectinput types={modes} onChangeText={mode => setMode(mode)}/>}
+                        inputType={<Myselectinput types={modes} 
+                        defaultValue={mode}
+                        onValueChange={(mode) => setMode(mode)}/>}
                     />
                     <FormView 
                         label="Note"
