@@ -53,7 +53,7 @@ const Income = () => {
 
     const handleSubmit = () => {
         // Alert.alert('Income', 'Processing income...')
-        Alert.alert(mode);
+        Alert.alert(date);
     }
 
     return (
@@ -79,7 +79,7 @@ const Income = () => {
                     />
                     <FormView 
                         label="Date" 
-                        inputType={<Mydateinput onChangeText={date => setDate(date)}/>}
+                        inputType={<Mydateinput defaultDate={date} onDateChange={(date) => {setDate(date)}}/>}
                     />
                      <FormView 
                         label="Mode"
