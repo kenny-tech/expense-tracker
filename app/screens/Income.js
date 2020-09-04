@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
 import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
-import styles from '../styles/style';
+import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
 const Income = ({ navigation }) => {
+    const [type, setType] = useState('');
     const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('');
+    const [date, setDate] = useState('');
+    const [mode, setMode] = useState('');
     const [note, setNote] = useState('');
+
     const [categories, setCategories] = useState([]);
     const [modes, setModes] = useState([]);
 
@@ -47,15 +51,9 @@ const Income = ({ navigation }) => {
         });
     }
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-          headerRight: () => (
-            <TouchableOpacity onPress={() => Alert.alert('Income', 'Processing income...')}>
-                <Icon name="check" size={30} style={styles.check}/>
-            </TouchableOpacity>            
-          ),
-        });
-    }, [navigation]);
+    const handleSubmit = () => {
+        Alert.alert('Income', 'Processing income...')
+    }
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -66,7 +64,7 @@ const Income = ({ navigation }) => {
                 >
                     <FormView 
                         label="Type" 
-                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense" value2="Expense"/>}
+                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense" value2="Expense" onChangeText={type => setType(type)}/>}
                     />
                     <FormView 
                         label="Amount" 
@@ -74,20 +72,21 @@ const Income = ({ navigation }) => {
                     />
                     <FormView 
                         label="Category"
-                        inputType={<Myselectinput types={categories}/>}
+                        inputType={<Myselectinput types={categories} onChangeText={category => setCategory(category)}/>}
                     />
                     <FormView 
                         label="Date" 
-                        inputType={<Mydateinput/>}
+                        inputType={<Mydateinput onChangeText={date => setDate(date)}/>}
                     />
                     <FormView 
                         label="Mode"
-                        inputType={<Myselectinput types={modes}/>}
+                        inputType={<Myselectinput types={modes} onChangeText={mode => setMode(mode)}/>}
                     />
                     <FormView 
                         label="Note"
                         inputType={<Mytextinput placeholder="Note" onChangeText={note => setNote(note)}/>}
                     />
+                    <Mybutton title="Submit" customClick={() => handleSubmit()}/>
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>

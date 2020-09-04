@@ -109,5 +109,16 @@ export default StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 150,
         marginHorizontal: 5
-    }
+    },
+    button: {
+        alignItems: 'center',
+        backgroundColor: '#4b81bf',
+        padding: 10,
+        marginTop: 15,
+        marginLeft: 10,
+        marginRight: 10,
+      },
+      buttonText: {
+        color: '#ffffff',
+      }
 });
