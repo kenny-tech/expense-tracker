@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
 import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
-import styles from '../styles/style';
+import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
 const Expense = ({ navigation }) => {
@@ -47,15 +46,9 @@ const Expense = ({ navigation }) => {
         });
     }
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-          headerRight: () => (
-            <TouchableOpacity onPress={() => Alert.alert('Expense', 'Processing expense...')}>
-                <Icon name="check" size={30} style={styles.check}/>
-            </TouchableOpacity>            
-          ),
-        });
-    }, [navigation]);
+    const handleSubmit = () => {
+        Alert.alert('Expense', 'Processing expense...')
+    }
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -88,6 +81,7 @@ const Expense = ({ navigation }) => {
                         label="Note"
                         inputType={<Mytextinput placeholder="Note" onChangeText={note => setNote(note)}/>}
                     />
+                    <Mybutton title="Submit" customClick={() => handleSubmit()}/>
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>
