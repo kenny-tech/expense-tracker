@@ -9,12 +9,12 @@ import Myselectinput from '../components/Myselectinput';
 import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
-const Income = ({ navigation }) => {
+const Income = () => {
     const [type, setType] = useState('');
     const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState('Business');
     const [date, setDate] = useState('');
-    const [mode, setMode] = useState('');
+    const [mode, setMode] = useState('Cash');
     const [note, setNote] = useState('');
 
     const [categories, setCategories] = useState([]);
@@ -52,7 +52,8 @@ const Income = ({ navigation }) => {
     }
 
     const handleSubmit = () => {
-        Alert.alert('Income', 'Processing income...')
+        // Alert.alert('Income', 'Processing income...')
+        Alert.alert(mode);
     }
 
     return (
@@ -72,15 +73,19 @@ const Income = ({ navigation }) => {
                     />
                     <FormView 
                         label="Category"
-                        inputType={<Myselectinput types={categories} onChangeText={category => setCategory(category)}/>}
+                        inputType={<Myselectinput types={categories} 
+                        defaultValue={category}
+                        onValueChange={(category) => setCategory(category)}/>}
                     />
                     <FormView 
                         label="Date" 
                         inputType={<Mydateinput onChangeText={date => setDate(date)}/>}
                     />
-                    <FormView 
+                     <FormView 
                         label="Mode"
-                        inputType={<Myselectinput types={modes} onChangeText={mode => setMode(mode)}/>}
+                        inputType={<Myselectinput types={modes} 
+                        defaultValue={mode}
+                        onValueChange={(mode) => setMode(mode)}/>}
                     />
                     <FormView 
                         label="Note"

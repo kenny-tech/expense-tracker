@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Picker } from 'react-native';
 
-const Myselectinput = ({ types }) => {
-
-    const [selectedValue, setSelectedValue] = useState("java");
+const Myselectinput = ({ types,defaultValue,onValueChange }) => {
 
     return (
         <Picker
-            selectedValue={selectedValue}
+            selectedValue={defaultValue}
             style={{ height: 40, width: 150, marginHorizontal: 5 }}
-            onValueChange={(itemValue) => setSelectedValue(itemValue)}
+            onValueChange={onValueChange}
         > 
             {
                 types.map(type => {
