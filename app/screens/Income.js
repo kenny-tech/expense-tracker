@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
@@ -55,7 +55,7 @@ const Income = ({ navigation }) => {
         if(amount.trim() != '') {
             if(date.trim != '') {
                 DB.transaction(function (tx) {
-                    // tx.executeSql('DROP TABLE IF EXISTS incomes');   
+                    tx.executeSql('DROP TABLE IF EXISTS incomes');   
                     tx.executeSql('CREATE TABLE IF NOT EXISTS incomes (type, amount, category, date, mode, note)');
               
                     }, function (error) {

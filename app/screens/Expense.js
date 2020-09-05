@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, TouchableOpacity, Alert} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
@@ -10,8 +10,13 @@ import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
 
 const Expense = ({ navigation }) => {
+    const [type, setType] = useState('Expense');
     const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('Business');
+    const [date, setDate] = useState('');
+    const [mode, setMode] = useState('Cash');
     const [note, setNote] = useState('');
+
     const [categories, setCategories] = useState([]);
     const [modes, setModes] = useState([]);
 
@@ -47,7 +52,47 @@ const Expense = ({ navigation }) => {
     }
 
     const handleSubmit = () => {
-        Alert.alert('Expense', 'Processing expense...')
+        if(amount.trim() != '') {
+            if(date.trim != '') {
+                DB.transaction(function (tx) {
+                    tx.executeSql('DROP TABLE IF EXISTS expenses');   
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS expenses (type, amount, category, date, mode, note)');
+              
+                    }, function (error) {
+                        console.log('Transaction error: ' + error.message);
+                    }, function () {
+                        console.log('Successfully loaded expenses table');
+                    });
+                DB.transaction((tx) => {
+                    tx.executeSql('INSERT INTO expenses VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
+                        (tx, results) => {               
+                            if (results.rowsAffected > 0 ) {
+                                Alert.alert(
+                                    'Success',
+                                    'Expense successfully recorded',
+                                    [
+                                        {
+                                            text: 'Ok',
+                                            onPress: () => navigation.navigate('Home'),
+                                        },
+                                    ],
+                                    { cancelable: false}
+                                );
+                                console.log("Expense successfully recorded");            
+                            } else {
+                                console.log('Insert failed');
+                            }
+                        }
+                    );
+                }, function (tx, err) {
+                    console.log('Insert expense error ' + err);
+                });
+            } else {
+                Alert.alert('Error', 'Please select a date');
+            }
+        } else {
+            Alert.alert('Error', 'Please enter an amount')
+        }
     }
 
     return (
@@ -59,7 +104,7 @@ const Expense = ({ navigation }) => {
                 >
                     <FormView 
                         label="Type" 
-                        inputType={<Myradioinput label1="Expense          " value1="Expense" label2="Income" value2="Income"/>}
+                        inputType={<Myradioinput label1="Expense          " value1="Expense" label2="Income"  value2="Income" defaultValue={type} onChangeType={type => setType(type)}/>}
                     />
                     <FormView 
                         label="Amount" 
@@ -67,15 +112,19 @@ const Expense = ({ navigation }) => {
                     />
                     <FormView 
                         label="Category"
-                        inputType={<Myselectinput types={categories}/>}
+                        inputType={<Myselectinput types={categories} 
+                        defaultValue={category}
+                        onValueChange={(category) => setCategory(category)}/>}
                     />
                     <FormView 
                         label="Date" 
-                        inputType={<Mydateinput/>}
+                        inputType={<Mydateinput defaultDate={date} onDateChange={(date) => {setDate(date)}}/>}
                     />
-                    <FormView 
+                     <FormView 
                         label="Mode"
-                        inputType={<Myselectinput types={modes}/>}
+                        inputType={<Myselectinput types={modes} 
+                        defaultValue={mode}
+                        onValueChange={(mode) => setMode(mode)}/>}
                     />
                     <FormView 
                         label="Note"
