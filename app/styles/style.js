@@ -40,7 +40,7 @@ export default StyleSheet.create({
         color: '#ffffff',
     },
     transactionMonth: {
-        width: 150,
+        width: 180,
         height: 40,
         backgroundColor: '#4b81bf',
         justifyContent: 'center',
