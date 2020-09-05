@@ -23,6 +23,7 @@ const Income = ({ navigation }) => {
     useEffect(() => {
         getCategories();
         getModes();
+        currentDate();
     }, []);    
 
     const getCategories = () => {
@@ -51,45 +52,51 @@ const Income = ({ navigation }) => {
         });
     }
 
+    const currentDate = () => {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd; 
+        setDate(today);
+    }
+
     const handleSubmit = () => {
         if(amount.trim() != '') {
-            if(date.trim != '') {
-                DB.transaction(function (tx) {
-                    tx.executeSql('DROP TABLE IF EXISTS incomes');   
-                    tx.executeSql('CREATE TABLE IF NOT EXISTS incomes (type, amount, category, date, mode, note)');
-              
-                    }, function (error) {
-                        console.log('Transaction error: ' + error.message);
-                    }, function () {
-                        console.log('Successfully loaded incomes table');
-                    });
-                DB.transaction((tx) => {
-                    tx.executeSql('INSERT INTO incomes VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
-                        (tx, results) => {               
-                            if (results.rowsAffected > 0 ) {
-                                Alert.alert(
-                                    'Success',
-                                    'Income successfully recorded',
-                                    [
-                                        {
-                                            text: 'Ok',
-                                            onPress: () => navigation.navigate('Home'),
-                                        },
-                                    ],
-                                    { cancelable: false}
-                                );
-                                console.log("Income successfully recorded");            
-                            } else {
-                                console.log('Insert failed');
-                            }
-                        }
-                    );
-                }, function (tx, err) {
-                    console.log('Insert income error ' + err);
+            DB.transaction(function (tx) {
+                tx.executeSql('DROP TABLE IF EXISTS incomes');   
+                tx.executeSql('CREATE TABLE IF NOT EXISTS incomes (type, amount, category, date, mode, note)');
+            
+                }, function (error) {
+                    console.log('Transaction error: ' + error.message);
+                }, function () {
+                    console.log('Successfully loaded incomes table');
                 });
-            } else {
-                Alert.alert('Error', 'Please select a date');
-            }
+            DB.transaction((tx) => {
+                tx.executeSql('INSERT INTO incomes VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
+                    (tx, results) => {               
+                        if (results.rowsAffected > 0 ) {
+                            Alert.alert(
+                                'Success',
+                                'Income successfully recorded',
+                                [
+                                    {
+                                        text: 'Ok',
+                                        onPress: () => navigation.navigate('Home'),
+                                    },
+                                ],
+                                { cancelable: false}
+                            );
+                            console.log("Income successfully recorded");            
+                        } else {
+                            console.log('Insert failed');
+                        }
+                    }
+                );
+            }, function (tx, err) {
+                console.log('Insert income error ' + err);
+            });
         } else {
             Alert.alert('Error', 'Please enter an amount')
         }
