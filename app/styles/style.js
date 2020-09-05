@@ -62,7 +62,7 @@ export default StyleSheet.create({
         marginHorizontal: 10,
     },
     transactionViewText: {
-        marginLeft: 30,
+        marginLeft: 5,
         marginTop: 10,
     },
     transactionText: {

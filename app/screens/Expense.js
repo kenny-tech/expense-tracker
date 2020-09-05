@@ -65,8 +65,8 @@ const Expense = ({ navigation }) => {
     const handleSubmit = () => {
         if(amount.trim() != '') {
             DB.transaction(function (tx) {
-                tx.executeSql('DROP TABLE IF EXISTS expenses');   
-                tx.executeSql('CREATE TABLE IF NOT EXISTS expenses (type, amount, category, date, mode, note)');
+                // tx.executeSql('DROP TABLE IF EXISTS transactions');   
+                tx.executeSql('CREATE TABLE IF NOT EXISTS transactions (type, amount, category, date, mode, note)');
             
                 }, function (error) {
                     console.log('Transaction error: ' + error.message);
@@ -74,7 +74,7 @@ const Expense = ({ navigation }) => {
                     console.log('Successfully loaded expenses table');
                 });
             DB.transaction((tx) => {
-                tx.executeSql('INSERT INTO expenses VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
+                tx.executeSql('INSERT INTO transactions VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
                     (tx, results) => {               
                         if (results.rowsAffected > 0 ) {
                             Alert.alert(
