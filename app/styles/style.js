@@ -40,7 +40,7 @@ export default StyleSheet.create({
         color: '#ffffff',
     },
     transactionMonth: {
-        width: 150,
+        width: 180,
         height: 40,
         backgroundColor: '#4b81bf',
         justifyContent: 'center',
@@ -62,7 +62,7 @@ export default StyleSheet.create({
         marginHorizontal: 10,
     },
     transactionViewText: {
-        marginLeft: 30,
+        marginLeft: 5,
         marginTop: 10,
     },
     transactionText: {

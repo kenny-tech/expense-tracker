@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Alert, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -17,11 +17,32 @@ const Transactions = ({ navigation }) => {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        currentMonthYear();
+    }, []);    
+
+    const [monthName, setMonthName] = useState('');
+    const [year, setYear] = useState('');
+
+    const currentMonthYear = () => {
+        let today = new Date();
+        let yyyy = today.getFullYear();
+
+        let months = [ "January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December" ];
+
+        let d = new Date();
+        let currentMonth = months[d.getMonth()];
+
+        setMonthName(currentMonth);
+        setYear(yyyy);
+    }
+
     return (
         <View>
-            <TransactionMonth />
+            <TransactionMonth monthName={monthName} year={year} />
             <View style={styles.transactionView}>
-                <TransactionText />
+                <TransactionText/>
             </View>
             <View style={styles.bottomView}>
                 <Text style={styles.bottomViewText}>Balance: NGN20,000.00 </Text>
