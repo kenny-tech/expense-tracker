@@ -22,13 +22,11 @@ const Transactions = ({ navigation }) => {
     }, []);    
 
     const [monthName, setMonthName] = useState('');
-    const [monthNumber, setMonthNumber] = useState('');
     const [year, setYear] = useState('');
 
     const currentMonthYear = () => {
         let today = new Date();
         let yyyy = today.getFullYear();
-        let mm = String(today.getMonth() + 1).padStart(2, '0'); 
 
         let months = [ "January", "February", "March", "April", "May", "June", 
            "July", "August", "September", "October", "November", "December" ];
@@ -38,16 +36,13 @@ const Transactions = ({ navigation }) => {
 
         setMonthName(currentMonth);
         setYear(yyyy);
-        setMonthNumber(mm);
-        console.log('Month number: ',monthNumber);
     }
-
 
     return (
         <View>
             <TransactionMonth monthName={monthName} year={year} />
             <View style={styles.transactionView}>
-                <TransactionText monthNumber={monthNumber} />
+                <TransactionText/>
             </View>
             <View style={styles.bottomView}>
                 <Text style={styles.bottomViewText}>Balance: NGN20,000.00 </Text>

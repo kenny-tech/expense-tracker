@@ -5,14 +5,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/style';
 import { DB } from '../model/db';
 
-const TransactionText = ({ monthNumber }) => {
+const TransactionText = () => {
 
-    let month = '09';
+    let today = new Date();
+    let currentMonth = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    
     const [transactions, setTransactions] = useState([]);
 
     const getTransactions = () => {
         DB.transaction(tx => {
-            tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [month], (tx, results) => {
+            tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
                 let temp = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     temp.push(results.rows.item(i));
