@@ -46,7 +46,7 @@ export default StyleSheet.create({
         justifyContent: 'center',
         marginTop: 5,
         borderBottomEndRadius: 10,
-        borderTopEndRadius: 10
+        borderTopEndRadius: 10,
     },
     transactionMonthText: {
         color: '#ffffff',
