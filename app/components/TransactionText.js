@@ -36,14 +36,16 @@ const TransactionText = () => {
             {
                 transactions.map(trans => {
                     return (
+                        <View>
                         <View style={{flexDirection: 'row'}}>
                             <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
                             <View style={styles.transactionViewText}>
                                 <Text style={styles.transactionText}>{trans.amount}</Text>
                                 <Text style={{fontStyle: 'italic'}}>{trans.date}</Text>
-                                <View style={{borderBottomWidth: 1, width: 280, padding: 5, borderColor: '#d3d3d3'}}></View>
                             </View>  
-                            {/* <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 5}} />  */}
+                            <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 210}} /> 
+                        </View>
+                        <View style={{borderBottomWidth: 1, marginHorizontal: 20, width: 350, padding: 5, borderColor: '#d3d3d3'}}></View>
                         </View>
                     )
                 })
