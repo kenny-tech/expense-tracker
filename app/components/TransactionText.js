@@ -4,19 +4,22 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from '../styles/style';
 import { DB } from '../model/db';
-import TransactionMonth from '../components/TransactionMonth';
 
 const TransactionText = () => {
-
-    let today = new Date();
-    let currentMonth = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let previousMonth = currentMonth - 1;
     
     const [transactions, setTransactions] = useState([]);
 
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const convertDate = (date_str) => {
+        let temp_date = date_str.split("-");
+        return temp_date[2] + " " + months[Number(temp_date[1]) - 1] + ", " + temp_date[0];
+    }
+
     const getTransactions = () => {
         DB.transaction(tx => {
-            tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
+            // tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
+            tx.executeSql(`SELECT * FROM transactions ORDER BY date DESC`, [], (tx, results) => {
                 let temp = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     temp.push(results.rows.item(i));
@@ -41,7 +44,7 @@ const TransactionText = () => {
                             <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
                             <View style={styles.transactionViewText}>
                                 <Text style={styles.transactionText}>{trans.amount}</Text>
-                                <Text style={{fontStyle: 'italic'}}>{trans.date}</Text>
+                                <Text style={{fontStyle: 'italic'}}>{convertDate(trans.date)}</Text>
                             </View>  
                             <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 210}} /> 
                         </View>
