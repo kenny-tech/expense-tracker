@@ -17,13 +17,8 @@ const Transactions = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <View>
-            <View style={styles.transactionView}>
-                <TransactionText/>
-            </View>
-            <View style={styles.bottomView}>
-                <Text style={styles.bottomViewText}>Balance: NGN20,000.00 </Text>
-            </View>
+        <View style={styles.transactionView}>
+            <TransactionText/>
         </View>
     )
 }

@@ -57,7 +57,7 @@ export default StyleSheet.create({
     transactionView: {
         backgroundColor: '#ffffff',
         width: 390,
-        height: 530,
+        height: 600,
         marginVertical: 10,
         marginHorizontal: 10,
     },
@@ -69,13 +69,12 @@ export default StyleSheet.create({
         fontSize: 18
     },
     bottomView: {
-        width: 390,
-        height: 40,
+        width: '100%',
+        height: 50,
         backgroundColor: '#4b81bf', 
         justifyContent: 'center',
-        position: 'absolute',
+        position: 'absolute', 
         bottom: 0,
-        marginHorizontal: 10
     },
     bottomViewText: {
         color: 'white',

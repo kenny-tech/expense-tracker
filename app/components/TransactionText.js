@@ -9,7 +9,7 @@ import TransactionMonth from '../components/TransactionMonth';
 const TransactionText = () => {
     
     const [transactions, setTransactions] = useState([]);
-    const [monthName, setMonthName] = useState('All Transactions');
+    const [monthName, setMonthName] = useState('All');
     const [year, setYear] = useState('');
 
     useEffect(() => {
@@ -57,7 +57,9 @@ const TransactionText = () => {
 
     return (
         <View> 
-            <TransactionMonth monthName={monthName} year={year} />
+            {
+                monthName == 'All' ? null : (<TransactionMonth monthName={monthName} year={year} />)
+            }    
             {
                 transactions.map(trans => {
                     return (
@@ -75,6 +77,11 @@ const TransactionText = () => {
                     )
                 })
             }
+             {
+                monthName == 'All' ? null : (<View style={styles.bottomView}>
+                    <Text style={styles.bottomViewText}>Balance for September: NGN20,000.00 </Text>
+                </View>)
+            }    
         </View>
     )
 }
