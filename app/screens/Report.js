@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import FormView from '../components/FormView';
 import Myselectinput from '../components/Myselectinput';
-import Chart from '../components/Chart';
+import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
 import Transaction from '../components/Transaction';
 import { DB } from '../model/db';
@@ -34,7 +34,7 @@ const Report = () => {
                 label="Report by"
                 inputType={<Myselectinput types={filterTypes}/>}
             />
-            <Chart/>
+            <PieChart month=""/>
             <ChartDescription/>
             <Transaction label="Income" amount="NGN200,000.00"/>
             <Transaction label="Expense" amount="NGN50,000.00"/>

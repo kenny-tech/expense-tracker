@@ -8,7 +8,7 @@ const graphicColor = ['#006400', '#C70039'];
 const wantedGraphicData = [{ y: 50000, x: '60%' }, { y: 30000, x: '40%' }]; // Data that we want to display
 const defaultGraphicData = [{ y: 0, x: '' }, { y: 0, x: '' }]; // Data used to make the animate prop work
 
-const PieChart = () => {
+const PieChart = ({ month }) => {
     const [graphicData, setGraphicData] = useState(defaultGraphicData);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const PieChart = () => {
                 left:'40%',
                 color: '#000000',
                 fontSize: 18
-                }}>September</Text>
+                }}>{month}</Text>
             <VictoryPie 
                 data={graphicData} 
                 width={250} height={250} 
