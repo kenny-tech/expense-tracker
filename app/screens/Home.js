@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import HomeLink from '../components/HomeLink';
 import HomeText from '../components/HomeText';
 import Chart from '../components/Chart';
+import PieChart from '../components/PieChart';
 import { DB } from '../model/db';
 
 const Home = ({ navigation }) => {
@@ -132,7 +133,7 @@ const Home = ({ navigation }) => {
 
     return (
         <View>
-            <Chart/>
+            <PieChart/>
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30}}>
                 <HomeText title="Income" amount="NGN50,000" color="#006400"/>
                 <HomeText title="Expense" amount="NGN30,000" color="#C70039"/>
