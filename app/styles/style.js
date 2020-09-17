@@ -15,7 +15,7 @@ export default StyleSheet.create({
         marginLeft: 40
     },
     pieChartView: {
-        margin: 20,
+        marginTop: 10,
         alignItems: 'center'
     },
     formView: {
