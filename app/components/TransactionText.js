@@ -40,7 +40,7 @@ const TransactionText = () => {
     const getTransactions = () => {
         DB.transaction(tx => {
             // tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
-            tx.executeSql(`SELECT * FROM transactions ORDER BY date DESC`, [], (tx, results) => {
+            tx.executeSql(`SELECT * FROM transactions ORDER BY rowid DESC`, [], (tx, results) => {
                 let temp = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     temp.push(results.rows.item(i));
@@ -49,6 +49,10 @@ const TransactionText = () => {
                 setTransactions(temp);
             })
         });
+    }
+
+    const numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     useEffect(() => {
@@ -67,7 +71,9 @@ const TransactionText = () => {
                             <View style={{flexDirection: 'row'}}>
                                 <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
                                 <View style={styles.transactionViewText}>
-                                    <Text style={styles.transactionText}>{trans.amount}</Text>
+                                    {
+                                        trans.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{numberWithCommas(trans.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{numberWithCommas(trans.amount)}</Text>)
+                                    }
                                     <Text style={{fontStyle: 'italic'}}>{convertDate(trans.date)}</Text>
                                 </View>  
                                 <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 

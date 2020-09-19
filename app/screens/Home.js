@@ -131,9 +131,9 @@ const Home = ({ navigation }) => {
 
 
     return (
-        <View>
-            <PieChart month="September"/>
-            <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30}}>
+        <View style={{marginTop: 15}}>
+            <PieChart month="September" year="2020"/>
+            <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
                 <HomeText title="Income" amount="NGN50,000" color="#006400"/>
                 <HomeText title="Expense" amount="NGN30,000" color="#C70039"/>
                 <HomeText title="Balance" amount="NGN20,000" color="#4b81bf"/>
