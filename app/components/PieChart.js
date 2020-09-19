@@ -19,16 +19,17 @@ const PieChart = ({ month }) => {
         <View style={styles.pieChartView}>
             <Text style={{
                 position: 'absolute',
-                top: 115,
+                top: 100,
                 left:'40%',
                 color: '#000000',
-                fontSize: 18
-                }}>{month}</Text>
+                fontSize: 12,
+                fontWeight: 'bold'
+                }}>{month} 2020</Text>
             <VictoryPie 
                 data={graphicData} 
-                width={250} height={250} 
+                width={200} height={200} 
                 colorScale={graphicColor} 
-                innerRadius={50} 
+                innerRadius={100} 
                 animate={{ easing: 'exp' }}
             />
         </View>
