@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 
 import HomeLink from '../components/HomeLink';
@@ -12,7 +12,33 @@ const Home = ({ navigation }) => {
         createCategories();
         createModes();
         createFilterTypes();
+        currentMonthYear();
+        getIncomes();
+        getExpenses();
     }, []);    
+
+    const [month, setMonth] = useState('');
+    const [monthName, setMonthName] = useState('');
+    const [year, setYear] = useState('');
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [totalExpense, setTotalExpense] = useState(0);
+
+    const currentMonthYear = () => {
+        let today = new Date();
+        let month = new Date().getMonth()+1;     
+        let yyyy = today.getFullYear();
+
+        let months = [ "January", "February", "March", "April", "May", "June", 
+           "July", "August", "September", "October", "November", "December" ];
+
+        let d = new Date();
+        let currentMonthName = months[d.getMonth()];
+
+        setMonthName(currentMonthName);
+        setMonth(month);
+        setYear(yyyy);
+        // console.log('Month: ', month);
+    }
 
     const createCategories = () => {
         DB.transaction(function (tx) {
@@ -126,17 +152,57 @@ const Home = ({ navigation }) => {
                 }
             })
         });
-
     }
 
+    const getIncomes = () => {
+        DB.transaction(tx => {
+            tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Income'], (tx, results) => {
+            // tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Income'], (tx, results) => {
+                let incomes = [];
+                for (let i = 0; i < results.rows.length; ++i) {
+                    incomes.push(results.rows.item(i));
+                }
+
+                console.log('Incomes: ', incomes);
+                let total_income = 0;
+                incomes.map(income => {
+                    total_income = total_income + parseInt(income.amount);
+                    setTotalIncome(total_income);
+                })
+            })
+        });
+    }
+
+    const getExpenses = () => {
+        DB.transaction(tx => {
+            tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
+            // tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Expense'], (tx, results) => {
+                let expenses = [];
+                for (let i = 0; i < results.rows.length; ++i) {
+                    expenses.push(results.rows.item(i));
+                }
+
+                console.log('Expenses: ', expenses);
+                let total_expense = 0;
+                expenses.map(expense => {
+                    total_expense = total_expense + parseInt(expense.amount);
+                    setTotalExpense(total_expense);
+                })
+            })
+        });
+    }
+
+    const numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     return (
-        <View style={{marginTop: 15}}>
-            <PieChart month="September" year="2020"/>
+        <View style={{marginTop: 10}}>
+            <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense}/>
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
-                <HomeText title="Income" amount="NGN50,000" color="#006400"/>
-                <HomeText title="Expense" amount="NGN30,000" color="#C70039"/>
-                <HomeText title="Balance" amount="NGN20,000" color="#4b81bf"/>
+                <HomeText title="Income" amount={"NGN"+numberWithCommas(totalIncome)} color="#006400"/>
+                <HomeText title="Expense" amount={"NGN"+numberWithCommas(totalExpense)} color="#C70039"/>
+                <HomeText title="Balance" amount={"NGN"+numberWithCommas(totalIncome - totalExpense)} color="#4b81bf"/>
             </View>
             <View style={{marginTop: 10}}>
                 <HomeLink text="ADD INCOME" backgroundColor="#daf5ff" textColor="#639eb8" icon="money" customClick={() => navigation.navigate('Income')}/>
