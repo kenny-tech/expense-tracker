@@ -156,8 +156,8 @@ const Home = ({ navigation }) => {
 
     const getIncomes = () => {
         DB.transaction(tx => {
-            // tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Income'], (tx, results) => {
-            tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Income'], (tx, results) => {
+            tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Income'], (tx, results) => {
+            // tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Income'], (tx, results) => {
                 let incomes = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     incomes.push(results.rows.item(i));
@@ -175,8 +175,8 @@ const Home = ({ navigation }) => {
 
     const getExpenses = () => {
         DB.transaction(tx => {
-            // tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
-            tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Expense'], (tx, results) => {
+            tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
+            // tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Expense'], (tx, results) => {
                 let expenses = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     expenses.push(results.rows.item(i));
@@ -197,8 +197,8 @@ const Home = ({ navigation }) => {
     }
 
     return (
-        <View style={{marginTop: 15}}>
-            <PieChart month={monthName} year={year}/>
+        <View style={{marginTop: 10}}>
+            <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense}/>
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
                 <HomeText title="Income" amount={"NGN"+numberWithCommas(totalIncome)} color="#006400"/>
                 <HomeText title="Expense" amount={"NGN"+numberWithCommas(totalExpense)} color="#C70039"/>
