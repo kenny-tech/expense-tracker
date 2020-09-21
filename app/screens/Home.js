@@ -118,7 +118,7 @@ const Home = ({ navigation }) => {
 
     const createFilterTypes = () => {
         DB.transaction(function (tx) {
-            // tx.executeSql('DROP TABLE IF EXISTS categories');   
+            tx.executeSql('DROP TABLE IF EXISTS filter_types');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS filter_types (name)');
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
@@ -139,8 +139,8 @@ const Home = ({ navigation }) => {
                     console.log('Filter Types: ',filterTypes);
                 } else {
                     tx.executeSql(        
-                        'INSERT INTO filter_types VALUES (?),(?),(?)',
-                        ['Type','Category','Mode'],
+                        'INSERT INTO filter_types VALUES (?),(?),(?),(?)',
+                        ['This month','Last Month','This week', 'Last week'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
                             console.log('Insert success');              
@@ -167,8 +167,8 @@ const Home = ({ navigation }) => {
                 let total_income = 0;
                 incomes.map(income => {
                     total_income = total_income + parseInt(income.amount);
-                    setTotalIncome(total_income);
                 })
+                setTotalIncome(total_income);
             })
         });
     }
@@ -186,8 +186,8 @@ const Home = ({ navigation }) => {
                 let total_expense = 0;
                 expenses.map(expense => {
                     total_expense = total_expense + parseInt(expense.amount);
-                    setTotalExpense(total_expense);
                 })
+                setTotalExpense(total_expense);
             })
         });
     }

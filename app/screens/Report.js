@@ -34,7 +34,7 @@ const Report = () => {
                 label="Report by"
                 inputType={<Myselectinput types={filterTypes}/>}
             />
-            <PieChart month=""/>
+            <PieChart month="" year="" income={20000} expense={50000}/>
             <ChartDescription/>
             <Transaction label="Income" amount="NGN200,000.00"/>
             <Transaction label="Expense" amount="NGN50,000.00"/>

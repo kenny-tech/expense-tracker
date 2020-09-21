@@ -5,7 +5,7 @@ import { VictoryPie } from 'victory-native';
 import styles from '../styles/style';
 
 const PieChart = ({ month, year, income, expense }) => {
-
+    console.log('income and expense: '+income, expense);
     let percentIncome = ((income / (income + expense)) * 100).toFixed(2);
     let percentExpense = ((expense / (income + expense)) * 100).toFixed(2);
     console.log(percentIncome, percentExpense);
