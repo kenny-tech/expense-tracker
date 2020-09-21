@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     homeLinkView: {
         width: 350,
-        height: 70,
+        height: 68,
         borderRadius: 20,
         marginHorizontal: 30,
         marginVertical: 5,

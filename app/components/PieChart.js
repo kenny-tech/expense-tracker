@@ -34,7 +34,7 @@ const PieChart = ({ month, year, income, expense }) => {
                 width={280} height={255} 
                 colorScale={graphicColor} 
                 innerRadius={128} labelRadius={80}
-                style={{ labels: { fontSize: 14, fill: "white" } }}
+                style={{ labels: { fontSize: 15, fill: "white" } }}
                 animate={{ easing: 'exp' }}
             />
         </View>
