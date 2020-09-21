@@ -23,17 +23,18 @@ const PieChart = ({ month, year, income, expense }) => {
         <View style={styles.pieChartView}>
             <Text style={{
                 position: 'absolute',
-                top: 100,
-                left:'37%',
+                top: 120,
+                left:'35%',
                 color: '#000000',
-                fontSize: 14,
+                fontSize: 17,
                 fontWeight: 'bold'
             }}>{month} {year}</Text>
             <VictoryPie 
                 data={graphicData} 
-                width={300} height={220} 
+                width={280} height={255} 
                 colorScale={graphicColor} 
-                innerRadius={80} 
+                innerRadius={128} labelRadius={80}
+                style={{ labels: { fontSize: 14, fill: "white" } }}
                 animate={{ easing: 'exp' }}
             />
         </View>
