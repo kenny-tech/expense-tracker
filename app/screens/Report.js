@@ -10,6 +10,8 @@ import { DB } from '../model/db';
 
 const Report = () => {
     const [filterTypes, setFilterTypes] = useState([]);
+    let income = 30000;
+    let expense = 20000;
 
     useEffect(() => {
         getFilterTypes();
@@ -31,13 +33,14 @@ const Report = () => {
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
            <FormView 
-                label="Report by"
+                label="Filter by"
                 inputType={<Myselectinput types={filterTypes}/>}
             />
-            <PieChart month="" year="" income={20000} expense={50000}/>
+            <PieChart month="" year="" income={income} expense={expense}/>
             <ChartDescription/>
             <Transaction label="Income" amount="NGN200,000.00"/>
             <Transaction label="Expense" amount="NGN50,000.00"/>
+            <Transaction label="Balance" amount="NGN150,000.00"/>
         </View>
     )
 }

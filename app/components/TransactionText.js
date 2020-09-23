@@ -25,7 +25,7 @@ const TransactionText = () => {
 
         let d = new Date();
         let currentMonth = months[d.getMonth()];
-
+        console.log('The Current Month is : ', currentMonth);
         // setMonthName(currentMonth);
         // setYear(yyyy);
     }
@@ -39,8 +39,8 @@ const TransactionText = () => {
 
     const getTransactions = () => {
         DB.transaction(tx => {
-            // tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
-            tx.executeSql(`SELECT * FROM transactions ORDER BY rowid DESC`, [], (tx, results) => {
+            tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
+            // tx.executeSql(`SELECT * FROM transactions ORDER BY rowid DESC`, [], (tx, results) => {
                 let temp = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     temp.push(results.rows.item(i));
