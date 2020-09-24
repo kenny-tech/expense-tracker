@@ -19,7 +19,7 @@ const Report = () => {
     
     const getFilterTypes = () => {
         DB.transaction(tx => {
-            tx.executeSql('SELECT rowid, name FROM filter_types', [], (tx, results) => {
+            tx.executeSql('SELECT rowid, name FROM filtertypes', [], (tx, results) => {
                 let filters = [];
                 console.log('Filter types from report screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
