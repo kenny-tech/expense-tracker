@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 import HomeLink from '../components/HomeLink';
 import HomeText from '../components/HomeText';
@@ -8,12 +9,20 @@ import { DB } from '../model/db';
 
 const Home = ({ navigation }) => {
 
+    // check if screen is focused
+    const isFocused = useIsFocused('');
+
+    // listen for isFocused, if useFocused changes 
+    // call the function that you use to mount the component.
+    useEffect(() => {
+        getIncomes();
+        getExpenses();
+    },[isFocused]);
+
     useEffect(() => {
         createCategories();
         createModes();
         createFilterTypes();
-        getIncomes();
-        getExpenses();
     }, []);    
 
     let today = new Date();
