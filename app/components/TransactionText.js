@@ -10,27 +10,39 @@ const TransactionText = () => {
     
     const [transactions, setTransactions] = useState([]);
     const [monthName, setMonthName] = useState('All');
-    const [year, setYear] = useState('');
-
-    useEffect(() => {
-        currentMonthYear();
-    }, []);    
-
-    const currentMonthYear = () => {
-        let today = new Date();
-        let yyyy = today.getFullYear();
-
-        let months = [ "January", "February", "March", "April", "May", "June", 
-           "July", "August", "September", "October", "November", "December" ];
-
-        let d = new Date();
-        let currentMonth = months[d.getMonth()];
-        console.log('The Current Month is : ', currentMonth);
-        // setMonthName(currentMonth);
-        // setYear(yyyy);
+   
+    let month = new Date().getMonth()+1;     
+    let monthNumber
+    
+    if(month == 1) {
+        monthNumber = '01';
+    }
+    if(month == 2) {
+        monthNumber = '02';
+    }
+    if(month == 3) {
+        monthNumber = '03';
+    }
+    if(month == 4) {
+        monthNumber = '04';
+    }
+    if(month == 5) {
+        monthNumber = '05';
+    }
+    if(month == 6) {
+        monthNumber = '06';
+    }
+    if(month == 7) {
+        monthNumber = '07';
+    }
+    if(month == 8) {
+        monthNumber = '08';
+    }
+    if(month == 9) {
+        monthNumber = '09';
     }
 
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     const convertDate = (date_str) => {
         let temp_date = date_str.split("-");
@@ -39,7 +51,7 @@ const TransactionText = () => {
 
     const getTransactions = () => {
         DB.transaction(tx => {
-            tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [currentMonth], (tx, results) => {
+            tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [monthNumber], (tx, results) => {
             // tx.executeSql(`SELECT * FROM transactions ORDER BY rowid DESC`, [], (tx, results) => {
                 let temp = [];
                 for (let i = 0; i < results.rows.length; ++i) {
