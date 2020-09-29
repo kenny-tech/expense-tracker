@@ -12,33 +12,50 @@ const Home = ({ navigation }) => {
         createCategories();
         createModes();
         createFilterTypes();
-        currentMonthYear();
         getIncomes();
         getExpenses();
     }, []);    
 
-    const [month, setMonth] = useState('');
-    const [monthName, setMonthName] = useState('');
-    const [year, setYear] = useState('');
+    let today = new Date();
+    let year = today.getFullYear();
+
+    let months = [ "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December" ];
+    let monthName = months[today.getMonth()];
+
+    let month = new Date().getMonth()+1;     
+    let monthNumber
+    
+    if(month == 1) {
+        monthNumber = '01';
+    }
+    if(month == 2) {
+        monthNumber = '02';
+    }
+    if(month == 3) {
+        monthNumber = '03';
+    }
+    if(month == 4) {
+        monthNumber = '04';
+    }
+    if(month == 5) {
+        monthNumber = '05';
+    }
+    if(month == 6) {
+        monthNumber = '06';
+    }
+    if(month == 7) {
+        monthNumber = '07';
+    }
+    if(month == 8) {
+        monthNumber = '08';
+    }
+    if(month == 9) {
+        monthNumber = '09';
+    }
+
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
-
-    const currentMonthYear = () => {
-        let today = new Date();
-        let month = new Date().getMonth()+1;     
-        let yyyy = today.getFullYear();
-
-        let months = [ "January", "February", "March", "April", "May", "June", 
-           "July", "August", "September", "October", "November", "December" ];
-
-        let d = new Date();
-        let currentMonthName = months[d.getMonth()];
-
-        setMonthName(currentMonthName);
-        setMonth(month);
-        setYear(yyyy);
-        // console.log('Month: ', month);
-    }
 
     const createCategories = () => {
         DB.transaction(function (tx) {
@@ -156,8 +173,8 @@ const Home = ({ navigation }) => {
 
     const getIncomes = () => {
         DB.transaction(tx => {
-            tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Income'], (tx, results) => {
-            // tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Income'], (tx, results) => {
+            // tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Income'], (tx, results) => {
+            tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [monthNumber, 'Income'], (tx, results) => {
                 let incomes = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     incomes.push(results.rows.item(i));
@@ -169,14 +186,16 @@ const Home = ({ navigation }) => {
                     total_income = total_income + parseInt(income.amount);
                     setTotalIncome(total_income);
                 })
+                console.log('Total income: ',totalIncome);
             })
         });
     }
 
     const getExpenses = () => {
+        console.log('Month Number at expense: ', monthNumber)
         DB.transaction(tx => {
-            tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
-            // tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [month, 'Expense'], (tx, results) => {
+            // tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
+            tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [monthNumber, 'Expense'], (tx, results) => {
                 let expenses = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     expenses.push(results.rows.item(i));
@@ -188,6 +207,7 @@ const Home = ({ navigation }) => {
                     total_expense = total_expense + parseInt(expense.amount);
                     setTotalExpense(total_expense);
                 })
+                console.log('Total expense: ',totalExpense);
             })
         });
     }
