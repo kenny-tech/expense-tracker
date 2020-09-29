@@ -10,6 +10,8 @@ import { DB } from '../model/db';
 
 const Report = () => {
     const [filterTypes, setFilterTypes] = useState([]);
+    const [filterBy, setFilterBy] = useState('This Month');
+
     let income = 30000;
     let expense = 20000;
 
@@ -32,9 +34,11 @@ const Report = () => {
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
-           <FormView 
+             <FormView 
                 label="Filter by"
-                inputType={<Myselectinput types={filterTypes}/>}
+                inputType={<Myselectinput types={filterTypes} 
+                defaultValue={filterBy}
+                onValueChange={(filter_by) => setFilterBy(filter_by)}/>}
             />
             <PieChart month="" year="" income={income} expense={expense}/>
             <ChartDescription/>

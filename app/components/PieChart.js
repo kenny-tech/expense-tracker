@@ -5,8 +5,8 @@ import { VictoryPie } from 'victory-native';
 import styles from '../styles/style';
 
 const PieChart = ({ month, year, income, expense }) => {
-    let percentIncome = ((income / (income + expense)) * 100).toFixed(2);
-    let percentExpense = ((expense / (income + expense)) * 100).toFixed(2);
+    let percentIncome = ((income / (income + expense)) * 100).toFixed(1);
+    let percentExpense = ((expense / (income + expense)) * 100).toFixed(1);
     const graphicColor = ['#006400', '#C70039'];
     const graphicData = [{ y: income, x: percentIncome+'%' }, { y: expense, x: percentExpense+'%' }]; // Data that we want to display
     
