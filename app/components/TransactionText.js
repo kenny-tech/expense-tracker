@@ -71,45 +71,35 @@ const TransactionText = () => {
         getTransactions()
     }, []);
 
-    const listViewItemSeparator = () => {
-        return (
-            <View style={{ height: 0.2, width: '100%', backgroundColor: '#808080' }} />
-        )
-    }
-
     return (
         <View> 
             {
                 monthName == 'All' ? null : (<TransactionMonth monthName={monthName} year={year} />)
             }    
             {
-                transactions.map(trans => {
-                    return (
-                        <View>
-                            <FlatList
-                                data={transactions}
-                                keyExtractor={(item, index) => index.toString()}
-                                renderItem={({ item }) => (
-                                    <View>
-                                        <View style={{flexDirection: 'row'}}>
-                                            <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
-                                            <View style={styles.transactionViewText}>
-                                                {
-                                                    item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>)
-                                                }
-                                                <Text style={{fontStyle: 'italic'}}>{convertDate(item.date)}</Text>
-                                            </View>  
-                                            <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
-                                        </View>
-                                        <View style={{borderBottomWidth: 1, marginHorizontal: 20, width: 350, padding: 5, borderColor: '#d3d3d3'}}/>
-                                    </View>
-                                )}
-                            />
-                        </View>
-                    )
-                })
+                <View>
+                    <FlatList
+                        data={transactions}
+                        keyExtractor={item => item.rowid}
+                        renderItem={({ item }) => (
+                            <View>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
+                                    <View style={styles.transactionViewText}>
+                                        {
+                                            item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>)
+                                        }
+                                        <Text style={{fontStyle: 'italic'}}>{convertDate(item.date)}</Text>
+                                    </View>  
+                                    <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
+                                </View>
+                                <View style={{borderBottomWidth: 1, marginHorizontal: 20, width: 350, padding: 5, borderColor: '#d3d3d3'}}/>
+                            </View>
+                        )}
+                    />
+                </View>
             }
-             {
+            {
                 monthName == 'All' ? null : (<View style={styles.bottomView}>
                     <Text style={styles.bottomViewText}>Balance for September: NGN20,000.00 </Text>
                 </View>)
