@@ -6,7 +6,7 @@ const NoTransaction = ({ text }) => {
     return (
         <View style={{alignItems: 'center', marginBottom: 15}}>
             <Icon name="credit-card" size={100} color="#4b81bf" style={{marginTop: 20}} />
-            <Text style={{fontSize: 14, color: '#4b81bf'}}>No Transaction found {text}</Text>
+            <Text style={{fontSize: 16, color: '#4b81bf'}}>No Transaction found {text}</Text>
         </View>
     )
 }
