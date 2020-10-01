@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { VictoryPie } from 'victory-native';
 
+import NoTransaction from '../components/NoTransaction';
 import styles from '../styles/style';
 
 const PieChart = ({ month, year, income, expense }) => {
@@ -11,6 +12,8 @@ const PieChart = ({ month, year, income, expense }) => {
     const graphicData = [{ y: income, x: percentIncome+'%' }, { y: expense, x: percentExpense+'%' }]; // Data that we want to display
     
     return (
+
+        income != 0 && expense != 0 ? (
         <View style={styles.pieChartView}>
             <Text style={{
                 position: 'absolute',
@@ -28,7 +31,9 @@ const PieChart = ({ month, year, income, expense }) => {
                 style={{ labels: { fontSize: 15, fill: "white" } }}
                 animate={{ easing: 'exp' }}
             />
-        </View>
+        </View>) : (<View style={{alignItems: 'center', marginBottom: 15}}>
+            <NoTransaction text={"for "+ month}/>
+        </View>)
     );
 }
 
