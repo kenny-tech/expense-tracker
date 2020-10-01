@@ -62,6 +62,15 @@ const Home = ({ navigation }) => {
     if(month == 9) {
         monthNumber = '09';
     }
+    if(month == 10) {
+        monthNumber = '10';
+    }
+    if(month == 11) {
+        monthNumber = '11';
+    }
+    if(month == 12) {
+        monthNumber = '12';
+    }
 
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
