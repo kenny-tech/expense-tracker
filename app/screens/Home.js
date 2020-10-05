@@ -34,6 +34,8 @@ const Home = ({ navigation }) => {
 
     let month = new Date().getMonth()+1;     
     let monthNumber
+
+    let type = monthName + ' ' + year;
     
     if(month == 1) {
         monthNumber = '01';
@@ -236,7 +238,7 @@ const Home = ({ navigation }) => {
 
     return (
         <View style={{marginTop: 10}}>
-            <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense}/>
+            <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense} type={type}/>
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
                 <HomeText title="Income" amount={"NGN"+numberWithCommas(totalIncome)} color="#006400"/>
                 <HomeText title="Expense" amount={"NGN"+numberWithCommas(totalExpense)} color="#C70039"/>
