@@ -176,8 +176,8 @@ const Home = ({ navigation }) => {
                     console.log('Filter Types: ',filterTypes);
                 } else {
                     tx.executeSql(        
-                        'INSERT INTO filtertypes VALUES (?),(?),(?),(?)',
-                        ['This Month','Last Month','This Week', 'Today'],
+                        'INSERT INTO filtertypes VALUES (?),(?)',
+                        ['This Month','Last Month'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
                             console.log('Insert success');              
