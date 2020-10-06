@@ -5,7 +5,7 @@ import { VictoryPie } from 'victory-native';
 import NoTransaction from '../components/NoTransaction';
 import styles from '../styles/style';
 
-const PieChart = ({ month, year, income, expense }) => {
+const PieChart = ({ month, year, income, expense, type }) => {
     let percentIncome = ((income / (income + expense)) * 100).toFixed(1);
     let percentExpense = ((expense / (income + expense)) * 100).toFixed(1);
     const graphicColor = ['#006400', '#C70039'];
@@ -24,7 +24,7 @@ const PieChart = ({ month, year, income, expense }) => {
                             color: '#000000',
                             fontSize: 17,
                             fontWeight: 'bold',
-                        }}>{month} {year}</Text>
+                        }}>{type}</Text>
                         <VictoryPie 
                             data={graphicData} 
                             width={280} height={255} 
