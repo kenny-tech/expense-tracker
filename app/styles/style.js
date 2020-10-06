@@ -105,9 +105,9 @@ export default StyleSheet.create({
     },
     transactionTextSize: {
         fontSize: 16,
-        paddingLeft: 20,
-        paddingRight: 150,
-        marginHorizontal: 5
+        paddingLeft: 35,
+        paddingRight: 30,
+        marginHorizontal: 10
     },
     button: {
         alignItems: 'center',

@@ -183,9 +183,9 @@ const Report = () => {
             />
             <PieChart income={totalIncome} expense={totalExpense}/>
             <ChartDescription/>
-            <Transaction label="Income" amount={"NGN"+numberWithCommas(totalIncome)}/>
-            <Transaction label="Expense" amount={"NGN"+numberWithCommas(totalExpense)}/>
-            <Transaction label="Balance" amount={"NGN"+numberWithCommas(totalIncome - totalExpense)}/>
+            <Transaction label="Total Income " amount={"NGN"+numberWithCommas(totalIncome)}/>
+            <Transaction label="Total Expense" amount={"NGN"+numberWithCommas(totalExpense)}/>
+            <Transaction label="Balance          " amount={"NGN"+numberWithCommas(totalIncome - totalExpense)}/>
         </View>
     )
 }
