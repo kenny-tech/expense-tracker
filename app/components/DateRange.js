@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-native-datepicker'
 import { View, Text } from 'react-native';
 
-const DateRange = ({ defaultDate,onDateChange,label }) => {
+const DateRange = ({ defaultDate,onDateChange,label,maxDate }) => {
 
     return (  
         <View>
@@ -15,6 +15,7 @@ const DateRange = ({ defaultDate,onDateChange,label }) => {
                 format="YYYY-MM-DD"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
+                maxDate={maxDate}
                 customStyles={{
                     dateIcon: {
                     position: 'absolute',

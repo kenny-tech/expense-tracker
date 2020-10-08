@@ -119,5 +119,13 @@ export default StyleSheet.create({
       },
       buttonText: {
         color: '#ffffff',
+      },
+      dateRangeButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#4b81bf',
+        width: 40,
+        height: 40,
+        marginTop: 18
       }
 });
