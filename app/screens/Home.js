@@ -155,7 +155,7 @@ const Home = ({ navigation }) => {
 
     const createFilterTypes = () => {
         DB.transaction(function (tx) {
-            // tx.executeSql('DROP TABLE IF EXISTS filtertypes');   
+            tx.executeSql('DROP TABLE IF EXISTS filtertypes');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS filtertypes (name)');
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
@@ -176,8 +176,8 @@ const Home = ({ navigation }) => {
                     console.log('Filter Types: ',filterTypes);
                 } else {
                     tx.executeSql(        
-                        'INSERT INTO filtertypes VALUES (?),(?)',
-                        ['This Month','Last Month'],
+                        'INSERT INTO filtertypes VALUES (?),(?),(?)',
+                        ['This Month','Last Month', 'Date Range'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
                             console.log('Insert success');              

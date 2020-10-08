@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import FormView from '../components/FormView';
 import Myselectinput from '../components/Myselectinput';
 import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
 import Transaction from '../components/Transaction';
+import DateRange from '../components/DateRange';
+import DateRangeButton from '../components/DateRangeButton';
+
 import { DB } from '../model/db';
 
 const Report = () => {
@@ -13,11 +16,16 @@ const Report = () => {
     const [filterBy, setFilterBy] = useState('This Month');
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
+    const [showDateRange, setShowDateRange] = useState(false);
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
+    const [maxDate, setMaxDate] = useState('');
 
     useEffect(() => {
         getFilterTypes();
         getTotalIncome(filterBy);
         getTotalExpense(filterBy);
+        maximumDate();
     }, []);    
 
     const getFilterTypes = () => {
@@ -34,9 +42,14 @@ const Report = () => {
     }
 
     const handleFilterBy = (filter_by) => { 
+        if(filter_by == 'Date Range') {
+            setShowDateRange(true);
+        } else {
+            getTotalIncome(filter_by);
+            getTotalExpense(filter_by);
+            setShowDateRange(false);
+        }
         setFilterBy(filter_by);
-        getTotalIncome(filter_by);
-        getTotalExpense(filter_by);
     }
 
     const getTotalIncome = (filter_by) => {
@@ -65,6 +78,22 @@ const Report = () => {
 
             DB.transaction(tx => {
                 tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [monthNumber, 'Income'], (tx, results) => {
+                    let incomes = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        incomes.push(results.rows.item(i));
+                    }
+    
+                    let total_income = 0;
+                    incomes.map(income => {
+                        total_income = total_income + parseInt(income.amount);
+                    })
+                 
+                    setTotalIncome(total_income);
+                })
+            });
+        } else if(filter_by === 'Date Range') {
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE date BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Income'], (tx, results) => {
                     let incomes = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         incomes.push(results.rows.item(i));
@@ -122,6 +151,22 @@ const Report = () => {
                     setTotalExpense(total_expense);
                 })
             });
+        }else if(filter_by === 'Date Range') {
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE date BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Expense'], (tx, results) => {
+                    let incomes = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        incomes.push(results.rows.item(i));
+                    }
+    
+                    let total_income = 0;
+                    incomes.map(income => {
+                        total_income = total_income + parseInt(income.amount);
+                    })
+                 
+                    setTotalIncome(total_income);
+                })
+            });
         }
     }
 
@@ -173,6 +218,30 @@ const Report = () => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    const maximumDate = () => {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd; 
+        setMaxDate(today);
+    }
+
+    const handleSubmit = () => {
+        if(dateFrom.trim()==='') {
+            Alert.alert('Error', 'Please select Date From');
+        } else if(dateTo.trim()==='') {
+            Alert.alert('Error', 'Please select Date To');
+        } else if(dateFrom > dateTo) {
+            Alert.alert('Error', 'Date From cannot be greater than Date To');
+        } else {
+            let filter_by = 'Date Range';
+            getTotalIncome(filter_by);
+            getTotalExpense(filter_by);
+        }
+    }
+
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
              <FormView 
@@ -181,6 +250,21 @@ const Report = () => {
                 defaultValue={filterBy}
                 onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
             />
+            {
+                showDateRange ? (
+                    <View 
+                        style={{flexDirection: 'row', justifyContent: 'flex-start', width: 380,
+                        height: 70,
+                        backgroundColor: '#ffffff',
+                        marginTop: 5,
+                        marginHorizontal: 10}}
+                    >
+                        <DateRange defaultDate={dateFrom} onDateChange={(dateFrom) => {setDateFrom(dateFrom)}} label="From" maxDate={maxDate}/>
+                        <DateRange defaultDate={dateTo} onDateChange={(dateTo) => {setDateTo(dateTo)}} label="To" maxDate={maxDate}/>
+                        <DateRangeButton title="Go" customClick={() => handleSubmit()}/>
+                    </View>
+                ) : null
+            }
             <PieChart income={totalIncome} expense={totalExpense}/>
             <ChartDescription/>
             <Transaction label="Total Income " amount={"NGN"+numberWithCommas(totalIncome)}/>

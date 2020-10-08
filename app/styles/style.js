@@ -101,7 +101,7 @@ export default StyleSheet.create({
         height: 40,
         backgroundColor: '#ffffff', 
         marginHorizontal: 80,
-        marginTop: 10,
+        marginTop: 5,
     },
     transactionTextSize: {
         fontSize: 16,
@@ -119,5 +119,13 @@ export default StyleSheet.create({
       },
       buttonText: {
         color: '#ffffff',
+      },
+      dateRangeButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#4b81bf',
+        width: 40,
+        height: 40,
+        marginTop: 18
       }
 });
