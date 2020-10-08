@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 
 import FormView from '../components/FormView';
 import Myselectinput from '../components/Myselectinput';
 import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
 import Transaction from '../components/Transaction';
+import DateRange from '../components/DateRange';
 import { DB } from '../model/db';
 
 const Report = () => {
@@ -13,6 +14,9 @@ const Report = () => {
     const [filterBy, setFilterBy] = useState('This Month');
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
+    const [showDateRange, setShowDateRange] = useState(false);
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
 
     useEffect(() => {
         getFilterTypes();
@@ -34,9 +38,14 @@ const Report = () => {
     }
 
     const handleFilterBy = (filter_by) => { 
+        if(filter_by == 'Date Range') {
+            setShowDateRange(true);
+        } else {
+            getTotalIncome(filter_by);
+            getTotalExpense(filter_by);
+            setShowDateRange(false);
+        }
         setFilterBy(filter_by);
-        getTotalIncome(filter_by);
-        getTotalExpense(filter_by);
     }
 
     const getTotalIncome = (filter_by) => {
@@ -181,6 +190,20 @@ const Report = () => {
                 defaultValue={filterBy}
                 onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
             />
+            {
+                showDateRange ? (
+                    <View 
+                        style={{flexDirection: 'row', justifyContent: 'flex-start', width: 380,
+                        height: 70,
+                        backgroundColor: '#ffffff',
+                        marginTop: 5,
+                        marginHorizontal: 10}}
+                    >
+                        <DateRange defaultDate={dateFrom} onDateChange={(dateFrom) => {setDateFrom(dateFrom)}} label="From"/>
+                        <DateRange defaultDate={dateTo} onDateChange={(dateTo) => {setDateTo(dateTo)}} label="To"/>
+                    </View>
+                ) : null
+            }
             <PieChart income={totalIncome} expense={totalExpense}/>
             <ChartDescription/>
             <Transaction label="Total Income " amount={"NGN"+numberWithCommas(totalIncome)}/>

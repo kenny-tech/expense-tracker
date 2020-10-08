@@ -101,7 +101,7 @@ export default StyleSheet.create({
         height: 40,
         backgroundColor: '#ffffff', 
         marginHorizontal: 80,
-        marginTop: 10,
+        marginTop: 5,
     },
     transactionTextSize: {
         fontSize: 16,
