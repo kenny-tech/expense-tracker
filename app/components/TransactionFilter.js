@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useIsFocused } from '@react-navigation/native';
 
 import styles from '../styles/style';
 import { DB } from '../model/db';
@@ -10,66 +11,100 @@ import NoTransaction from '../components/NoTransaction';
 const TransactionFilter = ({ filterBy }) => {
     
     const [transactions, setTransactions] = useState([]);
-   
-    let month = new Date().getMonth()+1;     
-    let monthNumber
-    
-    if(month == 1) {
-        monthNumber = '01';
-    }
-    if(month == 2) {
-        monthNumber = '02';
-    }
-    if(month == 3) {
-        monthNumber = '03';
-    }
-    if(month == 4) {
-        monthNumber = '04';
-    }
-    if(month == 5) {
-        monthNumber = '05';
-    }
-    if(month == 6) {
-        monthNumber = '06';
-    }
-    if(month == 7) {
-        monthNumber = '07';
-    }
-    if(month == 8) {
-        monthNumber = '08';
-    }
-    if(month == 9) {
-        monthNumber = '09';
-    }
 
-    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+     // check if screen is focused
+     const isFocused = useIsFocused('');
+
+     // listen for isFocused, if useFocused changes 
+     // call the function that you use to mount the component.
+     useEffect(() => {
+        getTransactions();
+     },[filterBy]);
+
 
     const convertDate = (date_str) => {
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let temp_date = date_str.split("-");
         return temp_date[2] + " " + months[Number(temp_date[1]) - 1] + " " + temp_date[0];
     }
 
     const getTransactions = () => {
-        DB.transaction(tx => {
-            // tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ?`, [monthNumber], (tx, results) => {
-            tx.executeSql(`SELECT * FROM transactions ORDER BY rowid DESC`, [], (tx, results) => {
-                let temp = [];
-                for (let i = 0; i < results.rows.length; ++i) {
-                    temp.push(results.rows.item(i));
-                }
-                console.log('Transactions: ',temp);
-                setTransactions(temp);
-            })
-        });
+        if(filterBy == 'This Month') {
+            let month = new Date().getMonth()+1;     
+            let monthNumber = getMonthNumber(month);
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log('Transactions: ',temp);
+                    setTransactions(temp);
+                })
+            });
+        } else if(filterBy == 'Last Month') {
+            let month = new Date().getMonth();     
+            let monthNumber = getMonthNumber(month);
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log('Transactions: ',temp);
+                    setTransactions(temp);
+                })
+            });
+        }
     }
 
     const numberWithCommas = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    useEffect(() => {
-        getTransactions()
-    }, []);
+    const getMonthNumber = (month) => {
+        
+        let monthNumber;
+
+        if(month == 1) {
+            monthNumber = '01';
+        }
+        if(month == 2) {
+            monthNumber = '02';
+        }
+        if(month == 3) {
+            monthNumber = '03';
+        }
+        if(month == 4) {
+            monthNumber = '04';
+        }
+        if(month == 5) {
+            monthNumber = '05';
+        }
+        if(month == 6) {
+            monthNumber = '06';
+        }
+        if(month == 7) {
+            monthNumber = '07';
+        }
+        if(month == 8) {
+            monthNumber = '08';
+        }
+        if(month == 9) {
+            monthNumber = '09';
+        }
+        if(month == 10) {
+            monthNumber = '10';
+        }
+        if(month == 11) {
+            monthNumber = '11';
+        }
+        if(month == 12) {
+            monthNumber = '12';
+        }
+
+        return monthNumber;
+    }
 
     return (
         <View> 

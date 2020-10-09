@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from '../styles/style';

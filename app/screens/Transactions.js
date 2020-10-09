@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 
@@ -85,7 +85,7 @@ const Transactions = ({ navigation }) => {
                 visible={visible}
                 dialogTitle={<DialogTitle title="Filter Transaction" />}
                 dialogAnimation={new SlideAnimation({
-                    slideFrom: 'left',
+                    slideFrom: 'bottom',
                 })}
                 onTouchOutside={() => {
                     setVisible(false)
