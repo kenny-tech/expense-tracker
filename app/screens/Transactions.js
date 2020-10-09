@@ -4,12 +4,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 
 import TransactionText from '../components/TransactionText';
+import TransactionFilter from '../components/TransactionFilter';
 import styles from '../styles/style';
 import FormView from '../components/FormView';
 import Myselectinput from '../components/Myselectinput';
 import { DB } from '../model/db';
 import DateRange from '../components/DateRange';
-import DateRangeButton from '../components/DateRangeButton';
 
 const Transactions = ({ navigation }) => {
 
@@ -20,6 +20,7 @@ const Transactions = ({ navigation }) => {
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [maxDate, setMaxDate] = useState('');
+    const [filter, setFilter] = useState(false);
 
     useEffect(() => {
         navigation.setOptions({
@@ -62,14 +63,23 @@ const Transactions = ({ navigation }) => {
     const handleFilterBy = (filter_by) => { 
         if(filter_by == 'Date Range') {
             setShowDateRange(true);
+            // filter_by = `${dateFrom} - ${dateTo}`;
         } else {
             setShowDateRange(false);
         }
         setFilterBy(filter_by);
     }
 
+    const handleFilterTransaction = () => {
+        setVisible(false);
+        setFilter(true);
+    }
+
     return (
         <View style={styles.transactionView}>
+            {
+                filter? (<TransactionFilter filterBy={filterBy}/>) : (<TransactionText/>)
+            }
             <TransactionText/>
             <Dialog
                 visible={visible}
@@ -88,7 +98,7 @@ const Transactions = ({ navigation }) => {
                       />
                       <DialogButton
                         text="OK"
-                        onPress={() => {}}
+                        onPress={() => handleFilterTransaction()}
                       />
                     </DialogFooter>
                 }
@@ -112,7 +122,6 @@ const Transactions = ({ navigation }) => {
                                 >
                                     <DateRange defaultDate={dateFrom} onDateChange={(dateFrom) => {setDateFrom(dateFrom)}} label="From" maxDate={maxDate}/>
                                     <DateRange defaultDate={dateTo} onDateChange={(dateTo) => {setDateTo(dateTo)}} label="To" maxDate={maxDate}/>
-                                    <DateRangeButton title="Go" customClick={() => handleSubmit()}/>
                                 </View>
                             ) : null
                         }
