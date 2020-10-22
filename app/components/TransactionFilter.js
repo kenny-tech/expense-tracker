@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useIsFocused } from '@react-navigation/native';
 
 import styles from '../styles/style';
 import { DB } from '../model/db';
@@ -12,15 +11,9 @@ const TransactionFilter = ({ filterBy }) => {
     
     const [transactions, setTransactions] = useState([]);
 
-     // check if screen is focused
-     const isFocused = useIsFocused('');
-
-     // listen for isFocused, if useFocused changes 
-     // call the function that you use to mount the component.
      useEffect(() => {
         getTransactions();
      },[filterBy]);
-
 
     const convertDate = (date_str) => {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -52,6 +45,24 @@ const TransactionFilter = ({ filterBy }) => {
                         temp.push(results.rows.item(i));
                     }
                     console.log('Transactions: ',temp);
+                    setTransactions(temp);
+                })
+            });
+        } else {
+            let filter_type = filterBy.split(" - ");
+            let dateFrom = filter_type[0];
+            let dateTo = filter_type[1];
+
+            console.log('DATE FROM:', dateFrom);
+            console.log('DATE TO:', dateTo);
+
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT * FROM transactions WHERE WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, ['2020-10-01', '2020-10-14'], (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log('Transactions for date range: ',temp);
                     setTransactions(temp);
                 })
             });
@@ -130,7 +141,7 @@ const TransactionFilter = ({ filterBy }) => {
                                 </View>
                             )}
                             keyExtractor={item => item.rowid}
-                        />) : (<View style={{marginTop: 50}}>
+                        />) : (<View>
                                     <NoTransaction/>
                                     <Text style={{textAlign: 'center', fontSize: 16}}>Please add a transaction</Text>
                                 </View>)
