@@ -25,7 +25,7 @@ const App = () => {
           },
         }}
       >
-        <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen}/>
+        <Stack.Screen options={{ title: "Expense Tracker" }} name="Home" component={HomeScreen}/>
         <Stack.Screen options={{ title: "Add Income" }} name="Income" component={IncomeScreen}/>
         <Stack.Screen options={{ title: "Add Expense" }} name="Expense" component={ExpenseScreen}/>
         <Stack.Screen options={{ title: "Transactions" }} name="Transactions" component={TransactionsScreen}/>

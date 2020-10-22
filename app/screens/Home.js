@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import HomeLink from '../components/HomeLink';
 import HomeText from '../components/HomeText';
 import PieChart from '../components/PieChart';
+import styles from '../styles/style';
 import { DB } from '../model/db';
 
 const Home = ({ navigation }) => {
@@ -18,6 +20,17 @@ const Home = ({ navigation }) => {
         getIncomes();
         getExpenses();
     },[isFocused]);
+
+    useEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity onPress={() => Alert.alert('Settings', 'Settings...')}>
+                <Icon name="gear" size={30} style={styles.check}/>
+            </TouchableOpacity>            
+          ),
+        });
+    }, [navigation]);
+
 
     useEffect(() => {
         createCategories();
