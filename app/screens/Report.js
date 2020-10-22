@@ -93,7 +93,7 @@ const Report = () => {
             });
         } else if(filter_by === 'Date Range') {
             DB.transaction(tx => {
-                tx.executeSql(`SELECT amount FROM transactions WHERE date BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Income'], (tx, results) => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE date(date) BETWEEN ? AND ? AND type = ?`, ['2020-10-01', '2020-10-22', 'Income'], (tx, results) => {
                     let incomes = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         incomes.push(results.rows.item(i));
