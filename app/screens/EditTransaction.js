@@ -8,8 +8,11 @@ import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
 import Mybutton from '../components/Mybutton';
 import { DB } from '../model/db';
+import { useNavigation } from '@react-navigation/native';
 
-const EditTransaction = ({ navigation,transId }) => {
+const EditTransaction = ({ transId }) => {
+    const navigation = useNavigation();
+
     const [type, setType] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
@@ -93,7 +96,7 @@ const EditTransaction = ({ navigation,transId }) => {
                             [
                                 {
                                     text: 'Ok',
-                                    onPress: () => navigation.navigate('Transactions'),
+                                    onPress: () => navigation.goBack(),
                                 },
                             ],
                             { cancelable: false}
