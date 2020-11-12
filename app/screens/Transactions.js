@@ -84,7 +84,6 @@ const Transactions = ({ navigation }) => {
             {
                 filter? (<TransactionFilter filterBy={filterBy}/>) : (<TransactionText/>)
             }
-            <TransactionText/>
             <Dialog
                 visible={visible}
                 dialogTitle={<DialogTitle title="Filter Transaction" />}

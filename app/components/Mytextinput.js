@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 
-const Mytextinput = ({ placeholder,keyboardType,onChangeText,returnKeyType,numberOfLines,multiline,onSubmitEditing,value }) => {
+const Mytextinput = ({ placeholder,keyboardType,onChangeText,returnKeyType,numberOfLines,multiline,onSubmitEditing,defaultValue }) => {
     return (
         <TextInput
             underlineColorAndroid="transparent"
@@ -15,7 +15,7 @@ const Mytextinput = ({ placeholder,keyboardType,onChangeText,returnKeyType,numbe
             onSubmitEditing={onSubmitEditing}
             style={{ height: 35, borderColor: "gray", borderBottomWidth: 1, marginHorizontal: 10}}
             blurOnSubmit={false}
-            value={value}
+            defaultValue={defaultValue}
         />
     )
 }
