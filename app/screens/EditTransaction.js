@@ -36,7 +36,7 @@ const EditTransaction = ({ route, navigation }) => {
     useEffect(() => {
         navigation.setOptions({
           headerRight: () => (
-            <TouchableOpacity onPress={() => Alert.alert('Delete Transaction', 'Are you sure?')}>
+            <TouchableOpacity onPress={() => handleDeleteTransaction()}>
                 <Icon name="trash" size={30} style={styles.check}/>
             </TouchableOpacity>            
           ),
@@ -121,6 +121,43 @@ const EditTransaction = ({ route, navigation }) => {
         } else {
             Alert.alert('Error', 'Please enter an amount')
         }
+    }
+
+    const handleDeleteTransaction = () => {
+        Alert.alert(
+            'Delete Transaction',
+            'Are you sure',
+            [
+                {
+                    text: 'Ok',
+                    onPress: () => deleteTransaction(transaction_id),
+                },
+            ],
+            { cancelable: false}
+        );
+    }
+
+    const deleteTransaction = (transaction_id) => {
+        DB.transaction(tx => {
+            tx.executeSql('DELETE FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
+                // console.log('Results : ', results.rowsAffected);
+                if (results.rowsAffected > 0) {
+                    Alert.alert(
+                        'Success',
+                        'Transaction successfully deleted',
+                        [
+                            {
+                                text: 'Ok',
+                                onPress: () => navigation.navigate('Transactions'),
+                            },
+                        ],
+                        { cancelable: false}
+                    );
+                } else {
+                    Alert.alert('Error','Invalid Transaction ID');
+                }
+            })
+        });
     }
 
     return (
