@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Alert, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
@@ -7,11 +8,10 @@ import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
 import Mybutton from '../components/Mybutton';
+import styles from '../styles/style';
 import { DB } from '../model/db';
-import { useNavigation } from '@react-navigation/native';
 
-const EditTransaction = ({ transId }) => {
-    const navigation = useNavigation();
+const EditTransaction = ({ route, navigation }) => {
 
     const [type, setType] = useState('');
     const [amount, setAmount] = useState('');
@@ -24,12 +24,24 @@ const EditTransaction = ({ transId }) => {
     const [categories, setCategories] = useState([]);
     const [modes, setModes] = useState([]);
 
+    let transaction_id  = route.params.transaction_id;
+
     useEffect(() => {
         getCategories();
         getModes();
         currentDate();
-        getTransaction(transId);
+        getTransaction(transaction_id);
     }, []);    
+
+    useEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity onPress={() => Alert.alert('Delete Transaction', 'Are you sure?')}>
+                <Icon name="trash" size={30} style={styles.check}/>
+            </TouchableOpacity>            
+          ),
+        });
+    }, [navigation]);
 
     const getCategories = () => {
         DB.transaction(tx => {
@@ -67,9 +79,9 @@ const EditTransaction = ({ transId }) => {
         setDate(today);
     }
 
-    const getTransaction = (transId) => {
+    const getTransaction = (transaction_id) => {
         DB.transaction(tx => {
-            tx.executeSql('SELECT rowid, type, amount, category, date, mode FROM transactions WHERE rowid = ?', [transId], (tx, results) => {
+            tx.executeSql('SELECT rowid, type, amount, category, date, mode FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
                 console.log(results.rows.item(0).amount);
 
                 setType(results.rows.item(0).type);
@@ -87,7 +99,7 @@ const EditTransaction = ({ transId }) => {
     const handleSubmit = () => {
         if(amount.trim() != '') {
             DB.transaction(tx => {
-                tx.executeSql('UPDATE transactions SET type=?, amount=?, category=?, date=?, mode=?, note=? WHERE rowid=?', [type, amount, category, date, mode, note, transactionId], (tx, results) => {
+                tx.executeSql('UPDATE transactions SET type=?, amount=?, category=?, date=?, mode=?, note=? WHERE rowid=?', [type, amount, category, date, mode, note, transaction_id], (tx, results) => {
                     console.log('Results: ', results.rowsAffected);
                     if(results.rowsAffected > 0) {
                         Alert.alert(
@@ -102,7 +114,7 @@ const EditTransaction = ({ transId }) => {
                             { cancelable: false}
                         );
                     } else {
-                        Alert.alert('Error', 'Failed to update user. Please try again')
+                        Alert.alert('Error', 'Failed to update transaction. Please try again')
                     }
                 })
             })
