@@ -126,14 +126,18 @@ const EditTransaction = ({ route, navigation }) => {
     const handleDeleteTransaction = () => {
         Alert.alert(
             'Delete Transaction',
-            'Are you sure',
+            'Are you sure?',
             [
+                {
+                    text: 'Cancel',
+                    cancelable: true
+                },
                 {
                     text: 'Ok',
                     onPress: () => deleteTransaction(transaction_id),
-                },
+                }
             ],
-            { cancelable: false}
+            { cancelable: true}
         );
     }
 
