@@ -109,10 +109,10 @@ const Income = ({ navigation }) => {
                     behavior="padding"
                     style={{ flex: 1, justifyContent: 'space-between' }}
                 >
-                    <FormView 
+                    {/* <FormView 
                         label="Type" 
                         inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense"  value2="Expense" defaultValue={type} onChangeType={type => setType(type)}/>}
-                    />
+                    /> */}
                     <FormView 
                         label="Amount" 
                         inputType={<Mytextinput placeholder="Amount" keyboardType="numeric" onChangeText={amount => setAmount(amount)}/>}
