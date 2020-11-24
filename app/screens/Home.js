@@ -24,7 +24,7 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
           headerRight: () => (
-            <TouchableOpacity onPress={() => Alert.alert('Settings', 'Settings...')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
                 <Icon name="gear" size={30} style={styles.check}/>
             </TouchableOpacity>            
           ),
@@ -36,6 +36,7 @@ const Home = ({ navigation }) => {
         createCategories();
         createModes();
         createFilterTypes();
+        createCurrencies();
     }, []);    
 
     let today = new Date();
@@ -241,6 +242,44 @@ const Home = ({ navigation }) => {
                     setTotalExpense(total_expense);
                 })
                 console.log('Total expense: ',totalExpense);
+            })
+        });
+    }
+
+    const createCurrencies = () => {
+        DB.transaction(function (tx) {
+            tx.executeSql('DROP TABLE IF EXISTS currencies');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS currencies (name)');
+            }, function (error) {
+                console.log('Transaction error: ' + error.message);
+            }, function () {
+                console.log('Successfully created currencies table');
+            }
+        );
+
+        DB.transaction(tx => {
+            tx.executeSql('SELECT name FROM currencies', [], (tx, results) => {
+                let len = results.rows.length;
+
+                if(len > 0) {
+                    let currencies = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        currencies.push(results.rows.item(i));
+                    }
+                    console.log('Currencies: ',currencies);
+                } else {
+                    tx.executeSql(        
+                        'INSERT INTO currencies VALUES (?),(?)',
+                        ['NGN','USD'],
+                        (tx, results) => {               
+                          if (results.rowsAffected > 0 ) {
+                            console.log('Insert success');              
+                          } else {
+                            console.log('Insert failed');
+                          }
+                        }
+                    );
+                }
             })
         });
     }
