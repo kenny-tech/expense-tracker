@@ -127,5 +127,13 @@ export default StyleSheet.create({
         width: 40,
         height: 40,
         marginTop: 18
-      }
+      },
+      formViewLink: {
+        width: 380,
+        height: 80,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        flexDirection: 'row'
+    }
 });

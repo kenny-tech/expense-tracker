@@ -20,12 +20,14 @@ const Report = () => {
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [maxDate, setMaxDate] = useState('');
+    const [currency, setCurrency] = useState('');
 
     useEffect(() => {
         getFilterTypes();
         getTotalIncome(filterBy);
         getTotalExpense(filterBy);
         maximumDate();
+        getCurrency();
     }, []);    
 
     const getFilterTypes = () => {
@@ -242,6 +244,20 @@ const Report = () => {
         }
     }
 
+    const getCurrency = () => {
+        DB.transaction(tx => {
+            tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
+                let len = results.rows.length;
+                // console.log('length_currency: ', results.rows.item(0).currency);
+                if (len > 0) {
+                    setCurrency(results.rows.item(0).currency);
+                } else {
+                    Alert.alert('Error:','No currency found');
+                }
+            })
+        });
+    }
+
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
              <FormView 
@@ -267,9 +283,9 @@ const Report = () => {
             }
             <PieChart income={totalIncome} expense={totalExpense}/>
             <ChartDescription/>
-            <Transaction label="Total Income " amount={"NGN"+numberWithCommas(totalIncome)}/>
-            <Transaction label="Total Expense" amount={"NGN"+numberWithCommas(totalExpense)}/>
-            <Transaction label="Balance          " amount={"NGN"+numberWithCommas(totalIncome - totalExpense)}/>
+            <Transaction label="Total Income " amount={currency+numberWithCommas(totalIncome)}/>
+            <Transaction label="Total Expense" amount={currency+numberWithCommas(totalExpense)}/>
+            <Transaction label="Balance          " amount={currency+numberWithCommas(totalIncome - totalExpense)}/>
         </View>
     )
 }
