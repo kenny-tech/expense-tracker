@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 
 import FormView from '../components/FormView';
+import FormViewReport from '../components/FormViewReport';
 import Myselectinput from '../components/Myselectinput';
 import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
@@ -283,9 +284,16 @@ const Report = () => {
             }
             <PieChart income={totalIncome} expense={totalExpense}/>
             <ChartDescription/>
-            <Transaction label="Total Income " amount={currency+numberWithCommas(totalIncome)}/>
-            <Transaction label="Total Expense" amount={currency+numberWithCommas(totalExpense)}/>
-            <Transaction label="Balance          " amount={currency+numberWithCommas(totalIncome - totalExpense)}/>
+            <FormViewReport
+                label="Report Summary" 
+                inputType={
+                    <View>
+                        <Text style={{marginLeft: 10, paddingBottom: 5, fontSize:16}}>Total Income:          {currency+numberWithCommas(totalIncome)}</Text>
+                        <Text style={{marginLeft: 10, paddingBottom: 5, fontSize:16}}>Total Expense:        {currency+numberWithCommas(totalExpense)}</Text>
+                        <Text style={{marginLeft: 10, fontSize:16}}>Balance:                   {currency+numberWithCommas(totalIncome - totalExpense)}</Text>
+                    </View>
+                }
+            />
         </View>
     )
 }
