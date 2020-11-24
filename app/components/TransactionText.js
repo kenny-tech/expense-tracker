@@ -11,8 +11,8 @@ import NoTransaction from '../components/NoTransaction';
 
 const TransactionText = () => {
 
-     // check if screen is focused
-     const isFocused = useIsFocused('');
+    // check if screen is focused
+    const isFocused = useIsFocused('');
     
     const navigation = useNavigation();
 
@@ -20,12 +20,17 @@ const TransactionText = () => {
     const [monthName, setMonthName] = useState('All');
     const [editing, setEditing] = useState(false);
     const [transactionId, setTransactionId] = useState('');
+    const [currency, setCurrency] = useState('');
 
     // listen for isFocused, if useFocused changes 
     // call the function that you use to mount the component.
     useEffect(() => {
         getTransactions();
     },[isFocused]);
+
+    useEffect(() => {
+        getSetting();
+    }, []);    
 
     let month = new Date().getMonth()+1;     
     let monthNumber
@@ -92,6 +97,20 @@ const TransactionText = () => {
           });
     }
 
+    const getSetting = () => {
+        DB.transaction(tx => {
+            tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
+                let len = results.rows.length;
+                // console.log('length_currency: ', results.rows.item(0).currency);
+                if (len > 0) {
+                    setCurrency(results.rows.item(0).currency);
+                } else {
+                    Alert.alert('Error:','No currency found');
+                }
+            })
+        });
+    }
+
     return (
         <View> 
             {
@@ -108,12 +127,12 @@ const TransactionText = () => {
                                         <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
                                         <View style={styles.transactionViewText}>
                                             {
-                                                item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>)
+                                                item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{currency+numberWithCommas(item.amount)}</Text>)
                                             }
                                             <Text style={{fontStyle: 'italic'}}>{convertDate(item.date)}</Text>
                                             {/* <Text style={{fontStyle: 'italic'}}>{item.rowid}</Text> */}
                                         </View>  
-                                        <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
+                                        <Icon name="angle-right" size={40} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
                                     </View>
                                 </TouchableOpacity>
                                 <View style={{borderBottomWidth: 1, marginHorizontal: 20, width: 350, padding: 5, borderColor: '#d3d3d3'}}/>

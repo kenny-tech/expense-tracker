@@ -8,22 +8,37 @@ import { DB } from '../model/db';
 
 const Setting = () => {
 
-    const [currency, setCurrency] = useState('NGN');
+    const [currency, setCurrency] = useState('');
     const [currencies, setCurrencies] = useState([]);
 
     useEffect(() => {
         getCurrencies();
+        getSetting();
     }, []);    
 
     const getCurrencies = () => {
         DB.transaction(tx => {
-            tx.executeSql('SELECT rowid, name FROM currencies', [], (tx, results) => {
+            tx.executeSql('SELECT rowid, name, symbol FROM currency', [], (tx, results) => {
                 let currencies = [];
                 for (let i = 0; i < results.rows.length; ++i) {
                     currencies.push(results.rows.item(i));
                 }
                 console.log('Currencies: ',currencies);
                 setCurrencies(currencies);
+            })
+        });
+    }
+
+    const getSetting = () => {
+        DB.transaction(tx => {
+            tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
+                let len = results.rows.length;
+                // console.log('length_currency: ', results.rows.item(0).currency);
+                if (len > 0) {
+                    setCurrency(results.rows.item(0).currency);
+                } else {
+                    Alert.alert('Error:','No currency found');
+                }
             })
         });
     }

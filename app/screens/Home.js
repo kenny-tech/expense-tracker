@@ -11,6 +11,10 @@ import { DB } from '../model/db';
 
 const Home = ({ navigation }) => {
 
+    const [totalIncome, setTotalIncome] = useState(0);
+    const [totalExpense, setTotalExpense] = useState(0);
+    const [currency, setCurrency] = useState('');
+
     // check if screen is focused
     const isFocused = useIsFocused('');
 
@@ -19,6 +23,7 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         getIncomes();
         getExpenses();
+        getSetting();
     },[isFocused]);
 
     useEffect(() => {
@@ -37,6 +42,7 @@ const Home = ({ navigation }) => {
         createModes();
         createFilterTypes();
         createCurrencies();
+        createSetting();
     }, []);    
 
     let today = new Date();
@@ -87,9 +93,6 @@ const Home = ({ navigation }) => {
     if(month == 12) {
         monthNumber = '12';
     }
-
-    const [totalIncome, setTotalIncome] = useState(0);
-    const [totalExpense, setTotalExpense] = useState(0);
 
     const createCategories = () => {
         DB.transaction(function (tx) {
@@ -248,8 +251,8 @@ const Home = ({ navigation }) => {
 
     const createCurrencies = () => {
         DB.transaction(function (tx) {
-            tx.executeSql('DROP TABLE IF EXISTS currencies');   
-            tx.executeSql('CREATE TABLE IF NOT EXISTS currencies (name)');
+            tx.executeSql('DROP TABLE IF EXISTS currency');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS currency (name, symbol)');
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
             }, function () {
@@ -258,7 +261,7 @@ const Home = ({ navigation }) => {
         );
 
         DB.transaction(tx => {
-            tx.executeSql('SELECT name FROM currencies', [], (tx, results) => {
+            tx.executeSql('SELECT name FROM currency', [], (tx, results) => {
                 let len = results.rows.length;
 
                 if(len > 0) {
@@ -269,8 +272,8 @@ const Home = ({ navigation }) => {
                     console.log('Currencies: ',currencies);
                 } else {
                     tx.executeSql(        
-                        'INSERT INTO currencies VALUES (?),(?)',
-                        ['NGN','USD'],
+                        'INSERT INTO currency (name, symbol) VALUES (?,?)',
+                        ['₦','₦'], ['$', '$'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
                             console.log('Insert success');              
@@ -284,6 +287,57 @@ const Home = ({ navigation }) => {
         });
     }
 
+    const createSetting = () => {
+        DB.transaction(function (tx) {
+            tx.executeSql('DROP TABLE IF EXISTS settings');   
+            tx.executeSql('CREATE TABLE IF NOT EXISTS settings (currency)');
+            }, function (error) {
+                console.log('Transaction error: ' + error.message);
+            }, function () {
+                console.log('Successfully created settings table');
+            }
+        );
+
+        DB.transaction(tx => {
+            tx.executeSql('SELECT currency FROM settings', [], (tx, results) => {
+                let len = results.rows.length;
+
+                if(len > 0) {
+                    let settings = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        settings.push(results.rows.item(i));
+                    }
+                } else {
+                    tx.executeSql(        
+                        'INSERT INTO settings VALUES (?)',
+                        ['₦'],
+                        (tx, results) => {               
+                          if (results.rowsAffected > 0 ) {
+                            console.log('Insert success');              
+                          } else {
+                            console.log('Insert failed');
+                          }
+                        }
+                    );
+                }
+            })
+        });
+    }
+
+    const getSetting = () => {
+        DB.transaction(tx => {
+            tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
+                let len = results.rows.length;
+                // console.log('length_currency: ', results.rows.item(0).currency);
+                if (len > 0) {
+                    setCurrency(results.rows.item(0).currency);
+                } else {
+                    Alert.alert('Error:','No currency found');
+                }
+            })
+        });
+    }
+
     const numberWithCommas = (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -292,9 +346,9 @@ const Home = ({ navigation }) => {
         <View style={{marginTop: 10}}>
             <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense} type={type}/>
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
-                <HomeText title="Income" amount={"NGN"+numberWithCommas(totalIncome)} color="#006400"/>
-                <HomeText title="Expense" amount={"NGN"+numberWithCommas(totalExpense)} color="#C70039"/>
-                <HomeText title="Balance" amount={"NGN"+numberWithCommas(totalIncome - totalExpense)} color="#4b81bf"/>
+                <HomeText title="Income" amount={currency+numberWithCommas(totalIncome)} color="#006400"/>
+                <HomeText title="Expense" amount={currency+numberWithCommas(totalExpense)} color="#C70039"/>
+                <HomeText title="Balance" amount={currency+numberWithCommas(totalIncome - totalExpense)} color="#4b81bf"/>
             </View>
             <View style={{marginTop: 10}}>
                 <HomeLink text="ADD INCOME" backgroundColor="#daf5ff" textColor="#639eb8" icon="money" customClick={() => navigation.navigate('Income')}/>
