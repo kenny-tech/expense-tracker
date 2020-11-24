@@ -24,6 +24,7 @@ export default StyleSheet.create({
         backgroundColor: '#ffffff',
         marginTop: 10,
         marginHorizontal: 10,
+        borderRadius: 20
     },
     formViewLabel: {
         color: '#4b81bf',
@@ -116,6 +117,7 @@ export default StyleSheet.create({
         marginTop: 15,
         marginLeft: 10,
         marginRight: 10,
+        borderRadius: 10
       },
       buttonText: {
         color: '#ffffff',
@@ -134,6 +136,26 @@ export default StyleSheet.create({
         backgroundColor: '#ffffff',
         marginTop: 10,
         marginHorizontal: 10,
-        flexDirection: 'row'
-    }
+        flexDirection: 'row',
+        borderRadius: 20
+    },
+    formViewReport: {
+        width: 380,
+        height: 120,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        borderRadius: 20
+    },
+    formViewTransaction: {
+        width: 380,
+        height: 60,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        borderRadius: 20,
+        flexDirection:'row',
+        alignItems: 'center'
+    },
 });
