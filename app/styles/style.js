@@ -146,5 +146,16 @@ export default StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 10,
         borderRadius: 20
-    }
+    },
+    formViewTransaction: {
+        width: 380,
+        height: 60,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        borderRadius: 20,
+        flexDirection:'row',
+        alignItems: 'center'
+    },
 });

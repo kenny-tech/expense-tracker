@@ -80,7 +80,7 @@ const Transactions = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.transactionView}>
+        <View>
             {
                 filter? (<TransactionFilter filterBy={filterBy}/>) : (<TransactionText/>)
             }
