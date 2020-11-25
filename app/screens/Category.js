@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
-import { useIsFocused } from '@react-navigation/native';
 
 import Mytextinput from '../components/Mytextinput';
 import FormPanel from '../components/FormPanel';
@@ -16,14 +15,9 @@ const Category = () => {
     const [categoryId, setCategoryId] = useState('');
     const [categoryName, setCategoryName] = useState('');
 
-     // check if screen is focused
-     const isFocused = useIsFocused('');
-
-     // listen for isFocused, if useFocused changes 
-     // call the function that you use to mount the component.
-     useEffect(() => {
+    useEffect(() => {
         getCategories();
-     },[isFocused]);
+    }, []);    
 
     const handleEditCategory = (category_id) => {
         setEditCategory(true);
