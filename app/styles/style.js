@@ -158,4 +158,13 @@ export default StyleSheet.create({
         flexDirection:'row',
         alignItems: 'center'
     },
+    formViewPanel: {
+        width: 385,
+        height: 55,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        borderRadius: 20
+    }
 });

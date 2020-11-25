@@ -199,7 +199,7 @@ const EditTransaction = ({ route, navigation }) => {
                         label="Note"
                         inputType={<Mytextinput placeholder="Note" onChangeText={note => setNote(note)} defaultValue={note}/>}
                     />
-                    <Mybutton title="Submit" customClick={() => handleSubmit()}/>
+                    <Mybutton title="Update" customClick={() => handleSubmit()}/>
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>
