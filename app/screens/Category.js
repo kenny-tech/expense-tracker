@@ -55,6 +55,7 @@ const Category = () => {
                 setCategories(allCategories);
             })
         });
+        setVisible(false);
     }
 
     const handleUpdateCategory = () => {
@@ -67,7 +68,7 @@ const Category = () => {
                         [
                             {
                                 text: 'Ok',
-                                onPress: () => setVisible(false),
+                                onPress: () => getCategories(),
                             },
                         ],
                         { cancelable: false}
