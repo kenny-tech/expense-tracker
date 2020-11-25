@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Alert, TouchableOpacity} from 'react-native';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Mytextinput from '../components/Mytextinput';
 import FormPanel from '../components/FormPanel';
 import FormView from '../components/FormView';
+import styles from '../styles/style';
 import { DB } from '../model/db';
 
-const Category = () => {
+const Category = ({ navigation }) => {
 
     const [categories, setCategories] = useState([]);
     const [editCategory, setEditCategory] = useState('false');
+    const [addCategory, setAddCategory] = useState('false');
     const [visible, setVisible] = useState(false);
     const [categoryId, setCategoryId] = useState('');
     const [categoryName, setCategoryName] = useState('');
@@ -19,10 +22,59 @@ const Category = () => {
         getCategories();
     }, []);    
 
+    useEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity onPress={() => handleAddCategory()}>
+                <Icon name="plus" size={30} style={styles.check}/>
+            </TouchableOpacity>            
+          ),
+        });
+    }, [navigation]);
+
+
     const handleEditCategory = (category_id) => {
         setEditCategory(true);
         setCategoryId(category_id);
         getCategory(category_id);
+        setAddCategory(false);
+    }
+
+    const handleAddCategory = () => {
+        setAddCategory(true);
+        setEditCategory(false);
+        setCategoryName("")
+        setVisible(true);
+    }
+
+    const addNewCategory = () => {
+        if (categoryName.trim() != "") {
+            DB.transaction(tx => {
+                tx.executeSql(        
+                    'INSERT INTO categories VALUES (?)',
+                    [categoryName],
+                    (tx, results) => {               
+                      if (results.rowsAffected > 0 ) {
+                        Alert.alert(
+                            'Success',
+                            'Category successfully updated',
+                            [
+                                {
+                                    text: 'Ok',
+                                    onPress: () => getCategories(),
+                                },
+                            ],
+                            { cancelable: false}
+                        );        
+                      } else {
+                        console.log('Insert failed');
+                      }
+                    }
+                );
+            });
+        } else {
+            Alert.alert("Error","Category Name cannot be empty");
+        }
     }
 
     const getCategory = (category_id) => {
@@ -89,7 +141,7 @@ const Category = () => {
             </ScrollView>
             <Dialog
                 visible={visible}
-                dialogTitle={<DialogTitle title="Update Category" />}
+                dialogTitle={<DialogTitle title={addCategory ? "Add Category" : "Update Category"} />}
                 dialogAnimation={new SlideAnimation({
                     slideFrom: 'bottom',
                 })}
@@ -102,10 +154,16 @@ const Category = () => {
                         text="CANCEL"
                         onPress={() => setVisible(false)}
                       />
-                      <DialogButton
-                        text="OK"
-                        onPress={() => handleUpdateCategory()}
-                      />
+                      {
+                          addCategory ? (<DialogButton
+                            text="OK"
+                            onPress={() => addNewCategory()}
+                          />) : (<DialogButton
+                            text="OK"
+                            onPress={() => handleUpdateCategory()}
+                          />)
+                      }
+                      
                     </DialogFooter>
                 }
             >
@@ -113,7 +171,7 @@ const Category = () => {
                     <View>
                         <FormView 
                             label="Category" 
-                            inputType={<Mytextinput placeholder="Category Name" defaultValue={categoryName} onChangeText={categoryName => setCategoryName(categoryName)}/>}
+                            inputType={<Mytextinput placeholder="Enter Category Name" defaultValue={categoryName} onChangeText={categoryName => setCategoryName(categoryName)}/>}
                         />
                     </View>
                 </DialogContent>
