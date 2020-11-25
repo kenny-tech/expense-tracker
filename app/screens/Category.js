@@ -1,18 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Text} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
+import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 
-import FormView from '../components/FormView';
+import Mytextinput from '../components/Mytextinput';
 import FormPanel from '../components/FormPanel';
-import Myselectinput from '../components/Myselectinput';
+import FormView from '../components/FormView';
 import { DB } from '../model/db';
 
 const Category = () => {
 
     const [categories, setCategories] = useState([]);
+    const [editCategory, setEditCategory] = useState('false');
+    const [visible, setVisible] = useState(false);
+    const [categoryId, setCategoryId] = useState('');
+    const [categoryName, setCategoryName] = useState('');
 
     useEffect(() => {
         getCategories();
     }, []);    
+
+    const handleEditCategory = (category_id) => {
+        setEditCategory(true);
+        setCategoryId(category_id);
+        getCategory(category_id);
+    }
+
+    const getCategory = (category_id) => {
+        DB.transaction(tx => {
+            tx.executeSql('SELECT rowid, name FROM categories WHERE rowid = ?', [category_id], (tx, results) => {
+                let len = results.rows.length;
+                if (len > 0) {
+                    setCategoryName(results.rows.item(0).name);
+                    setVisible(true);
+                } else {
+                    Alert.alert('Error:','Category ID not found');
+                }
+            })
+        });
+    }
 
     const getCategories = () => {
         DB.transaction(tx => {
@@ -36,10 +61,43 @@ const Category = () => {
                 >
                     <FormPanel 
                         types={categories}
+                        customPress={(category_id) => handleEditCategory(category_id)}
                     />
                 </KeyboardAvoidingView>
             </ScrollView>
+            <Dialog
+                visible={visible}
+                dialogTitle={<DialogTitle title="Update Category" />}
+                dialogAnimation={new SlideAnimation({
+                    slideFrom: 'bottom',
+                })}
+                onTouchOutside={() => {
+                    setVisible(false)
+                }}
+                footer={
+                    <DialogFooter>
+                      <DialogButton
+                        text="CANCEL"
+                        onPress={() => setVisible(false)}
+                      />
+                      <DialogButton
+                        text="OK"
+                        onPress={() => handleUpdateCategory()}
+                      />
+                    </DialogFooter>
+                }
+            >
+                <DialogContent>
+                    <View>
+                        <FormView 
+                            label="Category" 
+                            inputType={<Mytextinput placeholder="Category Name" defaultValue={categoryName} onChangeText={categoryName => setCategoryName(categoryName)}/>}
+                        />
+                    </View>
+                </DialogContent>
+            </Dialog>
         </View>
+
     )
 }
 

@@ -3,7 +3,6 @@ import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
-import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
 import Mybutton from '../components/Mybutton';
