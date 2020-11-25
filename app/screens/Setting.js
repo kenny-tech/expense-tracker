@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Text} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity} from 'react-native';
 
 import FormView from '../components/FormView';
 import FormViewLink from '../components/FormViewLink';
 import Myselectinput from '../components/Myselectinput';
 import { DB } from '../model/db';
 
-const Setting = () => {
+const Setting = ({ navigation }) => {
 
     const [currency, setCurrency] = useState('');
     const [currencies, setCurrencies] = useState([]);
@@ -56,10 +56,12 @@ const Setting = () => {
                         defaultValue={currency}
                         onValueChange={(currency) => setCurrency(currency)}/>}
                     />
-                    <FormViewLink 
-                        label="Category" 
-                        inputType={<Text style={{marginLeft: 10}}>Add/Edit Category           </Text>}
-                    />
+                    <TouchableOpacity onPress={() => navigation.navigate('Category')}>
+                        <FormViewLink 
+                            label="Category" 
+                            inputType={<Text style={{marginLeft: 10}}>Add/Edit Category           </Text>}
+                        />
+                    </TouchableOpacity>
                     <FormViewLink 
                         label="Payment Mode" 
                         inputType={<Text style={{marginLeft: 10}}>Add/Edit payment mode</Text>}
