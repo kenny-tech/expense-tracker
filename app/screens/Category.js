@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Alert} from 'react-native';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
+import { useIsFocused } from '@react-navigation/native';
 
 import Mytextinput from '../components/Mytextinput';
 import FormPanel from '../components/FormPanel';
@@ -15,9 +16,14 @@ const Category = () => {
     const [categoryId, setCategoryId] = useState('');
     const [categoryName, setCategoryName] = useState('');
 
-    useEffect(() => {
+     // check if screen is focused
+     const isFocused = useIsFocused('');
+
+     // listen for isFocused, if useFocused changes 
+     // call the function that you use to mount the component.
+     useEffect(() => {
         getCategories();
-    }, []);    
+     },[isFocused]);
 
     const handleEditCategory = (category_id) => {
         setEditCategory(true);
@@ -43,13 +49,34 @@ const Category = () => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM categories', [], (tx, results) => {
                 let allCategories = [];
-                console.log('Categories from income screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allCategories.push(results.rows.item(i));
                 }
                 setCategories(allCategories);
             })
         });
+    }
+
+    const handleUpdateCategory = () => {
+        DB.transaction(tx => {
+            tx.executeSql('UPDATE categories SET name=? WHERE rowid=?', [categoryName, categoryId], (tx, results) => {
+                if(results.rowsAffected > 0) {
+                    Alert.alert(
+                        'Success',
+                        'Category successfully updated',
+                        [
+                            {
+                                text: 'Ok',
+                                onPress: () => setVisible(false),
+                            },
+                        ],
+                        { cancelable: false}
+                    );
+                } else {
+                    Alert.alert('Error', 'Failed to update category. Please try again')
+                }
+            })
+        })
     }
 
     return (
