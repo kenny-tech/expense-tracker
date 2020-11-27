@@ -136,14 +136,14 @@ const TransactionText = () => {
                                         <Icon name="angle-right" size={40} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
                                     </View> */}
                                     <View style={styles.formViewTransaction}>
-                                        <View style={{margin: 5}}>
+                                        <View style={{width: '50%'}}>
                                             {
                                                 item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
                                             }
                                             <Text style={{fontStyle: 'italic', marginLeft: 8}}>{convertDate(item.date)}</Text>
                                         </View>
-                                        <View style={{marginLeft: 130}}>
-                                            <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 120}} /> 
+                                        <View style={{width: '50%'}}>
+                                            <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 160}} /> 
                                         </View>
                                     </View>
                                 </TouchableOpacity>
