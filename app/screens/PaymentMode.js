@@ -48,16 +48,16 @@ const PaymentMode = ({ navigation }) => {
     }
 
     const addNewPaymentMode = () => {
-        if (PaymentModeName.trim() != "") {
+        if (paymentModeName.trim() != "") {
             DB.transaction(tx => {
                 tx.executeSql(        
                     'INSERT INTO modes VALUES (?)',
-                    [PaymentModeName],
+                    [paymentModeName],
                     (tx, results) => {               
                       if (results.rowsAffected > 0 ) {
                         Alert.alert(
                             'Success',
-                            'Payment Mode successfully updated',
+                            'Payment Mode successfully added',
                             [
                                 {
                                     text: 'Ok',
