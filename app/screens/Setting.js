@@ -62,10 +62,12 @@ const Setting = ({ navigation }) => {
                             inputType={<Text style={{marginLeft: 10}}>Add/Edit Category           </Text>}
                         />
                     </TouchableOpacity>
-                    <FormViewLink 
-                        label="Payment Mode" 
-                        inputType={<Text style={{marginLeft: 10}}>Add/Edit payment mode</Text>}
-                    />
+                    <TouchableOpacity onPress={() => navigation.navigate('PaymentMode')}>
+                        <FormViewLink 
+                            label="Payment Mode" 
+                            inputType={<Text style={{marginLeft: 10}}>Add/Edit payment mode</Text>}
+                        />  
+                    </TouchableOpacity>
                 </KeyboardAvoidingView>
             </ScrollView>
         </View>
