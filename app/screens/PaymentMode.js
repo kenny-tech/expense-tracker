@@ -106,7 +106,7 @@ const PaymentMode = ({ navigation }) => {
 
     const handleUpdatePaymentMode = () => {
         DB.transaction(tx => {
-            tx.executeSql('UPDATE modes SET name=? WHERE rowid=?', [PaymentModeName, PaymentModeId], (tx, results) => {
+            tx.executeSql('UPDATE modes SET name=? WHERE rowid=?', [paymentModeName, paymentModeId], (tx, results) => {
                 if(results.rowsAffected > 0) {
                     Alert.alert(
                         'Success',
