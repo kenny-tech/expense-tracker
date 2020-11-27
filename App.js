@@ -11,6 +11,7 @@ import EditTransactionScreen from './app/screens/EditTransaction';
 import ReportScreen from './app/screens/Report';
 import SettingScreen from './app/screens/Setting';
 import CategoryScreen from './app/screens/Category';
+import PaymentModeScreen from './app/screens/PaymentMode';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,7 @@ const App = () => {
         <Stack.Screen options={{ title: "View/Edit Transaction" }} name="EditTransaction" component={EditTransactionScreen}/>
         <Stack.Screen options={{ title: "Settings" }} name="Settings" component={SettingScreen}/>
         <Stack.Screen options={{ title: "Manage Category" }} name="Category" component={CategoryScreen}/>
+        <Stack.Screen options={{ title: "Manage Payment Mode" }} name="PaymentMode" component={PaymentModeScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
