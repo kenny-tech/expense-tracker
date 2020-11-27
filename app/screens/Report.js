@@ -282,7 +282,7 @@ const Report = () => {
                     </View>
                 ) : null
             }
-            <PieChart income={totalIncome} expense={totalExpense}/>
+            <PieChart income={totalIncome} expense={totalExpense} month={filterBy}/>
             <ChartDescription/>
             <FormViewReport
                 label="Report Summary" 
