@@ -8,7 +8,6 @@ import styles from '../styles/style';
 import { DB } from '../model/db';
 import TransactionMonth from '../components/TransactionMonth';
 import NoTransaction from '../components/NoTransaction';
-import FormViewLink from '../components/FormViewLink';
 
 const TransactionText = () => {
 
@@ -124,17 +123,6 @@ const TransactionText = () => {
                         renderItem={({ item }) => (
                             <View>
                                 <TouchableOpacity onPress={() => editTransaction(item.rowid)}>
-                                    {/* <View style={{flexDirection: 'row'}}>
-                                        <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
-                                        <View style={styles.transactionViewText}>
-                                            {
-                                                item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{currency+numberWithCommas(item.amount)}</Text>)
-                                            }
-                                            <Text style={{fontStyle: 'italic'}}>{convertDate(item.date)}</Text> */}
-                                            {/* <Text style={{fontStyle: 'italic'}}>{item.rowid}</Text> */}
-                                        {/* </View>  
-                                        <Icon name="angle-right" size={40} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
-                                    </View> */}
                                     <View style={styles.formViewTransaction}>
                                         <View style={{width: '50%'}}>
                                             {

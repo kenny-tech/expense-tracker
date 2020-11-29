@@ -61,9 +61,9 @@ const Transactions = ({ navigation }) => {
     }
 
     const handleFilterBy = (filter_by) => { 
-        if(filter_by == 'Date Range') {
+        if(filter_by === 'Date Range') {
             setShowDateRange(true);
-            // filter_by = `${dateFrom} - ${dateTo}`;
+            setFilterBy(filter_by);
         } else {
             setShowDateRange(false);
         }

@@ -82,7 +82,7 @@ const EditTransaction = ({ route, navigation }) => {
     const getTransaction = (transaction_id) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, type, amount, category, date, mode FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
-                console.log(results.rows.item(0).type);
+                console.log('type: ',results.rows.item(0).type);
 
                 setType(results.rows.item(0).type);
                 setAmount(results.rows.item(0).amount);

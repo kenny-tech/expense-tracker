@@ -6,7 +6,6 @@ import FormViewReport from '../components/FormViewReport';
 import Myselectinput from '../components/Myselectinput';
 import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
-import Transaction from '../components/Transaction';
 import DateRange from '../components/DateRange';
 import DateRangeButton from '../components/DateRangeButton';
 
@@ -96,7 +95,7 @@ const Report = () => {
             });
         } else if(filter_by === 'Date Range') {
             DB.transaction(tx => {
-                tx.executeSql(`SELECT amount FROM transactions WHERE date(date) BETWEEN ? AND ? AND type = ?`, ['2020-10-01', '2020-10-22', 'Income'], (tx, results) => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE date(date) BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Income'], (tx, results) => {
                     let incomes = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         incomes.push(results.rows.item(i));
@@ -283,7 +282,9 @@ const Report = () => {
                 ) : null
             }
             <PieChart income={totalIncome} expense={totalExpense} month={filterBy}/>
-            <ChartDescription/>
+            {
+                totalIncome !== 0 || totalExpense !== 0 ? <ChartDescription/> : null
+            }
             <FormViewReport
                 label="Report Summary" 
                 inputType={
