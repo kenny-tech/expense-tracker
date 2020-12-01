@@ -63,7 +63,6 @@ const Transactions = ({ navigation }) => {
     const handleFilterBy = (filter_by) => { 
         if(filter_by === 'Date Range') {
             setShowDateRange(true);
-            setFilterBy(filter_by);
         } else {
             setShowDateRange(false);
         }
@@ -77,6 +76,7 @@ const Transactions = ({ navigation }) => {
         } 
         setVisible(false);
         setFilter(true);
+        setShowDateRange(false);
     }
 
     return (

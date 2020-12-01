@@ -60,7 +60,7 @@ const TransactionFilter = ({ filterBy }) => {
             // console.log('DATE TO:', dateTo);
 
             DB.transaction(tx => {
-                tx.executeSql(`SELECT * FROM transactions WHERE WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, [dateFrom, dateTo], (tx, results) => {
+                tx.executeSql(`SELECT * FROM transactions WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, [dateFrom, dateTo], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
