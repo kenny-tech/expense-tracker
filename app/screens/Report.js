@@ -6,7 +6,6 @@ import FormViewReport from '../components/FormViewReport';
 import Myselectinput from '../components/Myselectinput';
 import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
-import Transaction from '../components/Transaction';
 import DateRange from '../components/DateRange';
 import DateRangeButton from '../components/DateRangeButton';
 
@@ -96,7 +95,7 @@ const Report = () => {
             });
         } else if(filter_by === 'Date Range') {
             DB.transaction(tx => {
-                tx.executeSql(`SELECT amount FROM transactions WHERE date(date) BETWEEN ? AND ? AND type = ?`, ['2020-10-01', '2020-10-22', 'Income'], (tx, results) => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE type = ? AND date BETWEEN ? AND ?`, ['Income', dateFrom, dateTo], (tx, results) => {
                     let incomes = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         incomes.push(results.rows.item(i));
@@ -105,9 +104,11 @@ const Report = () => {
                     let total_income = 0;
                     incomes.map(income => {
                         total_income = total_income + parseInt(income.amount);
-                    })
-                 
+                    })                 
                     setTotalIncome(total_income);
+
+                    console.log('Total income 333 : ', totalIncome)
+
                 })
             });
         }
@@ -155,19 +156,20 @@ const Report = () => {
                 })
             });
         }else if(filter_by === 'Date Range') {
+
             DB.transaction(tx => {
-                tx.executeSql(`SELECT amount FROM transactions WHERE date BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Expense'], (tx, results) => {
-                    let incomes = [];
+                tx.executeSql(`SELECT amount FROM transactions WHERE type = ? AND date BETWEEN ? AND ?`, ['Expense', dateFrom, dateTo], (tx, results) => {
+                    let expenses = [];
                     for (let i = 0; i < results.rows.length; ++i) {
-                        incomes.push(results.rows.item(i));
+                        expenses.push(results.rows.item(i));
                     }
     
-                    let total_income = 0;
-                    incomes.map(income => {
-                        total_income = total_income + parseInt(income.amount);
+                    let total_expense = 0;
+                    expenses.map(expense => {
+                        total_expense = total_expense + parseInt(expense.amount);
                     })
                  
-                    setTotalIncome(total_income);
+                    setTotalExpense(total_expense);
                 })
             });
         }
@@ -283,7 +285,9 @@ const Report = () => {
                 ) : null
             }
             <PieChart income={totalIncome} expense={totalExpense} month={filterBy}/>
-            <ChartDescription/>
+            {
+                totalIncome !== 0 || totalExpense !== 0 ? <ChartDescription/> : null
+            }
             <FormViewReport
                 label="Report Summary" 
                 inputType={

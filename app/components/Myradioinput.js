@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import RadioForm from 'react-native-simple-radio-button';
 
-const Myradioinput = ({ label1,label2,value1,value2,onChangeType }) => {
+const Myradioinput = ({ label1,label2,value1,value2,onChangeType,initial }) => {
 
     let radio_props = [
         {label: label1, value: value1 },
@@ -17,6 +17,7 @@ const Myradioinput = ({ label1,label2,value1,value2,onChangeType }) => {
                 formHorizontal={true}
                 onPress={onChangeType}
                 style={{marginHorizontal: 10}}
+                initial={initial}
             />
         </View>
     );
