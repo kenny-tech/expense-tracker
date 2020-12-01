@@ -91,10 +91,9 @@ const TransactionText = () => {
     const editTransaction = (transaction_id) => {
         setEditing(true);
         setTransactionId(transaction_id);
-        // console.log(transaction_id);
         navigation.navigate('EditTransaction', {
             transaction_id: transaction_id,
-          });
+        });
     }
 
     const getSetting = () => {

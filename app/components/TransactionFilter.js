@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 import styles from '../styles/style';
 import { DB } from '../model/db';
@@ -11,12 +13,20 @@ const TransactionFilter = ({ filterBy }) => {
     
     const [transactions, setTransactions] = useState([]);
     const [currency, setCurrency] = useState('');
+    const [editing, setEditing] = useState(false);
+    const [transactionId, setTransactionId] = useState('');
+    // check if screen is focused
+    const isFocused = useIsFocused('');
+        
+    const navigation = useNavigation();
 
+    useEffect(() => {
+        getSetting();
+    },[]);
 
     useEffect(() => {
         getTransactions();
-        getSetting();
-    },[filterBy]);
+    },[isFocused]);
 
     const convertDate = (date_str) => {
         let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -29,7 +39,7 @@ const TransactionFilter = ({ filterBy }) => {
             let month = new Date().getMonth()+1;     
             let monthNumber = getMonthNumber(month);
             DB.transaction(tx => {
-                tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
+                tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -42,7 +52,7 @@ const TransactionFilter = ({ filterBy }) => {
             let month = new Date().getMonth();     
             let monthNumber = getMonthNumber(month);
             DB.transaction(tx => {
-                tx.executeSql(`SELECT * FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
+                tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -56,11 +66,8 @@ const TransactionFilter = ({ filterBy }) => {
             let dateFrom = filter_type[0];
             let dateTo = filter_type[1];
 
-            // console.log('DATE FROM:', dateFrom);
-            // console.log('DATE TO:', dateTo);
-
             DB.transaction(tx => {
-                tx.executeSql(`SELECT * FROM transactions WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, [dateFrom, dateTo], (tx, results) => {
+                tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, [dateFrom, dateTo], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -134,6 +141,14 @@ const TransactionFilter = ({ filterBy }) => {
         });
     }
 
+    const editTransaction = (transaction_id) => {
+        setEditing(true);
+        setTransactionId(transaction_id);
+        navigation.navigate('EditTransaction', {
+            transaction_id: transaction_id,
+        });
+    }
+
     return (
         <View> 
             <TransactionMonth monthName={filterBy}/>
@@ -144,31 +159,19 @@ const TransactionFilter = ({ filterBy }) => {
 
                             data={transactions}
                             renderItem={({ item }) => (
-                                // <View>
-                                //     <View style={{flexDirection: 'row'}}>
-                                //         <Icon name="money" size={30} color="#4b81bf" style={{marginTop: 20, marginHorizontal: 20}} />
-                                //         <View style={styles.transactionViewText}>
-                                //             {
-                                //                 item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18}}>{numberWithCommas(item.amount)}</Text>)
-                                //             }
-                                //             <Text style={{fontStyle: 'italic'}}>{convertDate(item.date)}</Text>
-                                //         </View>  
-                                //         <Icon name="angle-right" size={30} color="#4b81bf" style={{marginTop: 20, marginLeft: 200}} /> 
-                                //     </View>
-                                //     <View style={{borderBottomWidth: 1, marginHorizontal: 20, width: 350, padding: 5, borderColor: '#d3d3d3'}}/>
-                                // </View>
-
-                                <View style={styles.formViewTransaction}>
-                                    <View style={{width: '50%'}}>
-                                        {
-                                            item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
-                                        }
-                                        <Text style={{fontStyle: 'italic', marginLeft: 8}}>{convertDate(item.date)}</Text>
+                                <TouchableOpacity onPress={() => editTransaction(item.rowid)}>
+                                    <View style={styles.formViewTransaction}>
+                                        <View style={{width: '50%'}}>
+                                            {
+                                                item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
+                                            }
+                                            <Text style={{fontStyle: 'italic', marginLeft: 8}}>{convertDate(item.date)}</Text>
+                                        </View>
+                                        <View style={{width: '50%'}}>
+                                            <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 160}} /> 
+                                        </View>
                                     </View>
-                                    <View style={{width: '50%'}}>
-                                        <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 160}} /> 
-                                    </View>
-                                </View>
+                                </TouchableOpacity>
                             )}
                             keyExtractor={item => item.rowid}
                         />) : (<View>

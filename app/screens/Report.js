@@ -156,8 +156,6 @@ const Report = () => {
                 })
             });
         }else if(filter_by === 'Date Range') {
-            console.log('Date from in report screen: ',dateFrom);
-            console.log('Date to in report screen: ',dateTo);
 
             DB.transaction(tx => {
                 tx.executeSql(`SELECT amount FROM transactions WHERE type = ? AND date BETWEEN ? AND ?`, ['Expense', dateFrom, dateTo], (tx, results) => {
