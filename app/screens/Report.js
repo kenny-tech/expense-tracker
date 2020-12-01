@@ -95,7 +95,7 @@ const Report = () => {
             });
         } else if(filter_by === 'Date Range') {
             DB.transaction(tx => {
-                tx.executeSql(`SELECT amount FROM transactions WHERE date(date) BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Income'], (tx, results) => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE type = ? AND date BETWEEN ? AND ?`, ['Income', dateFrom, dateTo], (tx, results) => {
                     let incomes = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         incomes.push(results.rows.item(i));
@@ -104,9 +104,11 @@ const Report = () => {
                     let total_income = 0;
                     incomes.map(income => {
                         total_income = total_income + parseInt(income.amount);
-                    })
-                 
+                    })                 
                     setTotalIncome(total_income);
+
+                    console.log('Total income 333 : ', totalIncome)
+
                 })
             });
         }
@@ -154,19 +156,22 @@ const Report = () => {
                 })
             });
         }else if(filter_by === 'Date Range') {
+            console.log('Date from in report screen: ',dateFrom);
+            console.log('Date to in report screen: ',dateTo);
+
             DB.transaction(tx => {
-                tx.executeSql(`SELECT amount FROM transactions WHERE date BETWEEN ? AND ? AND type = ?`, [dateFrom, dateTo, 'Expense'], (tx, results) => {
-                    let incomes = [];
+                tx.executeSql(`SELECT amount FROM transactions WHERE type = ? AND date BETWEEN ? AND ?`, ['Expense', dateFrom, dateTo], (tx, results) => {
+                    let expenses = [];
                     for (let i = 0; i < results.rows.length; ++i) {
-                        incomes.push(results.rows.item(i));
+                        expenses.push(results.rows.item(i));
                     }
     
-                    let total_income = 0;
-                    incomes.map(income => {
-                        total_income = total_income + parseInt(income.amount);
+                    let total_expense = 0;
+                    expenses.map(expense => {
+                        total_expense = total_expense + parseInt(expense.amount);
                     })
                  
-                    setTotalIncome(total_income);
+                    setTotalExpense(total_expense);
                 })
             });
         }

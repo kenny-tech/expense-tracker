@@ -70,7 +70,7 @@ const Transactions = ({ navigation }) => {
     }
 
     const handleFilterTransaction = () => {
-        if(filterBy == 'Date Range') {
+        if(filterBy === 'Date Range') {
             let filter_by = `${dateFrom} - ${dateTo}`;
             setFilterBy(filter_by);
         } 
