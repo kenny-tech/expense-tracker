@@ -1,26 +1,124 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Text,FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
+import { useIsFocused } from '@react-navigation/native';
 
-import TransactionText from '../components/TransactionText';
-import TransactionFilter from '../components/TransactionFilter';
 import styles from '../styles/style';
 import FormView from '../components/FormView';
-import Myselectinput from '../components/Myselectinput';
+import FilterSelect from '../components/Myselectinput';
 import { DB } from '../model/db';
 import DateRange from '../components/DateRange';
+import NoTransaction from '../components/NoTransaction';
+import TransactionMonth from '../components/TransactionMonth';
 
 const Transactions = ({ navigation }) => {
 
     const [visible, setVisible] = useState(false);
     const [filterTypes, setFilterTypes] = useState([]);
-    const [filterBy, setFilterBy] = useState('This Month');
+    const [filterBy, setFilterBy] = useState('All Transactions');
     const [showDateRange, setShowDateRange] = useState(false);
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [maxDate, setMaxDate] = useState('');
     const [filter, setFilter] = useState(false);
+
+     // check if screen is focused
+     const isFocused = useIsFocused('');
+     
+     const [transactions, setTransactions] = useState([]);
+     const [monthName, setMonthName] = useState('All');
+     const [editing, setEditing] = useState(false);
+     const [transactionId, setTransactionId] = useState('');
+     const [currency, setCurrency] = useState('');
+ 
+     // listen for isFocused, if useFocused changes 
+     // call the function that you use to mount the component.
+     useEffect(() => {
+         getTransactions();
+     },[isFocused]);
+ 
+     useEffect(() => {
+         getSetting();
+     }, []);    
+ 
+     let month = new Date().getMonth()+1;     
+     let monthNumber
+     
+     if(month == 1) {
+         monthNumber = '01';
+     }
+     if(month == 2) {
+         monthNumber = '02';
+     }
+     if(month == 3) {
+         monthNumber = '03';
+     }
+     if(month == 4) {
+         monthNumber = '04';
+     }
+     if(month == 5) {
+         monthNumber = '05';
+     }
+     if(month == 6) {
+         monthNumber = '06';
+     }
+     if(month == 7) {
+         monthNumber = '07';
+     }
+     if(month == 8) {
+         monthNumber = '08';
+     }
+     if(month == 9) {
+         monthNumber = '09';
+     }
+ 
+     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+ 
+     const convertDate = (date_str) => {
+         let temp_date = date_str.split("-");
+         return temp_date[2] + " " + months[Number(temp_date[1]) - 1] + " " + temp_date[0];
+     }
+ 
+     const getTransactions = () => {
+         DB.transaction(tx => {
+             // tx.executeSql(`SELECT rowid, type, amount, category, date FROM transactions WHERE strftime('%m', date) = ?`, [monthNumber], (tx, results) => {
+             tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions ORDER BY rowid DESC`, [], (tx, results) => {
+                 let temp = [];
+                 for (let i = 0; i < results.rows.length; ++i) {
+                     temp.push(results.rows.item(i));
+                 }
+                 console.log('Transactions111: ',temp);
+                 setTransactions(temp);
+             })
+         });
+     }
+ 
+     const numberWithCommas = (x) => {
+         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+     }
+ 
+     const editTransaction = (transaction_id) => {
+         setEditing(true);
+         setTransactionId(transaction_id);
+         navigation.navigate('EditTransaction', {
+             transaction_id: transaction_id,
+         });
+     }
+ 
+     const getSetting = () => {
+         DB.transaction(tx => {
+             tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
+                 let len = results.rows.length;
+                 // console.log('length_currency: ', results.rows.item(0).currency);
+                 if (len > 0) {
+                     setCurrency(results.rows.item(0).currency);
+                 } else {
+                     Alert.alert('Error:','No currency found');
+                 }
+             })
+         });
+     } 
 
     useEffect(() => {
         navigation.setOptions({
@@ -61,29 +159,143 @@ const Transactions = ({ navigation }) => {
     }
 
     const handleFilterBy = (filter_by) => { 
+        setFilterBy(filter_by);
         if(filter_by === 'Date Range') {
             setShowDateRange(true);
         } else {
             setShowDateRange(false);
         }
-        setFilterBy(filter_by);
     }
 
     const handleFilterTransaction = () => {
         if(filterBy === 'Date Range') {
             let filter_by = `${dateFrom} - ${dateTo}`;
             setFilterBy(filter_by);
-        } 
-        setVisible(false);
+        }
+
+        filterTransactions();
         setFilter(true);
         setShowDateRange(false);
     }
 
+    const filterTransactions = () => {
+        setFilter(false);
+        setVisible(false);
+        if(filterBy === 'This Month') {
+            let month = new Date().getMonth()+1;     
+            let monthNumber = getMonthNumber(month);
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log('Transactions: ',temp);
+                    setTransactions(temp);
+                })
+            });
+        } else if(filterBy === 'Last Month') {
+            let month = new Date().getMonth();     
+            let monthNumber = getMonthNumber(month);
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE strftime('%m', date) = ? ORDER BY rowid DESC`, [monthNumber], (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log('Transactions: ',temp);
+                    setTransactions(temp);
+                })
+            });
+        } else {
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, [dateFrom, dateTo], (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    console.log('Transactions for date range: ',temp);
+                    setTransactions(temp);
+                })
+            });
+        }
+    }
+
+    const getMonthNumber = (month) => {
+        
+        let monthNumber;
+
+        if(month == 1) {
+            monthNumber = '01';
+        }
+        if(month == 2) {
+            monthNumber = '02';
+        }
+        if(month == 3) {
+            monthNumber = '03';
+        }
+        if(month == 4) {
+            monthNumber = '04';
+        }
+        if(month == 5) {
+            monthNumber = '05';
+        }
+        if(month == 6) {
+            monthNumber = '06';
+        }
+        if(month == 7) {
+            monthNumber = '07';
+        }
+        if(month == 8) {
+            monthNumber = '08';
+        }
+        if(month == 9) {
+            monthNumber = '09';
+        }
+        if(month == 10) {
+            monthNumber = '10';
+        }
+        if(month == 11) {
+            monthNumber = '11';
+        }
+        if(month == 12) {
+            monthNumber = '12';
+        }
+
+        return monthNumber;
+    }
+
     return (
         <View>
-            {
-                filter? (<TransactionFilter filterBy={filterBy}/>) : (<TransactionText/>)
-            }
+            <View>
+                <TransactionMonth monthName={filterBy}/>
+                {
+                    transactions.length != 0 ? (<FlatList
+                        data={transactions}
+                        renderItem={({ item }) => (
+                            <View>
+                                <TouchableOpacity onPress={() => editTransaction(item.rowid)}>
+                                    <View style={styles.formViewTransaction}>
+                                        <View style={{width: '50%'}}>
+                                            {
+                                                item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
+                                            }
+                                            <Text style={{fontStyle: 'italic', marginLeft: 8}}>{convertDate(item.date)}</Text>
+                                        </View>
+                                        <View style={{width: '50%'}}>
+                                            <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 160}} /> 
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                        keyExtractor={item => item.rowid}
+                    />) : (<View style={{marginTop: 50}}>
+                                <NoTransaction/>
+                                <Text style={{textAlign: 'center', fontSize: 16}}>Please add a transaction</Text>
+                            </View>)
+                }
+            </View>    
             <Dialog
                 visible={visible}
                 dialogTitle={<DialogTitle title="Filter Transaction" />}
@@ -110,7 +322,7 @@ const Transactions = ({ navigation }) => {
                     <View>
                         <FormView 
                             label="Filter by"
-                            inputType={<Myselectinput types={filterTypes} 
+                            inputType={<FilterSelect types={filterTypes} 
                             defaultValue={filterBy}
                             onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
                         />

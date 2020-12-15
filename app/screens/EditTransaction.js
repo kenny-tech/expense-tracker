@@ -20,6 +20,7 @@ const EditTransaction = ({ route, navigation }) => {
     const [mode, setMode] = useState('');
     const [note, setNote] = useState('');
     const [transactionId, setTransactionId] = useState('');
+    const [initial, setInitial] = useState('');
 
     const [categories, setCategories] = useState([]);
     const [modes, setModes] = useState([]);
@@ -81,8 +82,8 @@ const EditTransaction = ({ route, navigation }) => {
 
     const getTransaction = (transaction_id) => {
         DB.transaction(tx => {
-            tx.executeSql('SELECT rowid, type, amount, category, date, mode FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
-                console.log('type: ',results.rows.item(0).type);
+            tx.executeSql('SELECT rowid, type, amount, category, date, mode, note FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
+                console.log('type: ',results.rows.item(0));
 
                 setType(results.rows.item(0).type);
                 setAmount(results.rows.item(0).amount);
@@ -90,6 +91,14 @@ const EditTransaction = ({ route, navigation }) => {
                 setDate(results.rows.item(0).date);
                 setMode(results.rows.item(0).mode);
                 setNote(results.rows.item(0).note);
+
+                // console.log('type: ',results.rows.item(0).type);
+
+                if(results.rows.item(0).type === 'Income') {
+                    setInitial(0);
+                } else {
+                    setInitial(1)
+                }
 
                 setTransactionId(transId)
             })
@@ -173,7 +182,7 @@ const EditTransaction = ({ route, navigation }) => {
                 >
                     <FormView 
                         label="Type" 
-                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense"  value2="Expense" defaultValue={type} onChangeType={type => setType(type)}/>}
+                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense"  value2="Expense" defaultValue={type} onChangeType={type => setType(type)} initial={initial} />}
                     />
                     <FormView 
                         label="Amount" 
