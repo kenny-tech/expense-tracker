@@ -193,8 +193,8 @@ const Home = ({ navigation }) => {
                     console.log('Filter Types: ',filterTypes);
                 } else {
                     tx.executeSql(        
-                        'INSERT INTO filtertypes VALUES (?),(?),(?)',
-                        ['This Month','Last Month', 'Date Range'],
+                        'INSERT INTO filtertypes VALUES (?),(?),(?),(?)',
+                        ['All', 'This Month', 'Last Month', 'Date Range'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
                             console.log('Insert success');              
