@@ -16,12 +16,13 @@ const Transactions = ({ navigation }) => {
 
     const [visible, setVisible] = useState(false);
     const [filterTypes, setFilterTypes] = useState([]);
-    const [filterBy, setFilterBy] = useState('All Transactions');
+    const [filterBy, setFilterBy] = useState('All');
     const [showDateRange, setShowDateRange] = useState(false);
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [maxDate, setMaxDate] = useState('');
     const [filter, setFilter] = useState(false);
+    const [filterType, setFilterType] = useState('All')
 
      // check if screen is focused
      const isFocused = useIsFocused('');
@@ -88,7 +89,6 @@ const Transactions = ({ navigation }) => {
                  for (let i = 0; i < results.rows.length; ++i) {
                      temp.push(results.rows.item(i));
                  }
-                 console.log('Transactions111: ',temp);
                  setTransactions(temp);
              })
          });
@@ -170,7 +170,9 @@ const Transactions = ({ navigation }) => {
     const handleFilterTransaction = () => {
         if(filterBy === 'Date Range') {
             let filter_by = `${dateFrom} - ${dateTo}`;
-            setFilterBy(filter_by);
+            setFilterType(filter_by);
+        } else {
+            setFilterType(filterBy);
         }
 
         filterTransactions();
@@ -207,7 +209,9 @@ const Transactions = ({ navigation }) => {
                     setTransactions(temp);
                 })
             });
-        } else {
+        } else if(filterBy === 'All') {
+            getTransactions();
+        }else {
             DB.transaction(tx => {
                 tx.executeSql(`SELECT rowid, type, amount, category, date, mode FROM transactions WHERE date BETWEEN ? AND ? ORDER BY rowid DESC`, [dateFrom, dateTo], (tx, results) => {
                     let temp = [];
@@ -268,7 +272,7 @@ const Transactions = ({ navigation }) => {
     return (
         <View>
             <View>
-                <TransactionMonth monthName={filterBy}/>
+                <TransactionMonth monthName={filterType}/>
                 {
                     transactions.length != 0 ? (<FlatList
                         data={transactions}
