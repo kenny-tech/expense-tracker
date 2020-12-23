@@ -92,13 +92,14 @@ const EditTransaction = ({ route, navigation }) => {
                 setMode(results.rows.item(0).mode);
                 setNote(results.rows.item(0).note);
 
-                // console.log('type: ',results.rows.item(0).type);
+                // results.rows.item(0).type === 'Income' ? setInitial(0) : setInitial(1)
 
                 if(results.rows.item(0).type === 'Income') {
                     setInitial(0);
                 } else {
                     setInitial(1)
                 }
+                console.log('initial here : ', results.rows.item(0).type);
 
                 setTransactionId(transId)
             })

@@ -280,7 +280,10 @@ const Transactions = ({ navigation }) => {
                             <View>
                                 <TouchableOpacity onPress={() => editTransaction(item.rowid)}>
                                     <View style={styles.formViewTransaction}>
-                                        <View style={{width: '50%'}}>
+                                        <View style={{width: '12%'}}>
+                                            <Icon name="money" size={25} color="#4b81bf" style={{marginTop: 5, marginLeft: 15}} />
+                                        </View>
+                                        <View style={{width: '38%'}}>
                                             {
                                                 item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
                                             }
