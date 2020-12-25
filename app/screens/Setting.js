@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity} from 'react-native';
 
-import FormView from '../components/FormView';
 import FormViewLink from '../components/FormViewLink';
 import CurrencySelect from '../components/CurrencySelect';
 import { DB } from '../model/db';
