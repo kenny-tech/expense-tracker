@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity} from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Text, TouchableOpacity, Alert} from 'react-native';
 
 import FormViewLink from '../components/FormViewLink';
 import CurrencySelect from '../components/CurrencySelect';
@@ -957,28 +957,13 @@ const Setting = ({ navigation }) => {
     }]);
 
     useEffect(() => {
-        // getCurrencies();
         getSetting();
     }, []);    
-
-    // const getCurrencies = () => {
-    //     DB.transaction(tx => {
-    //         tx.executeSql('SELECT rowid, name, symbol FROM currency', [], (tx, results) => {
-    //             let currencies = [];
-    //             for (let i = 0; i < results.rows.length; ++i) {
-    //                 currencies.push(results.rows.item(i));
-    //             }
-    //             console.log('Currencies: ',currencies);
-    //             setCurrencies(currencies);
-    //         })
-    //     });
-    // }
 
     const getSetting = () => {
         DB.transaction(tx => {
             tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
                 let len = results.rows.length;
-                // console.log('length_currency: ', results.rows.item(0).currency);
                 if (len > 0) {
                     setCurrency(results.rows.item(0).currency);
                 } else {
@@ -988,6 +973,27 @@ const Setting = ({ navigation }) => {
         });
     }
 
+    const handleUpdateCurrency = () => {
+        DB.transaction(tx => {
+            tx.executeSql('UPDATE settings SET currency=?', [currency], (tx, results) => {
+                if(results.rowsAffected > 0) {
+                    Alert.alert(
+                        'Success',
+                        'Currency successfully updated',
+                        [
+                            {
+                                text: 'Ok',
+                                onPress: () => navigation.navigate('Settings'),
+                            },
+                        ],
+                        { cancelable: false}
+                    );
+                } else {
+                    Alert.alert('Error', 'Failed to update currency. Please try again')
+                }
+            })
+        })
+    }
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -1005,7 +1011,7 @@ const Setting = ({ navigation }) => {
                             />
                         </View>
                         <View style={{marginLeft: 5, marginTop: 10}}>
-                            <TouchableOpacity style={styles.button}>
+                            <TouchableOpacity style={styles.button} onPress={() => handleUpdateCurrency()}>
                                 <Text style={{color: '#ffffff'}}>Update Currency</Text>
                             </TouchableOpacity>
                         </View>
