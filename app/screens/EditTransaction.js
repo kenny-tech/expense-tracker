@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import FormView from '../components/FormView';
 import Mytextinput from '../components/Mytextinput';
-import Myradioinput from '../components/Myradioinput';
 import Mydateinput from '../components/MyDateinput';
 import Myselectinput from '../components/Myselectinput';
 import Mybutton from '../components/Mybutton';
@@ -20,8 +19,6 @@ const EditTransaction = ({ route, navigation }) => {
     const [mode, setMode] = useState('');
     const [note, setNote] = useState('');
     const [transactionId, setTransactionId] = useState('');
-    const [initial, setInitial] = useState('');
-
     const [categories, setCategories] = useState([]);
     const [modes, setModes] = useState([]);
 
@@ -83,7 +80,6 @@ const EditTransaction = ({ route, navigation }) => {
     const getTransaction = (transaction_id) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, type, amount, category, date, mode, note FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
-                console.log('type: ',results.rows.item(0));
 
                 setType(results.rows.item(0).type);
                 setAmount(results.rows.item(0).amount);
@@ -91,16 +87,6 @@ const EditTransaction = ({ route, navigation }) => {
                 setDate(results.rows.item(0).date);
                 setMode(results.rows.item(0).mode);
                 setNote(results.rows.item(0).note);
-
-                // results.rows.item(0).type === 'Income' ? setInitial(0) : setInitial(1)
-
-                if(results.rows.item(0).type === 'Income') {
-                    setInitial(0);
-                } else {
-                    setInitial(1)
-                }
-                console.log('initial here : ', results.rows.item(0).type);
-
                 setTransactionId(transId)
             })
         });
@@ -154,7 +140,6 @@ const EditTransaction = ({ route, navigation }) => {
     const deleteTransaction = (transaction_id) => {
         DB.transaction(tx => {
             tx.executeSql('DELETE FROM transactions WHERE rowid = ?', [transaction_id], (tx, results) => {
-                // console.log('Results : ', results.rowsAffected);
                 if (results.rowsAffected > 0) {
                     Alert.alert(
                         'Success',
@@ -174,6 +159,17 @@ const EditTransaction = ({ route, navigation }) => {
         });
     }
 
+    const transaction_types = [
+        {
+            rowid: 1,
+            name: 'Income'
+        },
+        {
+            rowid: 2,
+            name: 'Expense'
+        }
+    ];
+
     return (
         <View>
             <ScrollView keyboardShouldPersistTaps='handled'>
@@ -182,8 +178,10 @@ const EditTransaction = ({ route, navigation }) => {
                     style={{ flex: 1, justifyContent: 'space-between' }}
                 >
                     <FormView 
-                        label="Type" 
-                        inputType={<Myradioinput label1="Income          " value1="Income" label2="Expense"  value2="Expense" defaultValue={type} onChangeType={type => setType(type)} initial={initial} />}
+                        label="Trasaction Type"
+                        inputType={<Myselectinput types={transaction_types} 
+                        defaultValue={type}
+                        onValueChange={(type) => setType(type)}/>}
                     />
                     <FormView 
                         label="Amount" 
