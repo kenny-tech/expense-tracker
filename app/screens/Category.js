@@ -57,7 +57,7 @@ const Category = ({ navigation }) => {
                       if (results.rowsAffected > 0 ) {
                         Alert.alert(
                             'Success',
-                            'Category successfully updated',
+                            'Category successfully added',
                             [
                                 {
                                     text: 'Ok',

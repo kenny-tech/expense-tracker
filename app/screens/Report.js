@@ -106,9 +106,22 @@ const Report = () => {
                         total_income = total_income + parseInt(income.amount);
                     })                 
                     setTotalIncome(total_income);
+                })
+            });
+        } else if(filter_by === 'All') {
 
-                    console.log('Total income 333 : ', totalIncome)
-
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE type = ?`, ['Income'], (tx, results) => {
+                    let incomes = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        incomes.push(results.rows.item(i));
+                    }
+    
+                    let total_income = 0;
+                    incomes.map(income => {
+                        total_income = total_income + parseInt(income.amount);
+                    })                 
+                    setTotalIncome(total_income);
                 })
             });
         }
@@ -159,6 +172,23 @@ const Report = () => {
 
             DB.transaction(tx => {
                 tx.executeSql(`SELECT amount FROM transactions WHERE type = ? AND date BETWEEN ? AND ?`, ['Expense', dateFrom, dateTo], (tx, results) => {
+                    let expenses = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        expenses.push(results.rows.item(i));
+                    }
+    
+                    let total_expense = 0;
+                    expenses.map(expense => {
+                        total_expense = total_expense + parseInt(expense.amount);
+                    })
+                 
+                    setTotalExpense(total_expense);
+                })
+            });
+        } else if(filter_by === 'All') {
+
+            DB.transaction(tx => {
+                tx.executeSql(`SELECT amount FROM transactions WHERE type = ?`, ['Expense'], (tx, results) => {
                     let expenses = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         expenses.push(results.rows.item(i));

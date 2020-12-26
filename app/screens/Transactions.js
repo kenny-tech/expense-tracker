@@ -299,7 +299,6 @@ const Transactions = ({ navigation }) => {
                         keyExtractor={item => item.rowid}
                     />) : (<View style={{marginTop: 50}}>
                                 <NoTransaction/>
-                                <Text style={{textAlign: 'center', fontSize: 16}}>Please add a transaction</Text>
                             </View>)
                 }
             </View>    
