@@ -5,8 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import HomeLink from '../components/HomeLink';
 import HomeText from '../components/HomeText';
-// import PieChart from '../components/PieChart';
-import PieChartCategory from '../components/PieChartCategory';
+import PieChart from '../components/PieChart';
 import styles from '../styles/style';
 import { DB } from '../model/db';
 
@@ -25,7 +24,6 @@ const Home = ({ navigation }) => {
         getIncomes();
         getExpenses();
         getSetting();
-        getTransactionsByCategories();
     },[isFocused]);
 
     useEffect(() => {
@@ -45,7 +43,6 @@ const Home = ({ navigation }) => {
         createFilterTypes();
         createCurrencies();
         createSetting();
-        getTransactionsByCategories();
     }, []);    
 
     let today = new Date();
@@ -104,7 +101,7 @@ const Home = ({ navigation }) => {
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
             }, function () {
-                // console.log('Successfully created categories table');
+                console.log('Successfully created categories table');
             }
         );
 
@@ -117,14 +114,14 @@ const Home = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         category.push(results.rows.item(i));
                     }
-                    // console.log('Categories: ',category);
+                    console.log('Categories: ',category);
                 } else {
                     tx.executeSql(        
                         'INSERT INTO categories VALUES (?),(?),(?),(?),(?),(?)',
                         ['Business','Clothing','Drinks','Education','Food','Salary'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            // console.log('Insert success');              
+                            console.log('Insert success');              
                           } else {
                             console.log('Insert failed');
                           }
@@ -142,7 +139,7 @@ const Home = ({ navigation }) => {
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
             }, function () {
-                // console.log('Successfully created modes table');
+                console.log('Successfully created modes table');
             }
         );
 
@@ -155,14 +152,14 @@ const Home = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         mode.push(results.rows.item(i));
                     }
-                    // console.log('Modes: ',mode);
+                    console.log('Modes: ',mode);
                 } else {
                     tx.executeSql(        
                         'INSERT INTO modes VALUES (?),(?),(?),(?),(?)',
                         ['Cash','Credit Card','Debit Card','Bank','Cheque'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            // console.log('Insert success');              
+                            console.log('Insert success');              
                           } else {
                             console.log('Insert failed');
                           }
@@ -180,7 +177,7 @@ const Home = ({ navigation }) => {
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
             }, function () {
-                // console.log('Successfully created filtertypes table');
+                console.log('Successfully created filtertypes table');
             }
         );
 
@@ -200,7 +197,7 @@ const Home = ({ navigation }) => {
                         ['All', 'This Month', 'Last Month', 'Date Range'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            // console.log('Insert success');              
+                            console.log('Insert success');              
                           } else {
                             console.log('Insert failed');
                           }
@@ -220,19 +217,19 @@ const Home = ({ navigation }) => {
                     incomes.push(results.rows.item(i));
                 }
 
-                // console.log('Incomes: ', incomes);
+                console.log('Incomes: ', incomes);
                 let total_income = 0;
                 incomes.map(income => {
                     total_income = total_income + parseInt(income.amount);
                     setTotalIncome(total_income);
                 })
-                // console.log('Total income: ',totalIncome);
+                console.log('Total income: ',totalIncome);
             })
         });
     }
 
     const getExpenses = () => {
-        // console.log('Month Number at expense: ', monthNumber)
+        console.log('Month Number at expense: ', monthNumber)
         DB.transaction(tx => {
             // tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
             tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [monthNumber, 'Expense'], (tx, results) => {
@@ -241,13 +238,13 @@ const Home = ({ navigation }) => {
                     expenses.push(results.rows.item(i));
                 }
 
-                // console.log('Expenses: ', expenses);
+                console.log('Expenses: ', expenses);
                 let total_expense = 0;
                 expenses.map(expense => {
                     total_expense = total_expense + parseInt(expense.amount);
                     setTotalExpense(total_expense);
                 })
-                // console.log('Total expense: ',totalExpense);
+                console.log('Total expense: ',totalExpense);
             })
         });
     }
@@ -259,7 +256,7 @@ const Home = ({ navigation }) => {
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
             }, function () {
-                // console.log('Successfully created currencies table');
+                console.log('Successfully created currencies table');
             }
         );
 
@@ -279,7 +276,7 @@ const Home = ({ navigation }) => {
                         ['₦','₦'], ['$', '$'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            // console.log('Insert success');              
+                            console.log('Insert success');              
                           } else {
                             console.log('Insert failed');
                           }
@@ -297,7 +294,7 @@ const Home = ({ navigation }) => {
             }, function (error) {
                 console.log('Transaction error: ' + error.message);
             }, function () {
-                // console.log('Successfully created settings table');
+                console.log('Successfully created settings table');
             }
         );
 
@@ -316,7 +313,7 @@ const Home = ({ navigation }) => {
                         ['₦'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            // console.log('Insert success');              
+                            console.log('Insert success');              
                           } else {
                             console.log('Insert failed');
                           }
@@ -345,24 +342,9 @@ const Home = ({ navigation }) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    const getTransactionsByCategories = () => {
-        console.log('Month Number at get transactions by categories : ', monthNumber)
-        DB.transaction(tx => {
-            tx.executeSql(`SELECT category, SUM(amount) FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
-                let temp = [];
-                for (let i = 0; i < results.rows.length; ++i) {
-                    temp.push(results.rows.item(i));
-                }
-                // setTransactions(temp);
-
-                console.log('Transactions by category here : ',temp);
-            })
-        });
-    }
-
     return (
         <View style={{marginTop: 10}}>
-            <PieChartCategory month={monthName} year={year} income={totalIncome} expense={totalExpense} type={type}/>
+            <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense} type={type}/>
             <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
                 <HomeText title="Income" amount={currency+numberWithCommas(totalIncome)} color="#006400"/>
                 <HomeText title="Expense" amount={currency+numberWithCommas(totalExpense)} color="#C70039"/>

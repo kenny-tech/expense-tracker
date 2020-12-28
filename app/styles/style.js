@@ -166,5 +166,13 @@ export default StyleSheet.create({
         marginHorizontal: 10,
         flexDirection: 'row',
         borderRadius: 20
+    },
+    homeChartView: {
+        width: 380,
+        height: 280,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        borderRadius: 20
     }
 });
