@@ -22,7 +22,7 @@ const PieChart = ({ month, year, income, expense, type }) => {
                             top: 120,
                             left:'37%',
                             color: '#000000',
-                            fontSize: 17,
+                            fontSize: 14,
                             fontWeight: 'bold',
                         }}>{type}</Text>
                         <VictoryPie 

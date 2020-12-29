@@ -3,13 +3,26 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     homeLinkView: {
         width: 350,
-        height: 53,
+        height: 42,
         borderRadius: 20,
         marginHorizontal: 30,
         marginVertical: 5,
     },
+    // homeLinkView: {
+    //     width: 350,
+    //     height: 53,
+    //     borderRadius: 20,
+    //     marginHorizontal: 30,
+    //     marginVertical: 5,
+    // },
+    // homeLinkText: {
+    //     fontSize: 18,
+    //     color: '#639eb8',
+    //     fontWeight: 'bold',
+    //     marginLeft: 40
+    // },
     homeLinkText: {
-        fontSize: 18,
+        fontSize: 14,
         color: '#639eb8',
         fontWeight: 'bold',
         marginLeft: 40
@@ -174,5 +187,21 @@ export default StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 10,
         borderRadius: 20
+    },
+    homeChartView: {
+        width: 390,
+        height: 350,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        borderRadius: 20
+    },
+    homeLinksView: {
+        width: 390,
+        height: 220,
+        backgroundColor: '#ffffff',
+        marginTop: 5,
+        marginHorizontal: 10,
+        borderRadius: 20,
     }
 });
