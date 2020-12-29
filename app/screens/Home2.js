@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Alert, Text } from 'react-native';
+import { View, TouchableOpacity, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -344,22 +344,17 @@ const Home = ({ navigation }) => {
 
     return (
         <View style={{marginTop: 10}}>
-            <View style={styles.homeChartView}>
-                <Text style={{fontSize: 18, paddingTop: 5, marginLeft: 10, fontWeight: 'bold', textAlign:'center'}}>Overview - {monthName}</Text>
-                <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense}/>
-                <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 10}}>
-                    <HomeText title="Income" amount={currency+numberWithCommas(totalIncome)} color="#006400"/>
-                    <HomeText title="Expense" amount={currency+numberWithCommas(totalExpense)} color="#C70039"/>
-                    <HomeText title="Balance" amount={currency+numberWithCommas(totalIncome - totalExpense)} color="#0198E1"/>
-                </View>
+            <PieChart month={monthName} year={year} income={totalIncome} expense={totalExpense} type={type}/>
+            <View style={{flexDirection: "row", justifyContent: "space-evenly", marginHorizontal: 30, marginTop: 20}}>
+                <HomeText title="Income" amount={currency+numberWithCommas(totalIncome)} color="#006400"/>
+                <HomeText title="Expense" amount={currency+numberWithCommas(totalExpense)} color="#C70039"/>
+                <HomeText title="Balance" amount={currency+numberWithCommas(totalIncome - totalExpense)} color="#4b81bf"/>
             </View>
-            <View style={styles.homeLinksView}>
-                <View style={{marginTop: 10}}>
-                    <HomeLink text="ADD INCOME" backgroundColor="#f0f0f0" textColor="#006400" icon="money" customClick={() => navigation.navigate('Income')}/>
-                    <HomeLink text="ADD EXPENSES" backgroundColor="#f0f0f0" textColor="#C70039" icon="credit-card" customClick={() => navigation.navigate('Expense')}/>
-                    <HomeLink text="ALL TRANSACTION" backgroundColor="#f0f0f0" textColor="#6495ED" icon="pie-chart" customClick={() => navigation.navigate('Transactions')}/>
-                    <HomeLink text="REPORTS" backgroundColor="#f0f0f0" textColor="#4E78A0" icon="bar-chart" customClick={() => navigation.navigate('Reports')}/>
-                </View>
+            <View style={{marginTop: 10}}>
+                <HomeLink text="ADD INCOME" backgroundColor="#daf5ff" textColor="#639eb8" icon="money" customClick={() => navigation.navigate('Income')}/>
+                <HomeLink text="ADD EXPENSES" backgroundColor="#d4e8ff" textColor="#4b81bf" icon="credit-card" customClick={() => navigation.navigate('Expense')}/>
+                <HomeLink text="ALL TRANSACTION" backgroundColor="#ffecdd" textColor="#e79b5f" icon="pie-chart" customClick={() => navigation.navigate('Transactions')}/>
+                <HomeLink text="REPORTS" backgroundColor="#fedada" textColor="#ff7175" icon="bar-chart" customClick={() => navigation.navigate('Reports')}/>
             </View>
         </View>
     )
