@@ -134,8 +134,8 @@ const Expense = ({ navigation }) => {
                         onValueChange={(mode) => setMode(mode)}/>}
                     />
                     <FormView 
-                        label="Description"
-                        inputType={<Mytextinput placeholder="Transaction Description" onChangeText={note => setNote(note)}/>}
+                        label="Note"
+                        inputType={<Mytextinput placeholder="Note" onChangeText={note => setNote(note)}/>}
                     />
                     <Mybutton title="Submit" customClick={() => handleSubmit()}/>
                 </KeyboardAvoidingView>

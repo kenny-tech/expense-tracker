@@ -1004,7 +1004,7 @@ const Setting = ({ navigation }) => {
                 >
                     <View style={styles.formViewLink}>
                         <View>
-                            <Text style={styles.formViewLabel}>Update Currency</Text>
+                            <Text style={styles.formViewLabel}>Currency</Text>
                             <CurrencySelect types={currencies} 
                                 defaultValue={currency}
                                 onValueChange={(currency) => setCurrency(currency)}
@@ -1019,13 +1019,13 @@ const Setting = ({ navigation }) => {
                     <TouchableOpacity onPress={() => navigation.navigate('Category')}>
                         <FormViewLink 
                             label="Category" 
-                            inputType={<Text style={{marginLeft: 10}}>Add/Edit Category           </Text>}
+                            inputType={<Text style={{marginLeft: 10}}>Manage Category           </Text>}
                         />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('PaymentMode')}>
                         <FormViewLink 
                             label="Payment Mode" 
-                            inputType={<Text style={{marginLeft: 10}}>Add/Edit payment mode</Text>}
+                            inputType={<Text style={{marginLeft: 10}}>Manage Payment Mode</Text>}
                         />  
                     </TouchableOpacity>
                 </KeyboardAvoidingView>
