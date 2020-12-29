@@ -356,8 +356,8 @@ const Home = ({ navigation }) => {
             <View style={styles.homeLinksView}>
                 <View style={{marginTop: 10}}>
                     <HomeLink text="ADD INCOME" backgroundColor="#f0f0f0" textColor="#006400" icon="money" customClick={() => navigation.navigate('Income')}/>
-                    <HomeLink text="ADD EXPENSES" backgroundColor="#f0f0f0" textColor="#C70039" icon="credit-card" customClick={() => navigation.navigate('Expense')}/>
-                    <HomeLink text="ALL TRANSACTION" backgroundColor="#f0f0f0" textColor="#6495ED" icon="pie-chart" customClick={() => navigation.navigate('Transactions')}/>
+                    <HomeLink text="ADD EXPENSE" backgroundColor="#f0f0f0" textColor="#C70039" icon="credit-card" customClick={() => navigation.navigate('Expense')}/>
+                    <HomeLink text="TRANSACTIONS" backgroundColor="#f0f0f0" textColor="#6495ED" icon="pie-chart" customClick={() => navigation.navigate('Transactions')}/>
                     <HomeLink text="REPORTS" backgroundColor="#f0f0f0" textColor="#4E78A0" icon="bar-chart" customClick={() => navigation.navigate('Reports')}/>
                 </View>
             </View>
