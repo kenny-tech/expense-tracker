@@ -30,7 +30,6 @@ const Expense = ({ navigation }) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM categories', [], (tx, results) => {
                 let allCategories = [];
-                console.log('Categories from expense screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allCategories.push(results.rows.item(i));
                 }
@@ -43,7 +42,6 @@ const Expense = ({ navigation }) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM modes', [], (tx, results) => {
                 let allModes = [];
-                console.log('Modes from expense screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allModes.push(results.rows.item(i));
                 }
@@ -69,9 +67,9 @@ const Expense = ({ navigation }) => {
                 tx.executeSql('CREATE TABLE IF NOT EXISTS transactions (type, amount, category, date, mode, note)');
             
                 }, function (error) {
-                    console.log('Transaction error: ' + error.message);
+                    // console.log('Transaction error: ' + error.message);
                 }, function () {
-                    console.log('Successfully loaded expenses table');
+                    // console.log('Successfully loaded expenses table');
                 });
             DB.transaction((tx) => {
                 tx.executeSql('INSERT INTO transactions VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
@@ -88,14 +86,13 @@ const Expense = ({ navigation }) => {
                                 ],
                                 { cancelable: false}
                             );
-                            console.log("Expense successfully recorded");            
                         } else {
-                            console.log('Insert failed');
+                            Alert.alert('Error','Insert failed');
                         }
                     }
                 );
             }, function (tx, err) {
-                console.log('Insert expense error ' + err);
+                // console.log('Insert expense error ' + err);
             });
         } else {
             Alert.alert('Error', 'Please enter an amount')

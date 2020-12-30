@@ -29,7 +29,6 @@ const Income = ({ navigation }) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM categories', [], (tx, results) => {
                 let allCategories = [];
-                console.log('Categories from income screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allCategories.push(results.rows.item(i));
                 }
@@ -42,7 +41,6 @@ const Income = ({ navigation }) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM modes', [], (tx, results) => {
                 let allModes = [];
-                console.log('Modes from income screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allModes.push(results.rows.item(i));
                 }
@@ -68,9 +66,9 @@ const Income = ({ navigation }) => {
                 tx.executeSql('CREATE TABLE IF NOT EXISTS transactions (type, amount, category, date, mode, note)');
             
                 }, function (error) {
-                    console.log('Transaction error: ' + error.message);
+                    // console.log('Transaction error: ' + error.message);
                 }, function () {
-                    console.log('Successfully loaded incomes table');
+                    // console.log('Successfully loaded incomes table');
                 });
             DB.transaction((tx) => {
                 tx.executeSql('INSERT INTO transactions VALUES (?,?,?,?,?,?)', [type, amount, category, date, mode, note],
@@ -87,17 +85,17 @@ const Income = ({ navigation }) => {
                                 ],
                                 { cancelable: false}
                             );
-                            console.log("Income successfully recorded");            
+                            // console.log("Income successfully recorded");            
                         } else {
-                            console.log('Insert failed');
+                            // console.log('Insert failed');
                         }
                     }
                 );
             }, function (tx, err) {
-                console.log('Insert income error ' + err);
+                // console.log('Insert income error ' + err);
             });
         } else {
-            Alert.alert('Error', 'Please enter an amount')
+            // Alert.alert('Error', 'Please enter an amount')
         }
     }
 

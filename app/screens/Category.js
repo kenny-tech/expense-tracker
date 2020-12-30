@@ -67,13 +67,13 @@ const Category = ({ navigation }) => {
                             { cancelable: false}
                         );        
                       } else {
-                        console.log('Insert failed');
+                        Alert.alert('Error','Insert failed');
                       }
                     }
                 );
             });
         } else {
-            Alert.alert("Error","Category Name cannot be empty");
+            Alert.alert('Error','Category Name cannot be empty');
         }
     }
 
