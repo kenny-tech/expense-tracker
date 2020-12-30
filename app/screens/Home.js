@@ -99,9 +99,9 @@ const Home = ({ navigation }) => {
             // tx.executeSql('DROP TABLE IF EXISTS categories');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS categories (name)');
             }, function (error) {
-                console.log('Transaction error: ' + error.message);
+                // console.log('Transaction error: ' + error.message);
             }, function () {
-                console.log('Successfully created categories table');
+                // console.log('Successfully created categories table');
             }
         );
 
@@ -114,16 +114,15 @@ const Home = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         category.push(results.rows.item(i));
                     }
-                    console.log('Categories: ',category);
                 } else {
                     tx.executeSql(        
                         'INSERT INTO categories VALUES (?),(?),(?),(?),(?),(?)',
                         ['Business','Clothing','Drinks','Education','Food','Salary'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            console.log('Insert success');              
+                            // console.log('Insert success');              
                           } else {
-                            console.log('Insert failed');
+                            Alert.alert('Error','Insert failed');
                           }
                         }
                     );
@@ -137,9 +136,9 @@ const Home = ({ navigation }) => {
             // tx.executeSql('DROP TABLE IF EXISTS modes');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS modes (name)');
             }, function (error) {
-                console.log('Transaction error: ' + error.message);
+                // console.log('Transaction error: ' + error.message);
             }, function () {
-                console.log('Successfully created modes table');
+                // console.log('Successfully created modes table');
             }
         );
 
@@ -152,16 +151,15 @@ const Home = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         mode.push(results.rows.item(i));
                     }
-                    console.log('Modes: ',mode);
                 } else {
                     tx.executeSql(        
                         'INSERT INTO modes VALUES (?),(?),(?),(?),(?)',
                         ['Cash','Credit Card','Debit Card','Bank','Cheque'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            console.log('Insert success');              
+                            // console.log('Insert success');              
                           } else {
-                            console.log('Insert failed');
+                            // console.log('Insert failed');
                           }
                         }
                     );
@@ -175,9 +173,9 @@ const Home = ({ navigation }) => {
             tx.executeSql('DROP TABLE IF EXISTS filtertypes');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS filtertypes (name)');
             }, function (error) {
-                console.log('Transaction error: ' + error.message);
+                // console.log('Transaction error: ' + error.message);
             }, function () {
-                console.log('Successfully created filtertypes table');
+                // console.log('Successfully created filtertypes table');
             }
         );
 
@@ -197,9 +195,9 @@ const Home = ({ navigation }) => {
                         ['All', 'This Month', 'Last Month', 'Date Range'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            console.log('Insert success');              
+                            // console.log('Insert success');              
                           } else {
-                            console.log('Insert failed');
+                            // console.log('Insert failed');
                           }
                         }
                     );
@@ -217,19 +215,16 @@ const Home = ({ navigation }) => {
                     incomes.push(results.rows.item(i));
                 }
 
-                console.log('Incomes: ', incomes);
                 let total_income = 0;
                 incomes.map(income => {
                     total_income = total_income + parseInt(income.amount);
                     setTotalIncome(total_income);
                 })
-                console.log('Total income: ',totalIncome);
             })
         });
     }
 
     const getExpenses = () => {
-        console.log('Month Number at expense: ', monthNumber)
         DB.transaction(tx => {
             // tx.executeSql('SELECT amount FROM transactions WHERE type = ?', ['Expense'], (tx, results) => {
             tx.executeSql(`SELECT amount FROM transactions WHERE strftime('%m', date) = ? AND type = ?`, [monthNumber, 'Expense'], (tx, results) => {
@@ -238,13 +233,11 @@ const Home = ({ navigation }) => {
                     expenses.push(results.rows.item(i));
                 }
 
-                console.log('Expenses: ', expenses);
                 let total_expense = 0;
                 expenses.map(expense => {
                     total_expense = total_expense + parseInt(expense.amount);
                     setTotalExpense(total_expense);
                 })
-                console.log('Total expense: ',totalExpense);
             })
         });
     }
@@ -254,9 +247,9 @@ const Home = ({ navigation }) => {
             tx.executeSql('DROP TABLE IF EXISTS currency');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS currency (name, symbol)');
             }, function (error) {
-                console.log('Transaction error: ' + error.message);
+                // console.log('Transaction error: ' + error.message);
             }, function () {
-                console.log('Successfully created currencies table');
+                // console.log('Successfully created currencies table');
             }
         );
 
@@ -269,16 +262,15 @@ const Home = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         currencies.push(results.rows.item(i));
                     }
-                    console.log('Currencies: ',currencies);
                 } else {
                     tx.executeSql(        
                         'INSERT INTO currency (name, symbol) VALUES (?,?)',
                         ['₦','₦'], ['$', '$'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            console.log('Insert success');              
+                            // console.log('Insert success');              
                           } else {
-                            console.log('Insert failed');
+                            // console.log('Insert failed');
                           }
                         }
                     );
@@ -292,9 +284,9 @@ const Home = ({ navigation }) => {
             tx.executeSql('DROP TABLE IF EXISTS settings');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS settings (currency)');
             }, function (error) {
-                console.log('Transaction error: ' + error.message);
+                // console.log('Transaction error: ' + error.message);
             }, function () {
-                console.log('Successfully created settings table');
+                // console.log('Successfully created settings table');
             }
         );
 
@@ -313,9 +305,9 @@ const Home = ({ navigation }) => {
                         ['₦'],
                         (tx, results) => {               
                           if (results.rowsAffected > 0 ) {
-                            console.log('Insert success');              
+                            // console.log('Insert success');              
                           } else {
-                            console.log('Insert failed');
+                            // console.log('Insert failed');
                           }
                         }
                     );

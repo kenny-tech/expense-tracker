@@ -5,7 +5,7 @@ import styles from '../styles/style';
 
 const ChartDescription = () => {
     return (
-        <View style={{flexDirection: 'row', marginBottom: 10}}>
+        <View style={{flexDirection: 'row', marginBottom: 10, justifyContent: 'center'}}>
             <View style={styles.incomeTextDescriptionBg}/>
             <Text style={{marginRight: 10}}> Income</Text>
             <View style={styles.expenseTextDescriptionBg}/>

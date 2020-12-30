@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Alert, ScrollView } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 
 import FormView from '../components/FormView';
 import FormViewReport from '../components/FormViewReport';
@@ -8,7 +8,7 @@ import PieChart from '../components/PieChart';
 import ChartDescription from '../components/ChartDescription';
 import DateRange from '../components/DateRange';
 import DateRangeButton from '../components/DateRangeButton';
-import styles from '../styles/style';
+
 import { DB } from '../model/db';
 
 const Report = () => {
@@ -21,7 +21,6 @@ const Report = () => {
     const [dateTo, setDateTo] = useState('');
     const [maxDate, setMaxDate] = useState('');
     const [currency, setCurrency] = useState('');
-    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         getFilterTypes();
@@ -29,7 +28,6 @@ const Report = () => {
         getTotalExpense(filterBy);
         maximumDate();
         getCurrency();
-        getTransactionsByCategories(filterBy);
     }, []);    
 
     const getFilterTypes = () => {
@@ -45,7 +43,7 @@ const Report = () => {
     }
 
     const handleFilterBy = (filter_by) => { 
-        if(filter_by === 'Date Range') {
+        if(filter_by == 'Date Range') {
             setShowDateRange(true);
         } else {
             getTotalIncome(filter_by);
@@ -53,7 +51,6 @@ const Report = () => {
             setShowDateRange(false);
         }
         setFilterBy(filter_by);
-        getTransactionsByCategories(filter_by);
     }
 
     const getTotalIncome = (filter_by) => {
@@ -274,7 +271,6 @@ const Report = () => {
             let filter_by = 'Date Range';
             getTotalIncome(filter_by);
             getTotalExpense(filter_by);
-            getTransactionsByCategories(filter_by);
         }
     }
 
@@ -291,133 +287,43 @@ const Report = () => {
         });
     }
 
-    const getTransactionsByCategories = (filter_by) => {
-        if(filter_by === 'This Month') {
-            let month = new Date().getMonth()+1;     
-            let monthNumber = getMonthNumber(month);
-
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                })
-            });
-        }else if(filter_by === 'Last Month') {
-            let month = new Date().getMonth();     
-            let monthNumber = getMonthNumber(month);
-
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                })
-            });
-        } else if(filter_by === 'Date Range') {
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE date BETWEEN ? AND ?GROUP BY category`, [dateFrom, dateTo], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                })
-            });
-        } else if(filter_by === 'All') {
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions GROUP BY category`, [], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                })
-            });
-        }
-    }
-
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
-            <ScrollView keyboardShouldPersistTaps='handled'>
-                <FormView 
-                    label="Filter by"
-                    inputType={<Myselectinput types={filterTypes} 
-                    defaultValue={filterBy}
-                    onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
-                />
-                {
-                    showDateRange ? (
-                        <View 
-                            style={{flexDirection: 'row', justifyContent: 'flex-start', width: 380,
-                            height: 70,
-                            backgroundColor: '#ffffff',
-                            marginTop: 5,
-                            marginHorizontal: 10}}
-                        >
-                            <DateRange defaultDate={dateFrom} onDateChange={(dateFrom) => {setDateFrom(dateFrom)}} label="From" maxDate={maxDate}/>
-                            <DateRange defaultDate={dateTo} onDateChange={(dateTo) => {setDateTo(dateTo)}} label="To" maxDate={maxDate}/>
-                            <DateRangeButton title="Go" customClick={() => handleSubmit()}/>
-                        </View>
-                    ) : null
+             <FormView 
+                label="Filter by"
+                inputType={<Myselectinput types={filterTypes} 
+                defaultValue={filterBy}
+                onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
+            />
+            {
+                showDateRange ? (
+                    <View 
+                        style={{flexDirection: 'row', justifyContent: 'flex-start', width: 380,
+                        height: 70,
+                        backgroundColor: '#ffffff',
+                        marginTop: 5,
+                        marginHorizontal: 10}}
+                    >
+                        <DateRange defaultDate={dateFrom} onDateChange={(dateFrom) => {setDateFrom(dateFrom)}} label="From" maxDate={maxDate}/>
+                        <DateRange defaultDate={dateTo} onDateChange={(dateTo) => {setDateTo(dateTo)}} label="To" maxDate={maxDate}/>
+                        <DateRangeButton title="Go" customClick={() => handleSubmit()}/>
+                    </View>
+                ) : null
+            }
+            <PieChart income={totalIncome} expense={totalExpense} month={filterBy}/>
+            {
+                totalIncome !== 0 || totalExpense !== 0 ? <ChartDescription/> : null
+            }
+            <FormViewReport
+                label="Report Summary" 
+                inputType={
+                    <View>
+                        <Text style={{marginLeft: 10, paddingBottom: 5, fontSize:16}}>Total Income:          {currency+numberWithCommas(totalIncome)}</Text>
+                        <Text style={{marginLeft: 10, paddingBottom: 5, fontSize:16}}>Total Expense:        {currency+numberWithCommas(totalExpense)}</Text>
+                        <Text style={{marginLeft: 10, fontSize:16}}>Balance:                   {currency+numberWithCommas(totalIncome - totalExpense)}</Text>
+                    </View>
                 }
-                <PieChart income={totalIncome} expense={totalExpense} month={filterBy}/>
-                {
-                    totalIncome !== 0 || totalExpense !== 0 ? (<ChartDescription/>) : null
-                }
-                <FormViewReport
-                    label="Report By Transaction Type" 
-                    inputType={
-                        <View>
-                            <View style={{flexDirection: 'row', marginRight: 10}}>
-                                <View style={{width: '50%'}}>
-                                    <Text style={styles.reportText}>Total Income:</Text>
-                                </View>
-                                <View style={{width: '50%'}}>
-                                    <Text style={{fontWeight: 'bold'}}>{currency+numberWithCommas(totalIncome)}</Text>
-                                </View>
-                            </View>
-                            <View style={{flexDirection: 'row', marginRight: 10}}>
-                                <View style={{width: '50%'}}>
-                                    <Text style={styles.reportText}>Total Expense:</Text>
-                                </View>
-                                <View style={{width: '50%'}}>
-                                    <Text style={{fontWeight: 'bold'}}>{currency+numberWithCommas(totalExpense)}</Text>
-                                </View>
-                            </View>
-                            <View style={{flexDirection: 'row', marginRight: 10}}>
-                                <View style={{width: '50%'}}>
-                                    <Text style={styles.reportText}>Balance:</Text>
-                                </View>
-                                <View style={{width: '50%'}}>
-                                    <Text style={{fontWeight: 'bold'}}>{currency+numberWithCommas(totalIncome - totalExpense)}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    }
-                />
-                {
-                    transactions.length !== 0 ? (<View style={styles.formViewReportCategory}>
-                        <Text style={styles.formViewLabel}>Report By Category</Text>
-                            {
-                                transactions.map(transaction => (
-                                    <View style={{flexDirection: 'row', marginRight: 10}}>
-                                        <View style={{width: '50%'}}>
-                                            <Text style={styles.reportText}>{transaction.category}</Text>
-                                        </View>
-                                        <View style={{width: '50%'}}>
-                                            <Text style={{fontWeight: 'bold'}}>{currency+numberWithCommas(transaction.total_amount)}</Text>
-                                        </View>
-                                    </View>
-                                ))
-                            }
-                    </View>) : null
-                }
-            </ScrollView>
+            />
         </View>
     )
 }

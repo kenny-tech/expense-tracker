@@ -6,14 +6,12 @@ import NoTransaction from './NoTransaction';
 import styles from '../styles/style';
 
 const PieChartCategory = ({ month, year, income, expense, type, transactions }) => {
-    console.log('Chart transactions here : ', transactions);
     let percentIncome = ((income / (income + expense)) * 100).toFixed(1);
     let percentExpense = ((expense / (income + expense)) * 100).toFixed(1);
     const graphicColor = ['#006400', '#C70039'];
     // const graphicData = [{ y: income, x: percentIncome+'%' }, { y: expense, x: percentExpense+'%' }]; // Data that we want to display
     let chartData = [];
     transactions.map(trans => chartData.push({x: trans.category, y: trans.total_amount}));
-    console.log('Chart data: ', chartData);
     return (
         <View>
             {

@@ -45,7 +45,6 @@ const EditTransaction = ({ route, navigation }) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM categories', [], (tx, results) => {
                 let allCategories = [];
-                console.log('Categories from income screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allCategories.push(results.rows.item(i));
                 }
@@ -58,7 +57,6 @@ const EditTransaction = ({ route, navigation }) => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM modes', [], (tx, results) => {
                 let allModes = [];
-                console.log('Modes from income screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     allModes.push(results.rows.item(i));
                 }
@@ -96,7 +94,6 @@ const EditTransaction = ({ route, navigation }) => {
         if(amount.trim() != '') {
             DB.transaction(tx => {
                 tx.executeSql('UPDATE transactions SET type=?, amount=?, category=?, date=?, mode=?, note=? WHERE rowid=?', [type, amount, category, date, mode, note, transaction_id], (tx, results) => {
-                    console.log('Results: ', results.rowsAffected);
                     if(results.rowsAffected > 0) {
                         Alert.alert(
                             'Success',

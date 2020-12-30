@@ -40,8 +40,20 @@ const Transactions = ({ navigation }) => {
      },[isFocused]);
  
      useEffect(() => {
-         getSetting();
+        getSetting();
+        getFilterTypes();
+        maximumDate();
      }, []);    
+
+     useEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity onPress={() => setVisible(true)}>
+                <Icon name="filter" size={30} style={styles.check}/>
+            </TouchableOpacity>            
+          ),
+        });
+    }, [navigation]);   
  
      let month = new Date().getMonth()+1;     
      let monthNumber
@@ -120,26 +132,10 @@ const Transactions = ({ navigation }) => {
          });
      } 
 
-    useEffect(() => {
-        navigation.setOptions({
-          headerRight: () => (
-            <TouchableOpacity onPress={() => setVisible(true)}>
-                <Icon name="filter" size={30} style={styles.check}/>
-            </TouchableOpacity>            
-          ),
-        });
-    }, [navigation]);
-
-    useEffect(() => {
-        getFilterTypes();
-        maximumDate();
-    }, []);    
-
     const getFilterTypes = () => {
         DB.transaction(tx => {
             tx.executeSql('SELECT rowid, name FROM filtertypes', [], (tx, results) => {
                 let filters = [];
-                console.log('Filter types from report screen: ',results.rows);
                 for (let i = 0; i < results.rows.length; ++i) {
                     filters.push(results.rows.item(i));
                 }
@@ -192,7 +188,6 @@ const Transactions = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
                     }
-                    console.log('Transactions: ',temp);
                     setTransactions(temp);
                 })
             });
@@ -205,7 +200,6 @@ const Transactions = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
                     }
-                    console.log('Transactions: ',temp);
                     setTransactions(temp);
                 })
             });
@@ -218,7 +212,6 @@ const Transactions = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
                     }
-                    console.log('Transactions for date range: ',temp);
                     setTransactions(temp);
                 })
             });
@@ -296,7 +289,7 @@ const Transactions = ({ navigation }) => {
                                 </TouchableOpacity>
                             </View>
                         )}
-                        keyExtractor={item => item.rowid}
+                        keyExtractor={item => item.rowid.toString()}
                     />) : (<View style={{marginTop: 50}}>
                                 <NoTransaction/>
                             </View>)

@@ -67,7 +67,7 @@ const PaymentMode = ({ navigation }) => {
                             { cancelable: false}
                         );        
                       } else {
-                        console.log('Insert failed');
+                        // console.log('Insert failed');
                       }
                     }
                 );
