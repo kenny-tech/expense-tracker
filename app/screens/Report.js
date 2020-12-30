@@ -297,7 +297,7 @@ const Report = () => {
             let monthNumber = getMonthNumber(month);
 
             DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
+                tx.executeSql(`SELECT rowid, category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -310,7 +310,7 @@ const Report = () => {
             let monthNumber = getMonthNumber(month);
 
             DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
+                tx.executeSql(`SELECT rowid, category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -320,7 +320,7 @@ const Report = () => {
             });
         } else if(filter_by === 'Date Range') {
             DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE date BETWEEN ? AND ?GROUP BY category`, [dateFrom, dateTo], (tx, results) => {
+                tx.executeSql(`SELECT rowid, category, SUM(amount) AS total_amount FROM transactions WHERE date BETWEEN ? AND ?GROUP BY category`, [dateFrom, dateTo], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -330,7 +330,7 @@ const Report = () => {
             });
         } else if(filter_by === 'All') {
             DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions GROUP BY category`, [], (tx, results) => {
+                tx.executeSql(`SELECT rowid, category, SUM(amount) AS total_amount FROM transactions GROUP BY category`, [], (tx, results) => {
                     let temp = [];
                     for (let i = 0; i < results.rows.length; ++i) {
                         temp.push(results.rows.item(i));
@@ -405,7 +405,7 @@ const Report = () => {
                         <Text style={styles.formViewLabel}>Report By Category</Text>
                             {
                                 transactions.map(transaction => (
-                                    <View style={{flexDirection: 'row', marginRight: 10}}>
+                                    <View style={{flexDirection: 'row', marginRight: 10}} key={transaction.rowid}>
                                         <View style={{width: '50%'}}>
                                             <Text style={styles.reportText}>{transaction.category}</Text>
                                         </View>
