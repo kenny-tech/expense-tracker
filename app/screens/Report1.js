@@ -21,7 +21,6 @@ const Report = () => {
     const [dateTo, setDateTo] = useState('');
     const [maxDate, setMaxDate] = useState('');
     const [currency, setCurrency] = useState('');
-    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         getFilterTypes();
@@ -29,7 +28,6 @@ const Report = () => {
         getTotalExpense(filterBy);
         maximumDate();
         getCurrency();
-        getTransactionsByCategories(filterBy);
     }, []);    
 
     const getFilterTypes = () => {
@@ -53,7 +51,6 @@ const Report = () => {
             setShowDateRange(false);
         }
         setFilterBy(filter_by);
-        getTransactionsByCategories(filter_by);
     }
 
     const getTotalIncome = (filter_by) => {
@@ -141,7 +138,6 @@ const Report = () => {
                         expenses.push(results.rows.item(i));
                     }
 
-                    console.log('Expenses: ', expenses);
                     let total_expense = 0;
                     expenses.map(expense => {
                         total_expense = total_expense + parseInt(expense.amount);
@@ -161,7 +157,6 @@ const Report = () => {
                         expenses.push(results.rows.item(i));
                     }
 
-                    console.log('Expenses: ', expenses);
                     let total_expense = 0;
                     expenses.map(expense => {
                         total_expense = total_expense + parseInt(expense.amount);
@@ -283,7 +278,6 @@ const Report = () => {
         DB.transaction(tx => {
             tx.executeSql(`SELECT currency FROM settings`, [], (tx, results) => {
                 let len = results.rows.length;
-                // console.log('length_currency: ', results.rows.item(0).currency);
                 if (len > 0) {
                     setCurrency(results.rows.item(0).currency);
                 } else {
@@ -291,61 +285,6 @@ const Report = () => {
                 }
             })
         });
-    }
-
-    const getTransactionsByCategories = (filter_by) => {
-        if(filter_by === 'This Month') {
-            let month = new Date().getMonth()+1;     
-            let monthNumber = getMonthNumber(month);
-
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                    console.log('Transactions by categories: ', temp);
-                })
-            });
-        }else if(filter_by === 'Last Month') {
-            let month = new Date().getMonth();     
-            let monthNumber = getMonthNumber(month);
-
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE strftime('%m', date) = ? GROUP BY category`, [monthNumber], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                    console.log('Transactions by categories: ', temp);
-                })
-            });
-        } else if(filter_by === 'Date Range') {
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions WHERE date BETWEEN ? AND ?GROUP BY category`, [dateFrom, dateTo], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                    console.log('Transactions by categories: ', temp);
-                })
-            });
-        } else if(filter_by === 'All') {
-
-            DB.transaction(tx => {
-                tx.executeSql(`SELECT category, SUM(amount) AS total_amount FROM transactions GROUP BY category`, ['Income'], (tx, results) => {
-                    let temp = [];
-                    for (let i = 0; i < results.rows.length; ++i) {
-                        temp.push(results.rows.item(i));
-                    }
-                    setTransactions(temp);
-                    console.log('Transactions by categories: ', temp);
-                })
-            });
-        }
     }
 
     return (

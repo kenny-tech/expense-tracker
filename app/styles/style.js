@@ -160,6 +160,14 @@ export default StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 20
     },
+    formViewReportCategory: {
+        width: 380,
+        height: 350,
+        backgroundColor: '#ffffff',
+        marginTop: 10,
+        marginHorizontal: 10,
+        borderRadius: 20
+    },
     formViewTransaction: {
         width: 380,
         height: 60,
@@ -203,5 +211,10 @@ export default StyleSheet.create({
         marginTop: 5,
         marginHorizontal: 10,
         borderRadius: 20,
+    },
+    reportText: {
+        marginLeft: 10, 
+        paddingBottom: 5, 
+        fontSize:16
     }
 });
