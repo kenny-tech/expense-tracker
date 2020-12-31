@@ -95,7 +95,7 @@ const Income = ({ navigation }) => {
                 // console.log('Insert income error ' + err);
             });
         } else {
-            // Alert.alert('Error', 'Please enter an amount')
+            Alert.alert('Error', 'Please enter an amount')
         }
     }
 
