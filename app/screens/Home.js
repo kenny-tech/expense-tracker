@@ -170,7 +170,7 @@ const Home = ({ navigation }) => {
 
     const createFilterTypes = () => {
         DB.transaction(function (tx) {
-            tx.executeSql('DROP TABLE IF EXISTS filtertypes');   
+            // tx.executeSql('DROP TABLE IF EXISTS filtertypes');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS filtertypes (name)');
             }, function (error) {
                 // console.log('Transaction error: ' + error.message);
@@ -244,7 +244,7 @@ const Home = ({ navigation }) => {
 
     const createCurrencies = () => {
         DB.transaction(function (tx) {
-            tx.executeSql('DROP TABLE IF EXISTS currency');   
+            // tx.executeSql('DROP TABLE IF EXISTS currency');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS currency (name, symbol)');
             }, function (error) {
                 // console.log('Transaction error: ' + error.message);
@@ -281,7 +281,7 @@ const Home = ({ navigation }) => {
 
     const createSetting = () => {
         DB.transaction(function (tx) {
-            tx.executeSql('DROP TABLE IF EXISTS settings');   
+            // tx.executeSql('DROP TABLE IF EXISTS settings');   
             tx.executeSql('CREATE TABLE IF NOT EXISTS settings (currency)');
             }, function (error) {
                 // console.log('Transaction error: ' + error.message);

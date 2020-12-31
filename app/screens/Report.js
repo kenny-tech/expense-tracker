@@ -343,13 +343,13 @@ const Report = () => {
 
     return (
         <View style={{flex: 1, alignItems: 'center'}}>
+            <FormView 
+                label="Filter by"
+                inputType={<Myselectinput types={filterTypes} 
+                defaultValue={filterBy}
+                onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
+            />
             <ScrollView keyboardShouldPersistTaps='handled'>
-                <FormView 
-                    label="Filter by"
-                    inputType={<Myselectinput types={filterTypes} 
-                    defaultValue={filterBy}
-                    onValueChange={(filter_by) => handleFilterBy(filter_by)}/>}
-                />
                 {
                     showDateRange ? (
                         <View 
