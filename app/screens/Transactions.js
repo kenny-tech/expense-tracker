@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text,FlatList } from 'react-native';
+import { View, TouchableOpacity, Text, FlatList, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dialog, { SlideAnimation, DialogContent, DialogTitle, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 import { useIsFocused } from '@react-navigation/native';
@@ -222,40 +222,43 @@ const Transactions = ({ navigation }) => {
         
         let monthNumber;
 
-        if(month == 1) {
+        if(month === 1) {
             monthNumber = '01';
         }
-        if(month == 2) {
+        if(month === 2) {
             monthNumber = '02';
         }
-        if(month == 3) {
+        if(month === 3) {
             monthNumber = '03';
         }
-        if(month == 4) {
+        if(month === 4) {
             monthNumber = '04';
         }
-        if(month == 5) {
+        if(month === 5) {
             monthNumber = '05';
         }
-        if(month == 6) {
+        if(month === 6) {
             monthNumber = '06';
         }
-        if(month == 7) {
+        if(month === 7) {
             monthNumber = '07';
         }
-        if(month == 8) {
+        if(month === 8) {
             monthNumber = '08';
         }
-        if(month == 9) {
+        if(month === 9) {
             monthNumber = '09';
         }
-        if(month == 10) {
+        if(month === 10) {
             monthNumber = '10';
         }
-        if(month == 11) {
+        if(month === 11) {
             monthNumber = '11';
         }
-        if(month == 12) {
+        if(month === 12) {
+            monthNumber = '12';
+        }
+        if(month === 0) {
             monthNumber = '12';
         }
 
@@ -264,37 +267,39 @@ const Transactions = ({ navigation }) => {
 
     return (
         <View>
-            <View>
-                <TransactionMonth monthName={filterType}/>
-                {
-                    transactions.length != 0 ? (<FlatList
-                        data={transactions}
-                        renderItem={({ item }) => (
-                            <View>
-                                <TouchableOpacity onPress={() => editTransaction(item.rowid)}>
-                                    <View style={styles.formViewTransaction}>
-                                        <View style={{width: '12%'}}>
-                                            <Icon name="money" size={25} color="#4b81bf" style={{marginTop: 5, marginLeft: 15}} />
+            <ScrollView keyboardShouldPersistTaps='handled'>
+                <View>
+                    <TransactionMonth monthName={filterType}/>
+                    {
+                        transactions.length != 0 ? (<FlatList
+                            data={transactions}
+                            renderItem={({ item }) => (
+                                <View>
+                                    <TouchableOpacity onPress={() => editTransaction(item.rowid)}>
+                                        <View style={styles.formViewTransaction}>
+                                            <View style={{width: '12%'}}>
+                                                <Icon name="money" size={25} color="#4b81bf" style={{marginTop: 5, marginLeft: 15}} />
+                                            </View>
+                                            <View style={{width: '38%'}}>
+                                                {
+                                                    item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
+                                                }
+                                                <Text style={{fontStyle: 'italic', marginLeft: 8}}>{convertDate(item.date)}</Text>
+                                            </View>
+                                            <View style={{width: '50%'}}>
+                                                <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 160}} /> 
+                                            </View>
                                         </View>
-                                        <View style={{width: '38%'}}>
-                                            {
-                                                item.type == 'Income' ? (<Text style={{color: '#006400', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>) :  (<Text style={{color: '#C70039', fontSize: 18, marginLeft: 10}}>{currency+numberWithCommas(item.amount)}</Text>)
-                                            }
-                                            <Text style={{fontStyle: 'italic', marginLeft: 8}}>{convertDate(item.date)}</Text>
-                                        </View>
-                                        <View style={{width: '50%'}}>
-                                            <Icon name="angle-right" size={40} color="#4b81bf" style={{marginLeft: 160}} /> 
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        keyExtractor={item => item.rowid.toString()}
-                    />) : (<View style={{marginTop: 50}}>
-                                <NoTransaction/>
-                            </View>)
-                }
-            </View>    
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            keyExtractor={item => item.rowid.toString()}
+                        />) : (<View style={{marginTop: 50}}>
+                                    <NoTransaction/>
+                                </View>)
+                    }
+                </View>    
+            </ScrollView>
             <Dialog
                 visible={visible}
                 dialogTitle={<DialogTitle title="Filter Transaction" />}

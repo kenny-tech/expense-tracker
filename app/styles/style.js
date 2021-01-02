@@ -206,7 +206,7 @@ export default StyleSheet.create({
     },
     homeLinksView: {
         width: 390,
-        height: 350,
+        height: 300,
         backgroundColor: '#ffffff',
         marginTop: 5,
         marginHorizontal: 10,

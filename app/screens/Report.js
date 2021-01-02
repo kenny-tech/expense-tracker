@@ -209,40 +209,43 @@ const Report = () => {
         
         let monthNumber;
 
-        if(month == 1) {
+        if(month === 1) {
             monthNumber = '01';
         }
-        if(month == 2) {
+        if(month === 2) {
             monthNumber = '02';
         }
-        if(month == 3) {
+        if(month === 3) {
             monthNumber = '03';
         }
-        if(month == 4) {
+        if(month === 4) {
             monthNumber = '04';
         }
-        if(month == 5) {
+        if(month === 5) {
             monthNumber = '05';
         }
-        if(month == 6) {
+        if(month === 6) {
             monthNumber = '06';
         }
-        if(month == 7) {
+        if(month === 7) {
             monthNumber = '07';
         }
-        if(month == 8) {
+        if(month === 8) {
             monthNumber = '08';
         }
-        if(month == 9) {
+        if(month === 9) {
             monthNumber = '09';
         }
-        if(month == 10) {
+        if(month === 10) {
             monthNumber = '10';
         }
-        if(month == 11) {
+        if(month === 11) {
             monthNumber = '11';
         }
-        if(month == 12) {
+        if(month === 12) {
+            monthNumber = '12';
+        }
+        if(month === 0) {
             monthNumber = '12';
         }
 

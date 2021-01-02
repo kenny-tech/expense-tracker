@@ -13,7 +13,7 @@ const Mytextinput = ({ placeholder,keyboardType,onChangeText,returnKeyType,numbe
             numberOfLines={numberOfLines}
             multiline={multiline}
             onSubmitEditing={onSubmitEditing}
-            style={{ height: 35, borderColor: "gray", borderBottomWidth: 1, marginHorizontal: 10}}
+            style={{ height: 40, marginHorizontal: 10}}
             blurOnSubmit={false}
             defaultValue={defaultValue}
         />

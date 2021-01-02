@@ -6,7 +6,7 @@ const Myselectinput = ({ types,defaultValue,onValueChange }) => {
     return (
         <Picker
             selectedValue={defaultValue}
-            style={{ height: 40, width: 150, marginHorizontal: 5 }}
+            style={{ height: 40, width: 350, marginHorizontal: 5 }}
             onValueChange={onValueChange}
         > 
             {

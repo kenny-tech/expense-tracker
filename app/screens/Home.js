@@ -188,7 +188,6 @@ const Home = ({ navigation }) => {
                     for (let i = 0; i < results.rows.length; ++i) {
                         filterTypes.push(results.rows.item(i));
                     }
-                    console.log('Filter Types: ',filterTypes);
                 } else {
                     tx.executeSql(        
                         'INSERT INTO filtertypes VALUES (?),(?),(?),(?)',
