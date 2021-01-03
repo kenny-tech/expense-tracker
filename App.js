@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SplashScreen from 'react-native-splash-screen';
 
 import HomeScreen from './app/screens/Home';
 import IncomeScreen from './app/screens/Income';
@@ -16,6 +17,11 @@ import PaymentModeScreen from './app/screens/PaymentMode';
 const Stack = createStackNavigator();
 
 const App = () => {
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+  
   return (
     <NavigationContainer>
       <Stack.Navigator
