@@ -1,1 +1,1 @@
-# expense-manager
+# expense-tracker
